@@ -1,0 +1,140 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 16-May-2025, 12:19:10 AM
+    Author     : Admin
+*/
+
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 14-May-2025, 10:50:47 PM
+    Author     : Admin
+*/
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.bg-form {
+    background-image: url('../photos/different-types-of-food.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-container {
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 80%;
+    margin: 100px auto;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input, select {
+    width: 40%;
+    padding: 10px 20px;
+    margin: 10px 10px;
+    font-size: 16px;
+}
+
+.btn {
+    width: 45% !important;
+    padding: 0.9rem !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+
+    margin: 1rem 1rem !important;
+    cursor: pointer !important;
+    background-color: coral !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 4px !important;
+    transition: background-color 0.3s;
+
+}
+
+
+/*background-color: coral;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    width: 40%;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 1rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #ff52F52;*/
+
+
+
+
+
+
+.btn :hover {
+    background-color:#ff5252;
+}
+
+.success-toast {
+    position: fixed ;
+    top: 20px;
+    right: -300px;
+    background-color: greenyellow !important;
+    color: white !important;
+    padding: 16px;
+    border-radius: 5px;
+    font-size: 16px;
+    animation: slideIn 0.5s forwards;
+}
+
+.ui-growl-item-container.ui-growl-info {
+    background-color: green !important ;
+    color: white !important;
+    border: none !important;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/*.ui-growl {
+    position: fixed;
+    background-color: greenyellow;
+    top: 20px;
+    right: 20px;
+    width: 301px;
+}*/
+
+/*
+
+.ui-growl-item-container.ui-growl-warn {
+    background-color: #ffc107 !important;  Yellow 
+}*/
+/*
+.ui-growl-item-container.ui-growl-error {
+    background-color: #dc3545 !important;  Red 
+}*/
+
+
+/* Optional: change the icon color */
+.ui-growl-icon-info {
+    color: white !important;
+}
+@keyframes slideIn {
+    to {
+        right: 20px;
+    }
+}
