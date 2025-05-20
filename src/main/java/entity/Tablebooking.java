@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbDateFormat;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,10 +36,10 @@ import java.util.Date;
     @NamedQuery(name = "Tablebooking.findByDineInTime", query = "SELECT t FROM Tablebooking t WHERE t.dineInTime = :dineInTime"),
     @NamedQuery(name = "Tablebooking.findByBookingDate", query = "SELECT t FROM Tablebooking t WHERE t.bookingDate = :bookingDate"),
     @NamedQuery(name = "Tablebooking.findByDineInDate", query = "SELECT t FROM Tablebooking t WHERE t.dineInDate = :dineInDate"),
-    @NamedQuery(name = "Tablebooking.findByNoOfPeoples", query = "SELECT t FROM Tablebooking t WHERE t.noOfPeoples = :noOfPeoples"),
-    @NamedQuery(name = "Tablebooking.findByContactNo", query = "SELECT t FROM Tablebooking t WHERE t.contactNo = :contactNo"),
-    @NamedQuery(name = "Tablebooking.findByCustomerName", query = "SELECT t FROM Tablebooking t WHERE t.customerName = :customerName"),
-    @NamedQuery(name = "Tablebooking.findByTableBookingId", query = "SELECT t FROM Tablebooking t WHERE t.tableBookingId = :tableBookingId")})
+    @NamedQuery(name = "Tablebooking.findByNoofpeoples", query = "SELECT t FROM Tablebooking t WHERE t.noofpeoples = :noofpeoples"),
+    @NamedQuery(name = "Tablebooking.findByContactno", query = "SELECT t FROM Tablebooking t WHERE t.contactno = :contactno"),
+    @NamedQuery(name = "Tablebooking.findByCustomername", query = "SELECT t FROM Tablebooking t WHERE t.customername = :customername"),
+    @NamedQuery(name = "Tablebooking.findByTablebookingid", query = "SELECT t FROM Tablebooking t WHERE t.tablebookingid = :tablebookingid")})
 public class Tablebooking implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,13 +47,11 @@ public class Tablebooking implements Serializable {
     @NotNull
     @Column(name = "booking_time")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     private Date bookingTime;
     @Basic(optional = false)
     @NotNull
     @Column(name = "dine_in_time")
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss")
     private Date dineInTime;
     @Basic(optional = false)
     @NotNull
@@ -69,22 +66,22 @@ public class Tablebooking implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "noofpeoples")
-    private int noOfPeoples;
+    private int noofpeoples;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "contactno")
-    private String contactNo;
+    private String contactno;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "customername")
-    private String customerName;
+    private String customername;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "tablebookingid")
-    private Integer tableBookingId;
+    private Integer tablebookingid;
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(optional = false)
     private Restaurantmaster restaurantId;
@@ -95,19 +92,19 @@ public class Tablebooking implements Serializable {
     public Tablebooking() {
     }
 
-    public Tablebooking(Integer tableBookingId) {
-        this.tableBookingId = tableBookingId;
+    public Tablebooking(Integer tablebookingid) {
+        this.tablebookingid = tablebookingid;
     }
 
-    public Tablebooking(Integer tableBookingId, Date bookingTime, Date dineInTime, Date bookingDate, Date dineInDate, int noOfPeoples, String contactNo, String customerName) {
-        this.tableBookingId = tableBookingId;
+    public Tablebooking(Integer tablebookingid, Date bookingTime, Date dineInTime, Date bookingDate, Date dineInDate, int noofpeoples, String contactno, String customername) {
+        this.tablebookingid = tablebookingid;
         this.bookingTime = bookingTime;
         this.dineInTime = dineInTime;
         this.bookingDate = bookingDate;
         this.dineInDate = dineInDate;
-        this.noOfPeoples = noOfPeoples;
-        this.contactNo = contactNo;
-        this.customerName = customerName;
+        this.noofpeoples = noofpeoples;
+        this.contactno = contactno;
+        this.customername = customername;
     }
 
     public Date getBookingTime() {
@@ -142,36 +139,36 @@ public class Tablebooking implements Serializable {
         this.dineInDate = dineInDate;
     }
 
-    public int getNoOfPeoples() {
-        return noOfPeoples;
+    public int getNoofpeoples() {
+        return noofpeoples;
     }
 
-    public void setNoOfPeoples(int noOfPeoples) {
-        this.noOfPeoples = noOfPeoples;
+    public void setNoofpeoples(int noofpeoples) {
+        this.noofpeoples = noofpeoples;
     }
 
-    public String getContactNo() {
-        return contactNo;
+    public String getContactno() {
+        return contactno;
     }
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
+    public void setContactno(String contactno) {
+        this.contactno = contactno;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCustomername() {
+        return customername;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomername(String customername) {
+        this.customername = customername;
     }
 
-    public Integer getTableBookingId() {
-        return tableBookingId;
+    public Integer getTablebookingid() {
+        return tablebookingid;
     }
 
-    public void setTableBookingId(Integer tableBookingId) {
-        this.tableBookingId = tableBookingId;
+    public void setTablebookingid(Integer tablebookingid) {
+        this.tablebookingid = tablebookingid;
     }
 
     public Restaurantmaster getRestaurantId() {
@@ -193,7 +190,7 @@ public class Tablebooking implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (tableBookingId != null ? tableBookingId.hashCode() : 0);
+        hash += (tablebookingid != null ? tablebookingid.hashCode() : 0);
         return hash;
     }
 
@@ -204,7 +201,7 @@ public class Tablebooking implements Serializable {
             return false;
         }
         Tablebooking other = (Tablebooking) object;
-        if ((this.tableBookingId == null && other.tableBookingId != null) || (this.tableBookingId != null && !this.tableBookingId.equals(other.tableBookingId))) {
+        if ((this.tablebookingid == null && other.tablebookingid != null) || (this.tablebookingid != null && !this.tablebookingid.equals(other.tablebookingid))) {
             return false;
         }
         return true;
@@ -212,7 +209,7 @@ public class Tablebooking implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Tablebooking[ tableBookingId=" + tableBookingId + " ]";
+        return "entity.Tablebooking[ tablebookingid=" + tablebookingid + " ]";
     }
     
 }

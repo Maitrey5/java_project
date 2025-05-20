@@ -28,7 +28,7 @@ import java.util.List;
 @Local
 public interface ejb_restaurant_crudLocal {
     
-        void add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
+        Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
         void delete_restaurant(Integer restaurant_id);
         void update_restaurant(Integer restaurant_id , String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
         Restaurantmaster search_restaurant(Integer restaurant_id);
@@ -91,5 +91,6 @@ public interface ejb_restaurant_crudLocal {
         void add_transaction_to_restaurant(Integer restaurant_id,Integer amount, String transaction_type,String description,Date Date,Time time);
         Collection<Transactionmaster> get_all_transaction_by_restaurant(Integer restaurant_id);
 
+        void add_user_of_restaurant(String username , String password ,Integer restaurant_id , String role );
 
 }

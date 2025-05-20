@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,7 +37,7 @@ import java.util.Date;
 @NamedQueries({
     @NamedQuery(name = "Menumaster.findAll", query = "SELECT m FROM Menumaster m"),
     @NamedQuery(name = "Menumaster.findByMenuId", query = "SELECT m FROM Menumaster m WHERE m.menuId = :menuId"),
-    @NamedQuery(name = "Menumaster.findByItemNameandrestaurantid", query = "SELECT m FROM Menumaster m WHERE m.itemName = :itemName and m.restaurantId.restaurantId = :restaurantId "),
+    @NamedQuery(name = "Menumaster.findByItemName", query = "SELECT m FROM Menumaster m WHERE m.itemName = :itemName"),
     @NamedQuery(name = "Menumaster.findByItemPrice", query = "SELECT m FROM Menumaster m WHERE m.itemPrice = :itemPrice"),
     @NamedQuery(name = "Menumaster.findByDescription", query = "SELECT m FROM Menumaster m WHERE m.description = :description"),
     @NamedQuery(name = "Menumaster.findByIsAvalaible", query = "SELECT m FROM Menumaster m WHERE m.isAvalaible = :isAvalaible"),
@@ -162,7 +161,7 @@ public class Menumaster implements Serializable {
         this.itemType = itemType;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<OrderMenuJointable> getOrderMenuJointableCollection() {
         return orderMenuJointableCollection;
     }

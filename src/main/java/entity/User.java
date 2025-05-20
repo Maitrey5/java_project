@@ -8,6 +8,8 @@ import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
@@ -26,8 +28,7 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByRestaurantId", query = "SELECT u FROM User u WHERE u.restaurantId = :restaurantId")})
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,10 +43,9 @@ public class User implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "password")
     private String password;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "restaurant_id")
-    private int restaurantId;
+    @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
+    @ManyToOne(optional = false)
+    private Restaurantmaster restaurantId;
 
     public User() {
     }
@@ -54,10 +54,9 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public User(String username, String password, int restaurantId) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.restaurantId = restaurantId;
     }
 
     public String getUsername() {
@@ -76,11 +75,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getRestaurantId() {
+    public Restaurantmaster getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(int restaurantId) {
+    public void setRestaurantId(Restaurantmaster restaurantId) {
         this.restaurantId = restaurantId;
     }
 

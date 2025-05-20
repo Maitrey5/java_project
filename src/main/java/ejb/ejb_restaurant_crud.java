@@ -7,6 +7,7 @@ package ejb;
 
 import entity.Billmaster;
 import entity.Categorymaster;
+import entity.Groups;
 import entity.Inventorymaster;
 import entity.Menumaster;
 import entity.OrderMenuJointable;
@@ -17,9 +18,11 @@ import entity.Staffmaster;
 import entity.Tablebooking;
 import entity.Tablemaster;
 import entity.Transactionmaster;
+import entity.User;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.security.acl.Group;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +40,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     EntityManager em;
 
     @Override
-    public void add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active) {
+    public Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active) {
 
         Restaurantmaster r = new Restaurantmaster();
         r.setRestaurantName(restaurant_name);
@@ -53,7 +56,16 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         r.setIsActive(is_active);
 
         em.persist(r);
+        
+        em.flush(); // 👈 Force JPA to push to DB and generate the ID
 
+        
+        Integer idd  = r.getRestaurantId();
+                System.out.println(idd);
+        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiis");
+
+
+        return idd;
     }
 
     @Override
@@ -503,9 +515,9 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         tt.setBookingTime(booking_time);
         tt.setDineInDate(dine_in_date);
         tt.setDineInTime(dine_in_time);
-        tt.setNoOfPeoples(no_of_peoples);
-        tt.setCustomerName(customer_name);
-        tt.setContactNo(contact_no);
+        tt.setNoofpeoples(no_of_peoples);
+        tt.setCustomername(customer_name);
+        tt.setContactno(contact_no);
 
         em.persist(r);
 
@@ -528,9 +540,9 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         tt.setBookingTime(booking_time);
         tt.setDineInDate(dine_in_date);
         tt.setDineInTime(dine_in_time);
-        tt.setNoOfPeoples(no_of_peoples);
-        tt.setCustomerName(customer_name);
-        tt.setContactNo(contact_no);
+        tt.setNoofpeoples(no_of_peoples);
+        tt.setCustomername(customer_name);
+        tt.setContactno(contact_no);
 
 //        Collection<Tablebooking> cr = r.getTablebookingCollection();
 //        cr.remove(tt);
@@ -781,5 +793,40 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
         return r.getTransactionmasterCollection();
+    }
+
+    @Override
+    public void add_user_of_restaurant(String username, String password, Integer restaurant_id, String role) {
+    
+        Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
+        System.out.println(username);
+        System.out.println("pppppppppppppppppppppppppp");
+        System.out.println(password);
+        System.out.println(restaurant_id);
+        System.out.println(role);
+        
+        User u = new User();
+        u.setUsername(username);
+        u.setPassword(password);
+        u.setRestaurantId(r);
+        
+        em.persist(u);
+        
+        Collection<User> uu = r.getUserCollection();
+        
+        uu.add(u);
+        
+        r.setUserCollection(uu);
+        
+        Groups g = new Groups();
+        
+        g.setUsername(username);
+        g.setRoles(role);
+        
+        em.persist(g);
+        
+        
+
+    
     }
 }

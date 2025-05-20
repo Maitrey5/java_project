@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -97,7 +96,7 @@ public class Tablemaster implements Serializable {
         this.capacity = capacity;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Ordermaster> getOrdermasterCollection() {
         return ordermasterCollection;
     }
@@ -114,7 +113,7 @@ public class Tablemaster implements Serializable {
         this.restaurantId = restaurantId;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Tablebooking> getTablebookingCollection() {
         return tablebookingCollection;
     }

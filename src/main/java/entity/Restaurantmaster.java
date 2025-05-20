@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -127,6 +126,8 @@ public class Restaurantmaster implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurantId")
     private Collection<Inventorymaster> inventorymasterCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurantId")
+    private Collection<User> userCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurantId")
     private Collection<Tablebooking> tablebookingCollection;
 
     public Restaurantmaster() {
@@ -247,7 +248,7 @@ public class Restaurantmaster implements Serializable {
         this.isActive = isActive;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Categorymaster> getCategorymasterCollection() {
         return categorymasterCollection;
     }
@@ -256,8 +257,7 @@ public class Restaurantmaster implements Serializable {
         this.categorymasterCollection = categorymasterCollection;
     }
 
-    @JsonbTransient
-
+    @XmlTransient
     public Collection<Menumaster> getMenumasterCollection() {
         return menumasterCollection;
     }
@@ -266,7 +266,7 @@ public class Restaurantmaster implements Serializable {
         this.menumasterCollection = menumasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Transactionmaster> getTransactionmasterCollection() {
         return transactionmasterCollection;
     }
@@ -275,7 +275,7 @@ public class Restaurantmaster implements Serializable {
         this.transactionmasterCollection = transactionmasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Staffmaster> getStaffmasterCollection() {
         return staffmasterCollection;
     }
@@ -284,7 +284,7 @@ public class Restaurantmaster implements Serializable {
         this.staffmasterCollection = staffmasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
     }
@@ -293,7 +293,7 @@ public class Restaurantmaster implements Serializable {
         this.billmasterCollection = billmasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Ordermaster> getOrdermasterCollection() {
         return ordermasterCollection;
     }
@@ -302,7 +302,7 @@ public class Restaurantmaster implements Serializable {
         this.ordermasterCollection = ordermasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<StaffTransaction> getStaffTransactionCollection() {
         return staffTransactionCollection;
     }
@@ -311,7 +311,7 @@ public class Restaurantmaster implements Serializable {
         this.staffTransactionCollection = staffTransactionCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Tablemaster> getTablemasterCollection() {
         return tablemasterCollection;
     }
@@ -320,7 +320,7 @@ public class Restaurantmaster implements Serializable {
         this.tablemasterCollection = tablemasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Inventorymaster> getInventorymasterCollection() {
         return inventorymasterCollection;
     }
@@ -329,7 +329,16 @@ public class Restaurantmaster implements Serializable {
         this.inventorymasterCollection = inventorymasterCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
+    public Collection<User> getUserCollection() {
+        return userCollection;
+    }
+
+    public void setUserCollection(Collection<User> userCollection) {
+        this.userCollection = userCollection;
+    }
+
+    @XmlTransient
     public Collection<Tablebooking> getTablebookingCollection() {
         return tablebookingCollection;
     }

@@ -3,8 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jwtrest;
-//    import io.jsonwebtoken.Claims;
-//import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 //import io.jsonwebtoken.SignatureAlgorithm;
 
 import jakarta.annotation.PostConstruct;
@@ -18,6 +17,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 import static jwtrest.Constants.REMEMBERME_VALIDITY_SECONDS;
@@ -149,7 +149,7 @@ public class TokenProvider implements Serializable{
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(authToken);
           //Jwts.parser().setSigningKey(mypublicKey).parseClaimsJws(authToken);
             return true;
-        } catch (SignatureException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.INFO, "Invalid JWT signature: {0}", e.getMessage());
             return false;
         }

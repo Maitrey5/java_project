@@ -4,14 +4,17 @@
  */
 package beans;
 
+import client.realclientforadmin;
+import client.updatedadminclient;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
-import java.io.IOException;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -21,6 +24,12 @@ import java.io.Serializable;
 @ViewScoped
 public class RegisterBean implements Serializable {
 
+    updatedadminclient em;
+    Response rs ; 
+    GenericType<Integer> g = new GenericType<Integer>(){};
+    Integer id ;
+    
+    
     /**
      * Creates a new instance of RegisterBean
      */
@@ -39,8 +48,12 @@ public class RegisterBean implements Serializable {
     }
 
     public void register() {
+
+        em = new updatedadminclient();
         
         
+       
+
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (restaurant_name == null || restaurant_name.trim().length() < 3) {
@@ -55,8 +68,24 @@ public class RegisterBean implements Serializable {
             return;
         }
 
-        // Add more validations as needed...
+        LocalDate currentDate = LocalDate.now();
+        String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+        rs = em.add_restaurant(Response.class, restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, formattedDate, formattedDate, "true");
+        id = rs.readEntity(g);
+        
+        System.out.println(id);
+        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+        System.out.println(rs);
+        
+        String role ="Admin";
+
+        
+        
+        em.add_user_of_restaurant(username, password , String.valueOf(id),role);
+        
+        
+        // Add more validations as needed...
         // Success
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registered successfully"));
 

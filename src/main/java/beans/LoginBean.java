@@ -104,14 +104,14 @@ public class LoginBean implements Serializable {
 
             if (status.equals(SUCCESS)) {
                 if (roles.contains("Admin")) {
-                    return "/admin/Admin";
-                } else if (roles.contains("Supervisor")) {
-                    return "/user/User";
+                    return "/webpages/Admin";
+                } else if (roles.contains("Waiter")) {
+                    return "/webpages/User";
                 }
 
             } else {
                 errorstatus = "User Name or Password may be wrong";
-                return "/admin/Admin";
+                return "/webpages/Admin";
             }
 
         } catch (Exception e) {

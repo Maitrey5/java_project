@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,7 +37,7 @@ import java.util.Date;
     @NamedQuery(name = "Ordermaster.findAll", query = "SELECT o FROM Ordermaster o"),
     @NamedQuery(name = "Ordermaster.findByOrderId", query = "SELECT o FROM Ordermaster o WHERE o.orderId = :orderId"),
     @NamedQuery(name = "Ordermaster.findByOrederDate", query = "SELECT o FROM Ordermaster o WHERE o.orederDate = :orederDate"),
-    @NamedQuery(name = "Ordermaster.findByNoOfPeople", query = "SELECT o FROM Ordermaster o WHERE o.noOfPeople = :noOfPeople")})
+    @NamedQuery(name = "Ordermaster.findByNoofpeople", query = "SELECT o FROM Ordermaster o WHERE o.noofpeople = :noofpeople")})
 public class Ordermaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,7 +54,7 @@ public class Ordermaster implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "noofpeople")
-    private int noOfPeople;
+    private int noofpeople;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private Collection<OrderMenuJointable> orderMenuJointableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
@@ -74,10 +73,10 @@ public class Ordermaster implements Serializable {
         this.orderId = orderId;
     }
 
-    public Ordermaster(Integer orderId, Date orederDate, int noOfPeople) {
+    public Ordermaster(Integer orderId, Date orederDate, int noofpeople) {
         this.orderId = orderId;
         this.orederDate = orederDate;
-        this.noOfPeople = noOfPeople;
+        this.noofpeople = noofpeople;
     }
 
     public Integer getOrderId() {
@@ -96,15 +95,15 @@ public class Ordermaster implements Serializable {
         this.orederDate = orederDate;
     }
 
-    public int getNoOfPeople() {
-        return noOfPeople;
+    public int getNoofpeople() {
+        return noofpeople;
     }
 
-    public void setNoOfPeople(int noOfPeople) {
-        this.noOfPeople = noOfPeople;
+    public void setNoofpeople(int noofpeople) {
+        this.noofpeople = noofpeople;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<OrderMenuJointable> getOrderMenuJointableCollection() {
         return orderMenuJointableCollection;
     }
@@ -113,7 +112,7 @@ public class Ordermaster implements Serializable {
         this.orderMenuJointableCollection = orderMenuJointableCollection;
     }
 
-    @JsonbTransient
+    @XmlTransient
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
     }

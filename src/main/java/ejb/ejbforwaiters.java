@@ -51,7 +51,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
         Ordermaster o = new Ordermaster();
 
         o.setRestaurantId(r);
-        o.setNoOfPeople(noofpeople);
+        o.setNoofpeople(noofpeople);
         o.setTableId(t);
         o.setOrederDate(oreder_date);
 
@@ -216,9 +216,9 @@ public class ejbforwaiters implements ejbforwaitersLocal {
         b.setTotalAmount(total_amount);
         b.setDiscount(discount);
         b.setFinalAmount(final_amount);
-        b.setFinalPaybleAmountWithTax(final_payble_amount_with_tax);
+        b.setFinalPaybleAmountWithtax(final_payble_amount_with_tax);
         b.setDateTime(datetime);
-        b.setModeOfPayment(modeofpayment);
+        b.setModeofpayment(modeofpayment);
         b.setTransactionId(tr);
 
         em.persist(b);

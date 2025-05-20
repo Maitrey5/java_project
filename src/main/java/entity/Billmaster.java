@@ -4,7 +4,6 @@
  */
 package entity;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,9 +36,9 @@ import java.util.Date;
     @NamedQuery(name = "Billmaster.findByTotalAmount", query = "SELECT b FROM Billmaster b WHERE b.totalAmount = :totalAmount"),
     @NamedQuery(name = "Billmaster.findByDiscount", query = "SELECT b FROM Billmaster b WHERE b.discount = :discount"),
     @NamedQuery(name = "Billmaster.findByFinalAmount", query = "SELECT b FROM Billmaster b WHERE b.finalAmount = :finalAmount"),
-    @NamedQuery(name = "Billmaster.findByFinalPaybleAmountWithTax", query = "SELECT b FROM Billmaster b WHERE b.finalPaybleAmountWithTax = :finalPaybleAmountWithTax"),
+    @NamedQuery(name = "Billmaster.findByFinalPaybleAmountWithtax", query = "SELECT b FROM Billmaster b WHERE b.finalPaybleAmountWithtax = :finalPaybleAmountWithtax"),
     @NamedQuery(name = "Billmaster.findByDateTime", query = "SELECT b FROM Billmaster b WHERE b.dateTime = :dateTime"),
-    @NamedQuery(name = "Billmaster.findByModeOfPayment", query = "SELECT b FROM Billmaster b WHERE b.modeOfPayment = :modeOfPayment")})
+    @NamedQuery(name = "Billmaster.findByModeofpayment", query = "SELECT b FROM Billmaster b WHERE b.modeofpayment = :modeofpayment")})
 public class Billmaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,7 +62,7 @@ public class Billmaster implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "final_payble_amount_withtax")
-    private int finalPaybleAmountWithTax;
+    private int finalPaybleAmountWithtax;
     @Basic(optional = false)
     @NotNull
     @Column(name = "date_time")
@@ -73,7 +72,7 @@ public class Billmaster implements Serializable {
     @NotNull
     @Size(min = 1, max = 6)
     @Column(name = "modeofpayment")
-    private String modeOfPayment;
+    private String modeofpayment;
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(optional = false)
     private Restaurantmaster restaurantId;
@@ -91,14 +90,14 @@ public class Billmaster implements Serializable {
         this.billId = billId;
     }
 
-    public Billmaster(Integer billId, int totalAmount, int discount, int finalAmount, int finalPaybleAmountWithTax, Date dateTime, String modeOfPayment) {
+    public Billmaster(Integer billId, int totalAmount, int discount, int finalAmount, int finalPaybleAmountWithtax, Date dateTime, String modeofpayment) {
         this.billId = billId;
         this.totalAmount = totalAmount;
         this.discount = discount;
         this.finalAmount = finalAmount;
-        this.finalPaybleAmountWithTax = finalPaybleAmountWithTax;
+        this.finalPaybleAmountWithtax = finalPaybleAmountWithtax;
         this.dateTime = dateTime;
-        this.modeOfPayment = modeOfPayment;
+        this.modeofpayment = modeofpayment;
     }
 
     public Integer getBillId() {
@@ -133,12 +132,12 @@ public class Billmaster implements Serializable {
         this.finalAmount = finalAmount;
     }
 
-    public int getFinalPaybleAmountWithTax() {
-        return finalPaybleAmountWithTax;
+    public int getFinalPaybleAmountWithtax() {
+        return finalPaybleAmountWithtax;
     }
 
-    public void setFinalPaybleAmountWithTax(int finalPaybleAmountWithTax) {
-        this.finalPaybleAmountWithTax = finalPaybleAmountWithTax;
+    public void setFinalPaybleAmountWithtax(int finalPaybleAmountWithtax) {
+        this.finalPaybleAmountWithtax = finalPaybleAmountWithtax;
     }
 
     public Date getDateTime() {
@@ -149,12 +148,12 @@ public class Billmaster implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public String getModeOfPayment() {
-        return modeOfPayment;
+    public String getModeofpayment() {
+        return modeofpayment;
     }
 
-    public void setModeOfPayment(String modeOfPayment) {
-        this.modeOfPayment = modeOfPayment;
+    public void setModeofpayment(String modeofpayment) {
+        this.modeofpayment = modeofpayment;
     }
 
     public Restaurantmaster getRestaurantId() {
@@ -177,7 +176,6 @@ public class Billmaster implements Serializable {
         return transactionId;
     }
 
-    
     public void setTransactionId(Transactionmaster transactionId) {
         this.transactionId = transactionId;
     }

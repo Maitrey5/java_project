@@ -7,6 +7,7 @@ package rest;
 import ejb.ejb_restaurant_crudLocal;
 import entity.Billmaster;
 import entity.Categorymaster;
+import entity.Groups;
 import entity.Inventorymaster;
 import entity.Menumaster;
 import entity.Ordermaster;
@@ -16,6 +17,7 @@ import entity.Staffmaster;
 import entity.Tablebooking;
 import entity.Tablemaster;
 import entity.Transactionmaster;
+import entity.User;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.UriInfo;
@@ -62,7 +64,7 @@ public class GenericRestResource {
      */
     @POST
     @Path("/add/{restaurant_name}/{restaurant_address}/{restaurant_contactno}/{restaurant_email}/{restaurant_city}/{restaurant_state}/{restaurant_country}/{restaurant_pincode}/{created_at}/{updated_at}/{is_active}")
-    public void add_restaurant(
+    public Integer add_restaurant(
             @PathParam("restaurant_name") String restaurant_name,
             @PathParam("restaurant_address") String restaurant_address,
             @PathParam("restaurant_contactno") String restaurant_contactno,
@@ -83,7 +85,11 @@ public class GenericRestResource {
         created_date = new SimpleDateFormat("yyyy-MM-dd").parse(created_at);
         updated_date = new SimpleDateFormat("yyyy-MM-dd").parse(updated_at);
 
-        em.add_restaurant(restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, created_date, updated_date, is_active);
+        Integer idd =  em.add_restaurant(restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, created_date, updated_date, is_active);
+    
+        System.out.println(idd);
+        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiis");
+        return idd;
     }
 
     @DELETE
@@ -593,5 +599,16 @@ public class GenericRestResource {
     @Produces("application/json")
     public Collection<Transactionmaster> get_all_transaction_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
         return em.get_all_transaction_by_restaurant(restaurant_id);
+    }
+    
+    
+    @POST
+    @Path("add_user_of_restaurant/{username}/{password}/{restaurant_id}/{role}")
+    public void add_user_of_restaurant(@PathParam("username") String username, @PathParam("password") String password,@PathParam("restaurant_id") Integer restaurant_id,@PathParam("role") String role) {
+    
+        em.add_user_of_restaurant(username, password, restaurant_id, role);
+        
+
+    
     }
 }
