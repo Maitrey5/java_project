@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/J2EE/EJB40/StatelessEjbClass.java to edit this template
  */
-
 package ejb;
 
 import entity.Billmaster;
@@ -19,15 +18,21 @@ import entity.Tablebooking;
 import entity.Tablemaster;
 import entity.Transactionmaster;
 import entity.User;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.security.acl.Group;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import org.glassfish.soteria.identitystores.hash.Pbkdf2PasswordHashImpl;
 
 /**
  *
@@ -38,6 +43,64 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
     @PersistenceContext(unitName = "restaurant_pu")
     EntityManager em;
+
+    @Inject
+    Pbkdf2PasswordHash passwordHasher;
+
+    @PostConstruct
+    public void init() {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("Pbkdf2PasswordHash.Iterations", "2048");
+        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA256");
+        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
+
+        passwordHasher.initialize(parameters);
+        System.out.println("✅ init() called: PasswordHasher initialized");
+
+    }
+
+    
+    
+
+    @Override
+    public void add_user_of_restaurant(String username, String password, Integer restaurant_id, String role) {
+
+        init();
+        String hashpass = passwordHasher.generate(password.toCharArray());
+
+        //Pbkdf2PasswordHashImpl pb;
+        // Insert Student
+//        pb = new Pbkdf2PasswordHashImpl();
+//        String hashpass = pb.generate(password.toCharArray());
+        System.err.println(hashpass);
+        Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
+        System.out.println(username);
+        System.out.println("pppppppppppppppppppppppppp");
+        System.out.println(hashpass);
+        System.out.println(restaurant_id);
+        System.out.println(role);
+
+        User u = new User();
+        u.setUsername(username);
+        u.setPassword(hashpass);
+        u.setRestaurantId(r);
+
+        em.persist(u);
+
+        Collection<User> uu = r.getUserCollection();
+
+        uu.add(u);
+
+        r.setUserCollection(uu);
+
+        Groups g = new Groups();
+
+        g.setUsername(username);
+        g.setRoles(role);
+
+        em.persist(g);
+
+    }
 
     @Override
     public Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active) {
@@ -56,14 +119,12 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         r.setIsActive(is_active);
 
         em.persist(r);
-        
+
         em.flush(); // 👈 Force JPA to push to DB and generate the ID
 
-        
-        Integer idd  = r.getRestaurantId();
-                System.out.println(idd);
+        Integer idd = r.getRestaurantId();
+        System.out.println(idd);
         System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiis");
-
 
         return idd;
     }
@@ -174,7 +235,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     }
 
     @Override
-    public Menumaster search_menu(String itemname, Integer  restaurantId) {
+    public Menumaster search_menu(String itemname, Integer restaurantId) {
 
         return (Menumaster) em.createNamedQuery("Menumaster.findByItemNameandrestaurantid").setParameter("itemName", itemname).setParameter("restaurantId", restaurantId).getSingleResult();
 
@@ -375,7 +436,6 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 //        em.merge(m);
 //
 //    }
-
     @Override
     public void delete_order(Integer orderid) {
 
@@ -390,14 +450,13 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         Collection<Ordermaster> rrr = tr.getOrdermasterCollection();
         rrr.remove(om);
         em.merge(tr);
-        
+
         Collection<OrderMenuJointable> ee = om.getOrderMenuJointableCollection();
-        
-        for(OrderMenuJointable k : ee)
-        {
+
+        for (OrderMenuJointable k : ee) {
             em.remove(k);
         }
- 
+
         em.remove(om);
 
     }
@@ -760,7 +819,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     @Override
     public Collection<StaffTransaction> get_all_staff_transaction_by_restaurant(Integer restaurant_id) {
 
-        Restaurantmaster r = em.find(Restaurantmaster.class,restaurant_id);
+        Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
         return r.getStaffTransactionCollection();
     }
@@ -795,38 +854,4 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         return r.getTransactionmasterCollection();
     }
 
-    @Override
-    public void add_user_of_restaurant(String username, String password, Integer restaurant_id, String role) {
-    
-        Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
-        System.out.println(username);
-        System.out.println("pppppppppppppppppppppppppp");
-        System.out.println(password);
-        System.out.println(restaurant_id);
-        System.out.println(role);
-        
-        User u = new User();
-        u.setUsername(username);
-        u.setPassword(password);
-        u.setRestaurantId(r);
-        
-        em.persist(u);
-        
-        Collection<User> uu = r.getUserCollection();
-        
-        uu.add(u);
-        
-        r.setUserCollection(uu);
-        
-        Groups g = new Groups();
-        
-        g.setUsername(username);
-        g.setRoles(role);
-        
-        em.persist(g);
-        
-        
-
-    
-    }
 }

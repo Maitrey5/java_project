@@ -34,69 +34,68 @@ import record.KeepRecord;
  */
 @Named
 @RequestScoped
-public class SecureAuthentication implements HttpAuthenticationMechanism , Serializable{
+public class SecureAuthentication implements HttpAuthenticationMechanism, Serializable {
 
-    @Inject IdentityStoreHandler handler;
+    @Inject
+    IdentityStoreHandler handler;
     CredentialValidationResult result;
     AuthenticationStatus status;
-    @Inject TokenProvider tokenProvider;
-    @Inject LoginBean lbean;
-    @Inject KeepRecord keepRecord;
+    @Inject
+    TokenProvider tokenProvider;
+    @Inject
+    LoginBean lbean;
+    @Inject
+    KeepRecord keepRecord;
+
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext ctx) throws AuthenticationException {
-        
-           String token = extractToken(ctx);
-      try{
-        
-        
-      if(token==null && lbean.getUsername()!=null )
-      {
+
+        String token = extractToken(ctx);
+        try {
+
+            if (token == null && lbean.getUsername() != null) {
 //          String username = request.getParameter("username");
 //          String password = request.getParameter("password");
-          System.out.println("In Auth");
-          String username = lbean.getUsername();
-          String password = lbean.getPassword();
-          AuthenticationStatus status = lbean.getStatus();
-          Credential credential = new UsernamePasswordCredential(username, new Password(password));
-          result = handler.validate(credential);
-          if(result.getStatus()== Status.VALID)
-          {
-               status = createToken(result, ctx);
-             
-              status = ctx.notifyContainerAboutLogin(result);
-              keepRecord.setUsername(username);
-              keepRecord.setPassword(password);
-              keepRecord.setPrincipal(result.getCallerPrincipal());
-              keepRecord.setRoles(result.getCallerGroups());
-        
-              
-              lbean.setStatus(status);
-              lbean.setRoles(result.getCallerGroups());
-              return status;
-        
+                System.out.println("In Auth");
+                String username = lbean.getUsername();
+                String password = lbean.getPassword();
+                AuthenticationStatus status = lbean.getStatus();
+                Credential credential = new UsernamePasswordCredential(username, new Password(password));
+                System.err.println("ooooooooooooo");
+
+                System.err.println(credential);
+                result = handler.validate(credential);
+                if (result.getStatus() == Status.VALID) {
+                    status = createToken(result, ctx);
+
+                    status = ctx.notifyContainerAboutLogin(result);
+                    keepRecord.setUsername(username);
+                    keepRecord.setPassword(password);
+                    keepRecord.setPrincipal(result.getCallerPrincipal());
+                    keepRecord.setRoles(result.getCallerGroups());
+
+                    lbean.setStatus(status);
+                    lbean.setRoles(result.getCallerGroups());
+                    return status;
+
+                } else {
+                    lbean.setErrorstatus("User or Password is not correct !");
+                    lbean.setStatus(AuthenticationStatus.SEND_FAILURE);
+                    // request.getServletContext().getRequestDispatcher("/Login.jsf").forward(request, response);
+                }
+            }
+            if (keepRecord.getToken() != null) {
+                Credential credential1 = new UsernamePasswordCredential(keepRecord.getUsername(), new Password(keepRecord.getPassword()));
+                result = handler.validate(credential1);
+                AuthenticationStatus status = createToken(result, ctx);
+                ctx.notifyContainerAboutLogin(keepRecord.getPrincipal(), keepRecord.getRoles());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-          else
-          {
-              lbean.setErrorstatus("User or Password is not correct !");
-              lbean.setStatus(AuthenticationStatus.SEND_FAILURE);
-             // request.getServletContext().getRequestDispatcher("/Login.jsf").forward(request, response);
-          }
-      }
-     if(keepRecord.getToken()!=null)
-     {
-          Credential credential1 = new UsernamePasswordCredential(keepRecord.getUsername(), new Password(keepRecord.getPassword()));
-          result = handler.validate(credential1);
-          AuthenticationStatus status = createToken(result, ctx);
-          ctx.notifyContainerAboutLogin(keepRecord.getPrincipal(), keepRecord.getRoles());
-     }
-      
-      }
-    catch(Exception e)
-    {
-        e.printStackTrace();
-    }
-      
-     if (token != null) {
+
+        if (token != null) {
             // validation of the jwt credential
 
             return validateToken(token, ctx);
@@ -105,14 +104,14 @@ public class SecureAuthentication implements HttpAuthenticationMechanism , Seria
             // if there are no credentials and the resource is protected, we response with unauthorized status
             return ctx.responseUnauthorized();
         }
-      return ctx.doNothing();
+        return ctx.doNothing();
     }
-    
+
     private AuthenticationStatus validateToken(String token, HttpMessageContext context) {
         try {
             if (tokenProvider.validateToken(token)) {
                 JWTCredential credential = tokenProvider.getCredential(token);
-               // System.out.println("JWTAuthenticationMechanism-Token Validated");
+                // System.out.println("JWTAuthenticationMechanism-Token Validated");
                 return context.notifyContainerAboutLogin(credential.getPrincipal(), credential.getAuthorities());
 
             }
@@ -139,12 +138,11 @@ public class SecureAuthentication implements HttpAuthenticationMechanism , Seria
             //context.getRequest().getSession().setAttribute("token", jwt);
             keepRecord.setToken(jwt);
             context.getResponse().addHeader(AUTHORIZATION_HEADER, BEARER + jwt);
-            System.out.println("Token Value"+ jwt);
-        
-           
+            System.out.println("Token Value" + jwt);
+
         }
         System.out.println("JWTAuthenticationMechanism - Token Created");
-        
+
         return context.notifyContainerAboutLogin(result.getCallerPrincipal(), result.getCallerGroups());
     }
 
@@ -158,7 +156,7 @@ public class SecureAuthentication implements HttpAuthenticationMechanism , Seria
         String authorizationHeader = context.getRequest().getHeader(AUTHORIZATION_HEADER);
         if (authorizationHeader != null && authorizationHeader.startsWith(BEARER)) {
             String token = authorizationHeader.substring(BEARER.length(), authorizationHeader.length());
-          //  System.out.println("JWTAuthenticationMechanism - Extract Tokens");
+            //  System.out.println("JWTAuthenticationMechanism - Extract Tokens");
             return token;
         }
         return null;
@@ -174,8 +172,5 @@ public class SecureAuthentication implements HttpAuthenticationMechanism , Seria
     public Boolean isRememberMe(HttpMessageContext context) {
         return Boolean.valueOf(context.getRequest().getParameter("rememberme"));
     }
-        
- 
-    
-    
+
 }

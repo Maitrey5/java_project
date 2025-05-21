@@ -30,6 +30,7 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class GenericRestResource {
      */
     @POST
     @Path("/add/{restaurant_name}/{restaurant_address}/{restaurant_contactno}/{restaurant_email}/{restaurant_city}/{restaurant_state}/{restaurant_country}/{restaurant_pincode}/{created_at}/{updated_at}/{is_active}")
+    @Produces("application/json")
     public Integer add_restaurant(
             @PathParam("restaurant_name") String restaurant_name,
             @PathParam("restaurant_address") String restaurant_address,
@@ -606,6 +608,13 @@ public class GenericRestResource {
     @Path("add_user_of_restaurant/{username}/{password}/{restaurant_id}/{role}")
     public void add_user_of_restaurant(@PathParam("username") String username, @PathParam("password") String password,@PathParam("restaurant_id") Integer restaurant_id,@PathParam("role") String role) {
     
+        System.out.println("inside user rest ");
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(restaurant_id);
+        System.out.println(role);
+        
+        
         em.add_user_of_restaurant(username, password, restaurant_id, role);
         
 

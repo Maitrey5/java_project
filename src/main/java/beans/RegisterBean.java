@@ -4,32 +4,48 @@
  */
 package beans;
 
-import client.realclientforadmin;
 import client.updatedadminclient;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
-import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import org.glassfish.soteria.identitystores.hash.Pbkdf2PasswordHashImpl;
 
 /**
  *
  * @author Admin
  */
 @Named(value = "registerBean")
-@ViewScoped
+@RequestScoped
 public class RegisterBean implements Serializable {
 
+//    @Inject
+//    private Pbkdf2PasswordHash passwordHasher;
+    
+    @Inject
+    private Pbkdf2PasswordHash passwordHash;
     updatedadminclient em;
-    Response rs ; 
-    GenericType<Integer> g = new GenericType<Integer>(){};
-    Integer id ;
+    Response rs;
+    GenericType<Integer> g = new GenericType<Integer>() {};
+    Integer id;
     
-    
+    // String rawPassword = "admin";
+
+    // Manually create an instance of the hash class
+    Pbkdf2PasswordHash hash = new Pbkdf2PasswordHashImpl();
+
+//        System.out.println("PBKDF2 hash of 'admin':");
+//        System.out.println(hashedPassword);
+
     /**
      * Creates a new instance of RegisterBean
      */
@@ -46,13 +62,23 @@ public class RegisterBean implements Serializable {
 
     public RegisterBean() {
     }
+    
+    
+    public String generateHash(String password) {
+        // Optional: set parameters like iteration count, algorithm, etc.
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("Pbkdf2PasswordHash.Iterations", "3072");
+        parameters.put("Pbkdf2PasswordHash.Algorithm", "PBKDF2WithHmacSHA512");
+        parameters.put("Pbkdf2PasswordHash.SaltSizeBytes", "64");
+
+        hash.initialize(parameters);
+
+        return passwordHash.generate(password.toCharArray());
+    }
 
     public void register() {
 
         em = new updatedadminclient();
-        
-        
-       
 
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -72,22 +98,53 @@ public class RegisterBean implements Serializable {
         String formattedDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         rs = em.add_restaurant(Response.class, restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, formattedDate, formattedDate, "true");
-        id = rs.readEntity(g);
-        
-        System.out.println(id);
-        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
-        System.out.println(rs);
-        
-        String role ="Admin";
 
-        
-        
-        em.add_user_of_restaurant(username, password , String.valueOf(id),role);
-        
-        
+        if (rs.getStatus() == 200) {
+            String idStr = rs.readEntity(String.class);
+            Integer id = Integer.parseInt(idStr);
+
+            System.out.println("Generated ID: " + id);
+
+            String role = "Admin";
+            
+                //PasswordHashGenerator generator = container.select(PasswordHashGenerator.class).get();
+
+                String hashedPassword = generateHash(password);
+
+           // String hashedPassword = passwordHasher.generate(password.toCharArray());
+            
+            System.err.println(hashedPassword);
+            em.add_user_of_restaurant(username, password, String.valueOf(id), role);
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registered successfully"));
+        } else {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Registration failed: " + rs.getStatus()));
+        }
+
+        //id = rs.readEntity(g);
+
+        //String idStr = rs.readEntity(String.class);  // Read as string
+        //Integer id = Integer.parseInt(idStr);        // Convert to integer
+//        System.out.println(id);
+//
+//        System.out.println(id);
+//        System.out.println("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+//        System.out.println(rs);
+//
+//        String role = "Waiter";
+//        String hashedPassword = passwordHasher.generate(password.toCharArray());
+//
+//        System.out.println("after hashed pasworddddddddddddddddddddd");
+//        System.out.println(hashedPassword);
+
+        //em.add_user_of_restaurant(username, hashedPassword, String.valueOf(id), role);
+        //em.add_user_of_restaurant(username, hashedPassword, String.valueOf(id), role);
+
+        System.out.println("Registration successfully-------------------------------");
+
         // Add more validations as needed...
         // Success
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registered successfully"));
+        //context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registered successfully"));
 
 //        System.out.println("Registered: " + restaurant_name);
 //

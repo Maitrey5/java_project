@@ -4,22 +4,29 @@
  */
 package beans;
 
+import ejb.ejb_restaurant_crud;
+import entity.User;
+import jakarta.ejb.EJB;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Inject;
-import static jakarta.security.auth.message.AuthStatus.SEND_CONTINUE;
-import static jakarta.security.auth.message.AuthStatus.SUCCESS;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.security.enterprise.AuthenticationStatus;
+import static jakarta.security.enterprise.AuthenticationStatus.SEND_CONTINUE;
+import static jakarta.security.enterprise.AuthenticationStatus.SUCCESS;
 import jakarta.security.enterprise.SecurityContext;
 import static jakarta.security.enterprise.authentication.mechanism.http.AuthenticationParameters.withParams;
 import jakarta.security.enterprise.credential.Credential;
 import jakarta.security.enterprise.credential.Password;
 import jakarta.security.enterprise.credential.UsernamePasswordCredential;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +37,15 @@ import java.util.Set;
 @RequestScoped
 public class LoginBean implements Serializable {
 
-    @Inject SecurityContext ctx;
+    @PersistenceContext(unitName = "restaurant_pu")
+    EntityManager em;
+
+    @Inject
+    Pbkdf2PasswordHash passwordHasher;
+
+    //@EJB ejb_restaurant_crud em;
+    @Inject
+    SecurityContext ctx;
 
     private String username;
     private String password;
@@ -87,31 +102,52 @@ public class LoginBean implements Serializable {
     public String login() {
         // Dummy authentication logic
 
+        testLogin(username, password);
         try {
             FacesContext context = FacesContext.getCurrentInstance();
             Credential credential = new UsernamePasswordCredential(username, new Password(password));
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-
+            System.err.println(credential);
             status = ctx.authenticate(request, response, withParams().credential(credential));
 
+            System.err.println(status);
+            System.err.println(roles);
+
+            System.err.println("---------------------------------");
             // AuthenticationStatus mystatus = AuthenticationStatus.;
             if (status.equals(SEND_CONTINUE)) {
+                System.err.println("loowwwwwwwwwwww");
+
                 // Authentication mechanism has send a redirect, should not
                 // send anything to response from JSF now. The control will now go into HttpAuthenticationMechanism
                 context.responseComplete();
             }
 
             if (status.equals(SUCCESS)) {
+                System.err.println(roles);
+                
+                
                 if (roles.contains("Admin")) {
+                    System.err.println("poooooooooooooooo");
+
+                    System.err.println("admin");
+
                     return "/webpages/Admin";
                 } else if (roles.contains("Waiter")) {
+                    System.err.println("sssssssssssssssssss");
+
+                    System.err.println("waiter");
+
                     return "/webpages/User";
                 }
 
             } else {
+                System.err.println("fffffffffffffffff");
+
                 errorstatus = "User Name or Password may be wrong";
-                return "/webpages/Admin";
+                System.err.println(errorstatus);
+                return "/webpages/login";
             }
 
         } catch (Exception e) {
@@ -148,4 +184,18 @@ public class LoginBean implements Serializable {
         return "forgot-password?faces-redirect=true";
     }
 
+    public void testLogin(String inputUsername, String inputPassword) {
+        User user = em.find(User.class, inputUsername);
+        if (user == null) {
+            System.out.println("❌ Username not found.");
+            return;
+        }
+
+        String storedHash = user.getPassword();
+        boolean match = passwordHasher.verify(inputPassword.toCharArray(), storedHash);
+
+        System.out.println("Stored hash: " + storedHash);
+        System.out.println("Entered password: " + inputPassword);
+        System.out.println("✅ Password match? " + match);
+    }
 }
