@@ -514,6 +514,11 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     @Override
     public void add_table_to_restaurant(Integer restaurant_id, Integer table_number, Integer capacity) {
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
+        
+        System.err.println("in ejb");
+        System.err.println(restaurant_id);
+        System.err.println(table_number);
+        System.err.println(capacity);
 
         Tablemaster tb = new Tablemaster();
 

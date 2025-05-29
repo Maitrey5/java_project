@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import record.KeepRecord;
 
 /**
  *
@@ -42,6 +43,10 @@ public class LoginBean implements Serializable {
 
     @Inject
     Pbkdf2PasswordHash passwordHasher;
+    
+       @Inject
+    KeepRecord keepRecord;
+
 
     //@EJB ejb_restaurant_crud em;
     @Inject
@@ -102,7 +107,8 @@ public class LoginBean implements Serializable {
     public String login() {
         // Dummy authentication logic
 
-        testLogin(username, password);
+        Integer i =  testLogin(username, password);
+        
         try {
             FacesContext context = FacesContext.getCurrentInstance();
             Credential credential = new UsernamePasswordCredential(username, new Password(password));
@@ -127,9 +133,14 @@ public class LoginBean implements Serializable {
             if (status.equals(SUCCESS)) {
                 System.err.println(roles);
                 
+                 request.getSession().setAttribute("restaurant_id", i);
+                 keepRecord.setR_id(i);
+                 keepRecord.setIi(i);
+                 
+                
                 
                 if (roles.contains("Admin")) {
-                    System.err.println("poooooooooooooooo");
+                    System.err.println("poooooooooooooooo"+i);
 
                     System.err.println("admin");
 
@@ -184,18 +195,21 @@ public class LoginBean implements Serializable {
         return "forgot-password?faces-redirect=true";
     }
 
-    public void testLogin(String inputUsername, String inputPassword) {
+    public Integer testLogin(String inputUsername, String inputPassword) {
         User user = em.find(User.class, inputUsername);
         if (user == null) {
             System.out.println("❌ Username not found.");
-            return;
+            return 0;
         }
 
         String storedHash = user.getPassword();
+        Integer rid = user.getRestaurantId().getRestaurantId();
         boolean match = passwordHasher.verify(inputPassword.toCharArray(), storedHash);
 
         System.out.println("Stored hash: " + storedHash);
         System.out.println("Entered password: " + inputPassword);
         System.out.println("✅ Password match? " + match);
+        
+        return rid;
     }
 }

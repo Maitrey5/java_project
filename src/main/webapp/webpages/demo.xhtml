@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">        
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Dashboard</title>
+    <style>
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 4fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background-color: #2f3c4e;
+            color: white;
+            padding: 1rem;
+        }
+
+        .main-content {
+            background-color: #f5f7fb;
+            padding: 2rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .section {
+            margin-top: 2rem;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Skydash</h2>
+            <p:menu styleClass="ui-menu-list">
+                <p:menuitem value="Dashboard" icon="pi pi-home" />
+                <p:menuitem value="UI Elements" />
+                <p:menuitem value="Form Elements" />
+                <p:menuitem value="Tables" />
+                <!-- Add more items here -->
+            </p:menu>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="title">Welcome Aamir</div>
+            <p>You have 3 unread alerts!</p>
+
+            <!-- Stat Cards -->
+            <div class="card-grid section">
+                <div class="stat-card" style="background-color: #e3f2fd;">
+                    <h4>Today's Bookings</h4>
+                    <h3>4006</h3>
+                </div>
+                <div class="stat-card" style="background-color: #c5cae9;">
+                    <h4>Total Bookings</h4>
+                    <h3>61344</h3>
+                </div>
+                <div class="stat-card" style="background-color: #bbdefb;">
+                    <h4>Number of Meetings</h4>
+                    <h3>34040</h3>
+                </div>
+                <div class="stat-card" style="background-color: #ffcdd2;">
+                    <h4>Number of Clients</h4>
+                    <h3>47033</h3>
+                </div>
+            </div>
+
+            <!-- Order Details & Sales Report -->
+            <div class="section">
+                <h3>Order Details</h3>
+                <p:panel>
+                    <h:outputText value="Orders: 14k | Users: 71.56% | Downloads: 34040" />
+                    <!-- Add a p:chart here -->
+                </p:panel>
+            </div>
+
+            <div class="section">
+                <h3>Sales Report</h3>
+            </div>
+        </div>
+    </div>
+    </h:body>
+</html>

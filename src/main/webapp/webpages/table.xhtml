@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+
+    <h:head>
+        <title>Table Management</title>
+        <style>
+            .dashboard-box {
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                margin: 2rem;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <div class="dashboard-box">
+                <h2>Add Table</h2>
+                <p:panelGrid columns="2" columnClasses="label,value" styleClass="form-grid">
+                    <p:outputLabel for="tableNumber" value="Table Number:" />
+                    <p:inputText id="tableNumber" value="#{tableBean.tablenumber}" required="true" />
+
+                    <p:outputLabel for="capacity" value="Capacity:" />
+                    <p:inputText id="capacity" value="#{tableBean.capacity}" required="true" />
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Add Table" action="#{tableBean.addTable}"  icon="pi pi-plus" />
+                    </f:facet>
+                </p:panelGrid>
+            </div>
+
+        </h:form>>
+
+    </h:body>
+</html>

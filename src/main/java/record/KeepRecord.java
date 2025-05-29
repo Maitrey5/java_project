@@ -4,6 +4,7 @@
  */
 package record;
 
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.security.enterprise.CallerPrincipal;
 import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Set;
  *
  * @author Admin
  */
+@SessionScoped
 public class KeepRecord implements Serializable{
     
         private  CredentialValidationResult result;
@@ -21,6 +23,18 @@ public class KeepRecord implements Serializable{
    private  String token;
    private  String username;
    private  String password;
+   private Integer r_id;
+   private Integer ii;
+
+    public Integer getIi() {
+        return ii;
+    }
+
+    public void setIi(Integer ii) {
+        this.ii = ii;
+    }
+   
+   
 
     public CredentialValidationResult getResult() {
         return result;
@@ -33,6 +47,15 @@ public class KeepRecord implements Serializable{
     public CallerPrincipal getPrincipal() {
         return principal;
     }
+
+    public Integer getR_id() {
+        return r_id;
+    }
+
+    public void setR_id(Integer r_id) {
+        this.r_id = r_id;
+    }
+    
 
     public void setPrincipal(CallerPrincipal principal) {
         this.principal = principal;

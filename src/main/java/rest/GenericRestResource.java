@@ -31,6 +31,7 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -327,18 +328,33 @@ public class GenericRestResource {
             @PathParam("restaurant_id") Integer restaurant_id,
             @PathParam("table_number") Integer table_number,
             @PathParam("capacity") Integer capacity) {
+        
+        
+        System.err.println("inside table rest &&&&&&&&&&&&&&&&&&&&&");
+        System.err.println(restaurant_id+" uu "+table_number+" oo "+"capacity"+capacity);
         em.add_table_to_restaurant(restaurant_id, table_number, capacity);
     }
 
+//    @PUT
+//    @Path("update_table_to_restaurant/{table_id}/{restaurant_id}/{table_number}/{capacity}")
+//    public void update_table_to_restaurant(
+//            @PathParam("table_id") Integer table_id,
+//            @PathParam("restaurant_id") Integer restaurant_id,
+//            @PathParam("table_number") Integer table_number,
+//            @PathParam("capacity") Integer capacity) {
+//        em.update_table_to_restaurant(table_id, restaurant_id, table_number, capacity);
+//    }
+
     @PUT
-    @Path("update_table_to_restaurant/{table_id}/{restaurant_id}/{table_number}/{capacity}")
-    public void update_table_to_restaurant(
-            @PathParam("table_id") Integer table_id,
-            @PathParam("restaurant_id") Integer restaurant_id,
-            @PathParam("table_number") Integer table_number,
-            @PathParam("capacity") Integer capacity) {
-        em.update_table_to_restaurant(table_id, restaurant_id, table_number, capacity);
+    @Path("update_table_to_restaurant/{table_id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+
+    public void update_table_to_restaurant(@PathParam("table_id") Integer table_id,Tablemaster updatedTable){
+        
+        em.update_table_to_restaurant(table_id, updatedTable.getRestaurantId().getRestaurantId(), updatedTable.getTableNumber(), updatedTable.getCapacity());
     }
+    
+    //Tablemaster updatedTable
 
     @DELETE
     @Path("delete_table_by_restaurant/{table_id}")
@@ -350,8 +366,19 @@ public class GenericRestResource {
     @GET
     @Path("get_tables_by_restaurant/{restaurant_id}")
     @Produces("application/json")
-    public Collection<Tablemaster> get_tables_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
-        return em.get_tables_by_restaurant(restaurant_id);
+    public Response  get_tables_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
+       try {
+        System.err.println("inside display -----------------"+restaurant_id);
+        Collection<Tablemaster> klo = em.get_tables_by_restaurant(restaurant_id);
+        System.err.println(klo);
+        return Response.ok(klo).build(); // Return Response object with JSON
+    } catch (Exception e) {
+        e.printStackTrace();
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity("Error occurred: " + e.getMessage())
+                .type(MediaType.TEXT_PLAIN)
+                .build();
+    }
     }
 
     @POST

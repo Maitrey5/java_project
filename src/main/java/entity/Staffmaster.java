@@ -74,11 +74,11 @@ public class Staffmaster implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "id-number")
+    @Column(name = "id_number")
     private String idNumber;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "date-of-joining")
+    @Column(name = "date_of_joining")
     @Temporal(TemporalType.DATE)
     private Date dateOfJoining;
     @Basic(optional = false)
@@ -89,7 +89,7 @@ public class Staffmaster implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "id-image")
+    @Column(name = "id_image")
     private String idImage;
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(optional = false)

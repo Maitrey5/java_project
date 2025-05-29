@@ -183,7 +183,7 @@
                     <p:menuitem value="Dashboard" icon="pi pi-th-large" />
                     <p:menuitem value="Tables" icon="pi pi-table"
                                 action="#{tableBean.showForm}" update="mainContent" />
-                    <p:menuitem value="Book Table" icon="pi pi-star" />
+                    <p:menuitem value="Icons" icon="pi pi-star" />
                     <p:menuitem value="Error Pages" icon="pi pi-exclamation-triangle" />
                     <p:menuitem value="Documentation" icon="pi pi-book" />
                 </p:menu>
@@ -217,14 +217,14 @@
                         </div>
 
                         <!-- Submit button below -->
-                        <p:commandButton value="#{tableBean.editMode ? 'Update' : 'Add-Table'}"
+                        <p:commandButton value="Submit"
                                          action="#{tableBean.submitTable}"
                                          update="mainContent"
                                          styleClass="coral-button" />
                     </div>
 
                     <!-- Data Table -->
-                    <p:dataTable value="#{tableBean.gettabledata()}" var="table" 
+                    <p:dataTable  var="table" 
                                   scrollable="true" scrollHeight="200"
                                   style="margin-top: 2rem; width: 100%;">
 

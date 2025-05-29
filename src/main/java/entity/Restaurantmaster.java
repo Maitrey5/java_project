@@ -4,6 +4,7 @@
  */
 package entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -248,7 +249,7 @@ public class Restaurantmaster implements Serializable {
         this.isActive = isActive;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Categorymaster> getCategorymasterCollection() {
         return categorymasterCollection;
     }
@@ -257,7 +258,7 @@ public class Restaurantmaster implements Serializable {
         this.categorymasterCollection = categorymasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Menumaster> getMenumasterCollection() {
         return menumasterCollection;
     }
@@ -266,7 +267,7 @@ public class Restaurantmaster implements Serializable {
         this.menumasterCollection = menumasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Transactionmaster> getTransactionmasterCollection() {
         return transactionmasterCollection;
     }
@@ -275,7 +276,7 @@ public class Restaurantmaster implements Serializable {
         this.transactionmasterCollection = transactionmasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Staffmaster> getStaffmasterCollection() {
         return staffmasterCollection;
     }
@@ -284,7 +285,7 @@ public class Restaurantmaster implements Serializable {
         this.staffmasterCollection = staffmasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
     }
@@ -293,7 +294,7 @@ public class Restaurantmaster implements Serializable {
         this.billmasterCollection = billmasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Ordermaster> getOrdermasterCollection() {
         return ordermasterCollection;
     }
@@ -302,7 +303,7 @@ public class Restaurantmaster implements Serializable {
         this.ordermasterCollection = ordermasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<StaffTransaction> getStaffTransactionCollection() {
         return staffTransactionCollection;
     }
@@ -311,7 +312,7 @@ public class Restaurantmaster implements Serializable {
         this.staffTransactionCollection = staffTransactionCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Tablemaster> getTablemasterCollection() {
         return tablemasterCollection;
     }
@@ -320,7 +321,7 @@ public class Restaurantmaster implements Serializable {
         this.tablemasterCollection = tablemasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Inventorymaster> getInventorymasterCollection() {
         return inventorymasterCollection;
     }
@@ -329,7 +330,7 @@ public class Restaurantmaster implements Serializable {
         this.inventorymasterCollection = inventorymasterCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<User> getUserCollection() {
         return userCollection;
     }
@@ -338,7 +339,7 @@ public class Restaurantmaster implements Serializable {
         this.userCollection = userCollection;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Tablebooking> getTablebookingCollection() {
         return tablebookingCollection;
     }

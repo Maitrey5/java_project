@@ -204,8 +204,8 @@ public class updatedadminclient {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public void update_table_to_restaurant(String table_id, String restaurant_id, String table_number, String capacity) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("update_table_to_restaurant/{0}/{1}/{2}/{3}", new Object[]{table_id, restaurant_id, table_number, capacity})).request().put(null);
+    public void update_table_to_restaurant(Object requestEntity, String table_id) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("update_table_to_restaurant/{0}", new Object[]{table_id})).request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).put(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
     public void update_staff_to_restaurant(String Staff_id, String restaurant_id, String name, String surname, String age, String salary, String id_number, String date_of_joining, String image, String id_image) throws ClientErrorException {
