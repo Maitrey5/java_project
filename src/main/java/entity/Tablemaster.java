@@ -33,7 +33,7 @@ import java.util.Collection;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Tablemaster.findAll", query = "SELECT t FROM Tablemaster t"),
-    @NamedQuery(name = "Tablemaster.findByTableId", query = "SELECT t FROM Tablemaster t WHERE t.tableId = :tableId"),
+    @NamedQuery(name = "Tablemaster.findByTableId", query = "SELECT t FROM Tablemaster t WHERE t.tableNumber = :tableNumber and t.restaurantId = :restaurantId"),
     @NamedQuery(name = "Tablemaster.findByTableNumber", query = "SELECT t FROM Tablemaster t WHERE t.tableNumber = :tableNumber"),
     @NamedQuery(name = "Tablemaster.findByCapacity", query = "SELECT t FROM Tablemaster t WHERE t.capacity = :capacity")})
 public class Tablemaster implements Serializable {

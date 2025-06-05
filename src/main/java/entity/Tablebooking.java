@@ -6,6 +6,7 @@ package entity;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Date;
+import entity.LocalTimeAttributeConverter;
 
 /**
  *
@@ -46,13 +49,13 @@ public class Tablebooking implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "booking_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date bookingTime;
+//    @Convert(converter = LocalTimeAttributeConverter.class)
+    private LocalTime  bookingTime;
     @Basic(optional = false)
     @NotNull
     @Column(name = "dine_in_time")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dineInTime;
+//    @Convert(converter = LocalTimeAttributeConverter.class)
+    private LocalTime  dineInTime;
     @Basic(optional = false)
     @NotNull
     @Column(name = "booking_date")
@@ -96,7 +99,7 @@ public class Tablebooking implements Serializable {
         this.tablebookingid = tablebookingid;
     }
 
-    public Tablebooking(Integer tablebookingid, Date bookingTime, Date dineInTime, Date bookingDate, Date dineInDate, int noofpeoples, String contactno, String customername) {
+    public Tablebooking(Integer tablebookingid, LocalTime bookingTime, LocalTime dineInTime, Date bookingDate, Date dineInDate, int noofpeoples, String contactno, String customername) {
         this.tablebookingid = tablebookingid;
         this.bookingTime = bookingTime;
         this.dineInTime = dineInTime;
@@ -107,19 +110,19 @@ public class Tablebooking implements Serializable {
         this.customername = customername;
     }
 
-    public Date getBookingTime() {
+    public LocalTime getBookingTime() {
         return bookingTime;
     }
 
-    public void setBookingTime(Date bookingTime) {
+    public void setBookingTime(LocalTime bookingTime) {
         this.bookingTime = bookingTime;
     }
 
-    public Date getDineInTime() {
+    public LocalTime getDineInTime() {
         return dineInTime;
     }
 
-    public void setDineInTime(Date dineInTime) {
+    public void setDineInTime(LocalTime dineInTime) {
         this.dineInTime = dineInTime;
     }
 

@@ -26,6 +26,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import java.security.acl.Group;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -162,9 +163,19 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, restaurant_id);
 
         return r;
+    }
+    
+    
+    public Tablemaster search_table(Integer rid , Integer table_no){
+    
+        Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class,rid);
 
+        Tablemaster t = (Tablemaster) em.createNamedQuery("Tablemaster.findByTableId").setParameter("tableNumber",table_no).setParameter("restaurantId",r).getSingleResult();
+        
+        return t;
     }
 
+    
     @Override
     public void add_menu(Integer restaurant_id, Integer category_id, String item_name, Integer item_price, String description, Boolean is_avalaible, Date updated_at, String item_type) {
 
@@ -566,12 +577,17 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     }
 
     @Override
-    public void book_table_by_restaurant(Integer table_id, Integer restaurant_id, Date booking_time, Date dine_in_time, Date booking_date, Date dine_in_date, Integer no_of_peoples, String contact_no, String customer_name) {
+    public void book_table_by_restaurant(Integer table_id, Integer restaurant_id, LocalTime booking_time, LocalTime dine_in_time, Date booking_date, Date dine_in_date, Integer no_of_peoples, String contact_no, String customer_name) {
 
         Tablemaster tb = em.find(Tablemaster.class, table_id);
 
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
+        System.err.println(" in ejd time @@@@@ "+booking_time);
+        System.err.println(" in ejd time @@@@@ "+booking_time.getClass());
+
+        System.err.println(" in ejd date @@@@@ "+booking_date);
+        System.err.println(" in ejd date @@@@@ "+booking_date.getClass());
         Tablebooking tt = new Tablebooking();
         tt.setRestaurantId(r);
         tt.setTableId(tb);
@@ -583,7 +599,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         tt.setCustomername(customer_name);
         tt.setContactno(contact_no);
 
-        em.persist(r);
+        em.persist(tt);
 
         Collection<Tablebooking> cr = r.getTablebookingCollection();
         cr.add(tt);
@@ -592,7 +608,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     }
 
     @Override
-    public void update_table_by_restaurant(Integer table_booking_id, Integer table_id, Integer restaurant_id, Date booking_time, Date dine_in_time, Date booking_date, Date dine_in_date, Integer no_of_peoples, String contact_no, String customer_name) {
+    public void update_table_by_restaurant(Integer table_booking_id, Integer table_id, Integer restaurant_id, LocalTime booking_time, LocalTime dine_in_time, Date booking_date, Date dine_in_date, Integer no_of_peoples, String contact_no, String customer_name) {
 
         Tablemaster tb = em.find(Tablemaster.class, table_id);
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);

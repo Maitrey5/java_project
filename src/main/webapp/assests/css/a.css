@@ -1,0 +1,107 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 03-Jun-2025, 9:57:09 AM
+    Author     : Admin
+*/
+
+/* Layout wrapper */
+.layout {
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  padding: 1rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  transition: background 0.2s ease;
+}
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.menu-item.active {
+  background-color: #f97316;
+  color: white;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  background-color: #f9fafb;
+}
+
+/* Responsive: Hide sidebar on small screens */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+
+  .sidebar-header {
+    display: none; /* or keep minimal branding */
+  }
+
+  .sidebar-menu {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+  }
+
+  .menu-item {
+    padding: 0.5rem 0.75rem;
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}

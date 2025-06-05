@@ -113,7 +113,7 @@ public class updatedadminclient {
     }
 
     public void update_table_by_restaurant(String table_booking_id, String table_id, String restaurant_id, String booking_time, String dine_in_time, String booking_date, String dine_in_date, String no_of_peoples, String contact_no, String customer_name) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("update_table_by_restaurant/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}", new Object[]{table_booking_id, table_id, restaurant_id, booking_time, dine_in_time, booking_date, dine_in_date, no_of_peoples, contact_no, customer_name})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("update_table_by_restaurant/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}", new Object[]{table_booking_id, table_id, restaurant_id, booking_time, dine_in_time, booking_date, dine_in_date, no_of_peoples, contact_no, customer_name})).request().post(null);
     }
 
     public void add_category(String restaurant_id, String category_name, String updated_at) throws ClientErrorException {
@@ -142,6 +142,12 @@ public class updatedadminclient {
 
     public void update_item_to_inventory(String inventoryid, String restaurant_id, String quantity, String amount, String date, String time, String description, String transaction_id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("update_item_to_inventory/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", new Object[]{inventoryid, restaurant_id, quantity, amount, date, time, description, transaction_id})).request().put(null);
+    }
+
+    public <T> T search_table(Class<T> responseType, String rid, String table_no) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("search_table/{0}/{1}", new Object[]{rid, table_no}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void delete_table_booking_by_restaurant(String table_booking_id) throws ClientErrorException {

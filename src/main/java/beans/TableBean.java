@@ -40,6 +40,7 @@ public class TableBean implements Serializable {
     updatedadminclient em = new updatedadminclient();
 
     private boolean showTableForm = false;
+    private boolean showbookingForm = false;
     private int tableNumber;
     private int capacity;
     private boolean editMode = false;
@@ -86,12 +87,27 @@ public class TableBean implements Serializable {
         return capacity;
     }
 
+    public boolean isShowbookingForm() {
+        return showbookingForm;
+    }
+
+    public void setShowbookingForm(boolean showbookingForm) {
+        this.showbookingForm = showbookingForm;
+    }
+    
+
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
     public void showForm() {
         showTableForm = true;
+        showbookingForm = false;
+    }
+    public void showFormbooking() {
+        showTableForm = false;
+        showbookingForm = true;
+
     }
 
     public void submitTable() {

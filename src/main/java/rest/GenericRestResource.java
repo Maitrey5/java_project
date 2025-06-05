@@ -35,6 +35,8 @@ import jakarta.ws.rs.core.Response;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -64,6 +66,15 @@ public class GenericRestResource {
      *
      * @return an instance of java.lang.String
      */
+    @GET
+    @Path("/search_table/{rid}/{table_no}")
+    @Produces("application/json")
+    public Tablemaster search_table(@PathParam("rid") Integer rid, @PathParam("table_no") Integer table_no) {
+
+        return em.search_table(rid, table_no);
+
+    }
+
     @POST
     @Path("/add/{restaurant_name}/{restaurant_address}/{restaurant_contactno}/{restaurant_email}/{restaurant_city}/{restaurant_state}/{restaurant_country}/{restaurant_pincode}/{created_at}/{updated_at}/{is_active}")
     @Produces("application/json")
@@ -88,8 +99,8 @@ public class GenericRestResource {
         created_date = new SimpleDateFormat("yyyy-MM-dd").parse(created_at);
         updated_date = new SimpleDateFormat("yyyy-MM-dd").parse(updated_at);
 
-        Integer idd =  em.add_restaurant(restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, created_date, updated_date, is_active);
-    
+        Integer idd = em.add_restaurant(restaurant_name, restaurant_address, restaurant_contactno, restaurant_email, restaurant_city, restaurant_state, restaurant_country, restaurant_pincode, created_date, updated_date, is_active);
+
         System.out.println(idd);
         System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiis");
         return idd;
@@ -328,10 +339,9 @@ public class GenericRestResource {
             @PathParam("restaurant_id") Integer restaurant_id,
             @PathParam("table_number") Integer table_number,
             @PathParam("capacity") Integer capacity) {
-        
-        
+
         System.err.println("inside table rest &&&&&&&&&&&&&&&&&&&&&");
-        System.err.println(restaurant_id+" uu "+table_number+" oo "+"capacity"+capacity);
+        System.err.println(restaurant_id + " uu " + table_number + " oo " + "capacity" + capacity);
         em.add_table_to_restaurant(restaurant_id, table_number, capacity);
     }
 
@@ -344,18 +354,16 @@ public class GenericRestResource {
 //            @PathParam("capacity") Integer capacity) {
 //        em.update_table_to_restaurant(table_id, restaurant_id, table_number, capacity);
 //    }
-
     @PUT
     @Path("update_table_to_restaurant/{table_id}")
     @Consumes(MediaType.APPLICATION_JSON)
 
-    public void update_table_to_restaurant(@PathParam("table_id") Integer table_id,Tablemaster updatedTable){
-        
+    public void update_table_to_restaurant(@PathParam("table_id") Integer table_id, Tablemaster updatedTable) {
+
         em.update_table_to_restaurant(table_id, updatedTable.getRestaurantId().getRestaurantId(), updatedTable.getTableNumber(), updatedTable.getCapacity());
     }
-    
-    //Tablemaster updatedTable
 
+    //Tablemaster updatedTable
     @DELETE
     @Path("delete_table_by_restaurant/{table_id}")
     public void delete_table_by_restaurant(@PathParam("table_id") Integer table_id) {
@@ -366,19 +374,19 @@ public class GenericRestResource {
     @GET
     @Path("get_tables_by_restaurant/{restaurant_id}")
     @Produces("application/json")
-    public Response  get_tables_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
-       try {
-        System.err.println("inside display -----------------"+restaurant_id);
-        Collection<Tablemaster> klo = em.get_tables_by_restaurant(restaurant_id);
-        System.err.println(klo);
-        return Response.ok(klo).build(); // Return Response object with JSON
-    } catch (Exception e) {
-        e.printStackTrace();
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                .entity("Error occurred: " + e.getMessage())
-                .type(MediaType.TEXT_PLAIN)
-                .build();
-    }
+    public Response get_tables_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
+        try {
+            System.err.println("inside display -----------------" + restaurant_id);
+            Collection<Tablemaster> klo = em.get_tables_by_restaurant(restaurant_id);
+            System.err.println(klo);
+            return Response.ok(klo).build(); // Return Response object with JSON
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error occurred: " + e.getMessage())
+                    .type(MediaType.TEXT_PLAIN)
+                    .build();
+        }
     }
 
     @POST
@@ -394,20 +402,33 @@ public class GenericRestResource {
             @PathParam("contact_no") String contact_no,
             @PathParam("customer_name") String customer_name) throws ParseException {
 
-        Time booking_timee = null;
-        Time dine_in_timee = null;
+//        Time booking_timee = null;
+//        Time dine_in_timee = null;
         Date booking_datee = null;
         Date dine_in_datee = null;
-
-        booking_timee = Time.valueOf(booking_time);
-        dine_in_timee = Time.valueOf(dine_in_time);
+//
+//        System.err.println("booking time ---- "+booking_time);
+//        System.err.println("dine time ---- "+dine_in_time);
+//        System.err.println("dine date ---- "+dine_in_date);
+//        booking_timee = Time.valueOf(booking_time);
+//        dine_in_timee = Time.valueOf(dine_in_time);
         booking_datee = new SimpleDateFormat("yyyy-MM-dd").parse(booking_date);
         dine_in_datee = new SimpleDateFormat("yyyy-MM-dd").parse(dine_in_date);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        em.book_table_by_restaurant(table_id, restaurant_id, booking_timee, dine_in_timee, booking_datee, dine_in_datee, no_of_peoples, contact_no, customer_name);
+        LocalTime bookingTime = LocalTime.parse(booking_time, timeFormatter);
+        LocalTime dineInTime = LocalTime.parse(dine_in_time, timeFormatter);
+
+        System.err.println(" in rest time @@@@@ " + bookingTime);
+        System.err.println(" in rest time @@@@@ " + bookingTime.getClass());
+
+        System.err.println(" in rest date @@@@@ " + booking_datee);
+        System.err.println(" in rest date @@@@@ " + booking_datee.getClass());
+
+        em.book_table_by_restaurant(table_id, restaurant_id, bookingTime, dineInTime, booking_datee, dine_in_datee, no_of_peoples, contact_no, customer_name);
     }
 
-    @PUT
+    @POST
     @Path("update_table_by_restaurant/{table_booking_id}/{table_id}/{restaurant_id}/{booking_time}/{dine_in_time}/{booking_date}/{dine_in_date}/{no_of_peoples}/{contact_no}/{customer_name}")
     public void update_table_by_restaurant(
             @PathParam("table_booking_id") Integer table_booking_id,
@@ -421,17 +442,22 @@ public class GenericRestResource {
             @PathParam("contact_no") String contact_no,
             @PathParam("customer_name") String customer_name) throws ParseException {
 
-        Time booking_timee = null;
-        Time dine_in_timee = null;
+//        Time booking_timee = null;
+//        Time dine_in_timee = null;
         Date booking_datee = null;
         Date dine_in_datee = null;
 
-        booking_timee = Time.valueOf(booking_time);
-        dine_in_timee = Time.valueOf(dine_in_time);
+//        booking_timee = Time.valueOf(booking_time);
+//        dine_in_timee = Time.valueOf(dine_in_time);
         booking_datee = new SimpleDateFormat("yyyy-MM-dd").parse(booking_date);
         dine_in_datee = new SimpleDateFormat("yyyy-MM-dd").parse(dine_in_date);
+        
+         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        em.update_table_by_restaurant(table_booking_id, table_id, restaurant_id, booking_timee, dine_in_timee, booking_datee, dine_in_datee, no_of_peoples, contact_no, customer_name);
+        LocalTime bookingTime = LocalTime.parse(booking_time, timeFormatter);
+        LocalTime dineInTime = LocalTime.parse(dine_in_time, timeFormatter);
+
+        em.update_table_by_restaurant(table_booking_id, table_id, restaurant_id, bookingTime, dineInTime, booking_datee, dine_in_datee, no_of_peoples, contact_no, customer_name);
     }
 
     @DELETE
@@ -629,22 +655,18 @@ public class GenericRestResource {
     public Collection<Transactionmaster> get_all_transaction_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
         return em.get_all_transaction_by_restaurant(restaurant_id);
     }
-    
-    
+
     @POST
     @Path("add_user_of_restaurant/{username}/{password}/{restaurant_id}/{role}")
-    public void add_user_of_restaurant(@PathParam("username") String username, @PathParam("password") String password,@PathParam("restaurant_id") Integer restaurant_id,@PathParam("role") String role) {
-    
+    public void add_user_of_restaurant(@PathParam("username") String username, @PathParam("password") String password, @PathParam("restaurant_id") Integer restaurant_id, @PathParam("role") String role) {
+
         System.out.println("inside user rest ");
         System.out.println(username);
         System.out.println(password);
         System.out.println(restaurant_id);
         System.out.println(role);
-        
-        
-        em.add_user_of_restaurant(username, password, restaurant_id, role);
-        
 
-    
+        em.add_user_of_restaurant(username, password, restaurant_id, role);
+
     }
 }

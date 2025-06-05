@@ -144,7 +144,7 @@ public class LoginBean implements Serializable {
 
                     System.err.println("admin");
 
-                    return "/webpages/Admin";
+                    return "/webpages/a";
                 } else if (roles.contains("Waiter")) {
                     System.err.println("sssssssssssssssssss");
 

@@ -17,6 +17,7 @@ import entity.Tablemaster;
 import entity.Transactionmaster;
 import jakarta.ejb.Local;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,8 @@ import java.util.List;
 @Local
 public interface ejb_restaurant_crudLocal {
     
+        Tablemaster search_table(Integer rid , Integer table_no);
+
         Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
         void delete_restaurant(Integer restaurant_id);
         void update_restaurant(Integer restaurant_id , String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
@@ -67,8 +70,8 @@ public interface ejb_restaurant_crudLocal {
         Collection<Tablemaster> get_tables_by_restaurant(Integer restaurant_id);
         
         
-        void book_table_by_restaurant(Integer table_id , Integer restaurant_id ,Date booking_time, Date dine_in_time,Date booking_date,Date dine_in_date,Integer no_of_peoples,String contact_no, String customer_name);
-        void update_table_by_restaurant(Integer table_booking_id ,Integer table_id , Integer restaurant_id ,Date booking_time, Date dine_in_time,Date booking_date,Date dine_in_date,Integer no_of_peoples,String contact_no, String customer_name);
+        void book_table_by_restaurant(Integer table_id , Integer restaurant_id ,LocalTime booking_time, LocalTime dine_in_time,Date booking_date,Date dine_in_date,Integer no_of_peoples,String contact_no, String customer_name);
+        void update_table_by_restaurant(Integer table_booking_id ,Integer table_id , Integer restaurant_id ,LocalTime booking_time, LocalTime dine_in_time,Date booking_date,Date dine_in_date,Integer no_of_peoples,String contact_no, String customer_name);
         void delete_table_booking_by_restaurant(Integer table_booking_id);
         Collection<Tablebooking> get_tablesbooking_by_restaurant(Integer restaurant_id);
         

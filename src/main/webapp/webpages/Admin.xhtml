@@ -13,10 +13,10 @@
             }
 
             .sidebar {
-                width: 250px;
+                width: 18%;
                 height: 100vh;
-                background-color: #f8f9fa;
-                padding: 1rem;
+                background-color: #FFFFFF;
+                padding: 0rem;
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -31,6 +31,7 @@
             .sidebar .ui-menuitem-link:hover .ui-menuitem-text,
             .sidebar .ui-menuitem-link:hover .ui-icon {
                 color: white !important;
+                border-radius: 10px;
             }
 
             .sidebar-header {
@@ -44,20 +45,26 @@
             .sidebar .ui-menu {
                 border: none;
                 background: transparent;
+                border-radius: 4px;
             }
 
             .sidebar .ui-menuitem-link {
                 color: #333;
-                font-weight: 700;
-                padding: 0.75rem 1rem;
-                border-radius: 8px;
+                font-weight:bold;
+                font-size: 1.4rem !important;
+                padding: 0.75rem 0.75rem !important;
+                color:black;
+                border-radius: 10px !important;
                 display: flex;
                 align-items: center;
+                margin-bottom: 0.75rem; /* Add this line to increase spacing */
+
             }
 
             .sidebar .ui-menuitem-link:hover {
                 background-color: coral !important;
                 color: white !important;
+                border-radius: 10px !important;
             }
 
             .sidebar .ui-icon {
@@ -67,6 +74,13 @@
             .sidebar .ui-state-active {
                 background-color: #5A57DD !important;
                 color: white !important;
+            }
+            .sidebar .custom-menu{
+                
+                width:100%;
+                padding: 0 1rem;
+                font-size: 1rem;
+                border-radius: 5px;
             }
 
             .logout-btn {
@@ -181,11 +195,11 @@
 
                 <p:menu styleClass="custom-menu">
                     <p:menuitem value="Dashboard" icon="pi pi-th-large" />
-                    <p:menuitem value="Tables" icon="pi pi-table"
+                    <p:menuitem value="Table Mangement" icon="pi pi-table"
                                 action="#{tableBean.showForm}" update="mainContent" />
-                    <p:menuitem value="Book Table" icon="pi pi-star" />
+                    <p:menuitem value="Book Table" icon="pi pi-star" action="#{tableBean.showFormbooking()}" update="mainContent" />
                     <p:menuitem value="Error Pages" icon="pi pi-exclamation-triangle" />
-                    <p:menuitem value="Documentation" icon="pi pi-book" />
+                    <p:menuitem value="Manage Order" icon="pi pi-book" />
                 </p:menu>
             </div>
 
@@ -200,11 +214,11 @@
 
         <!-- Main Content -->
         <!-- Main Content -->
-        <h:form id="mainContent">
+        <h:form id="mainContent" style=" margin-left: 2rem">
             <div class="main-content">
                 <h:panelGroup rendered="#{tableBean.showTableForm}">
                     <!-- Top bar form -->
-                    <div class="top-bar-form">
+                    <div class="top-bar-form" >
                         <div class="main">
                             <div class="form-group">
                                 <p:outputLabel for="tableNumber" value="Table Number:" />
@@ -225,8 +239,8 @@
 
                     <!-- Data Table -->
                     <p:dataTable value="#{tableBean.gettabledata()}" var="table" 
-                                  scrollable="true" scrollHeight="200"
-                                  style="margin-top: 2rem; width: 100%;">
+                                 scrollable="true" scrollHeight="200"
+                                 style="margin-top: 2rem; width: 100%;">
 
                         <!-- Table Number -->
                         <p:column headerText="Table Number">
@@ -281,8 +295,67 @@
 
 
                 </h:panelGroup>
+                
+                <h:panelGroup rendered="#{tableBean.showbookingForm}">
+                    <!-- Top bar form -->
+                    <h1>Book Table</h1>
+                    <div class="top-bar-form">
+                        <div class="main">
+                            <div class="form-group">
+                                <p:outputLabel for="tableNumber1" value="Table Number:" />
+                                <p:inputText id="tableNumber1" value="#{bookingbean.tableNumber}" placeholder="Enter number" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="capacity1" value="Capacity-of-peoples:" />
+                                <p:inputText id="capacity1" value="#{bookingbean.capacity}" placeholder="Enter capacity" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="customer" value="Customer-Name" />
+                                <p:inputText id="customer" value="#{bookingbean.customername}" placeholder="Customer-name" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="customer-no" value="Customer-Number" />
+                                <p:inputText id="customer-no" value="#{bookingbean.mobileno}" placeholder="mobile Number" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="booking-date" value="Booking-Date" />
+                                <p:datePicker id="booking-date" value="#{bookingbean.bookingdate}" placeholder="booking date" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="booking-time" value="Booking-Time" />
+                                <p:datePicker id="booking-time" value="#{bookingbean.bookingtime}" timeOnly="true" pattern="HH:mm:ss" hourFormat="24" placeholder="booking time" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="Dine-in-date" value="Dine-in-Date" />
+                                <p:datePicker id="Dine-in-date" value="#{bookingbean.dineDate}" placeholder="booking date" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="Dine-in-time" value="Dine-in-Time" />
+                                <p:datePicker id="Dine-in-time" value="#{bookingbean.dinetime }" timeOnly="true" pattern="HH:mm:ss" hourFormat="24" placeholder="booking time" />
+                            </div>
+                            
+                            
+                        </div>
+                        <p:commandButton value="add"
+                                         action="#{bookingbean.insertbook()}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </div>
+
+                        
+
+
+                </h:panelGroup>
+
+
             </div>
+
+
         </h:form>
+
+       
+
+
 
     </h:body>
 </html>

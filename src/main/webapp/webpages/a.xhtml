@@ -1,64 +1,573 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-<h:head>
-    <title>Dashboard Sidebar</title>
-    <style>
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background-color: #f8f9fa;
-            padding: 1rem;
-            position: fixed;
-            top: 0;
-            left: 0;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            margin-top: 3rem;
-            border-right: 1px solid coral !important; /* ← Add this line for vertical border */
+    <h:head>
+        <title>Admin Dashboard</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Segoe UI', sans-serif;
+            }
 
-           
-        }
-        .sidebar .ui-menu {
-            border: none;
-            background: transparent;
-        }
-        .sidebar .ui-menuitem-link {
-            color: #333;
-            font-weight: 700;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-        }
-        .sidebar .ui-menuitem-link:hover {
-            background-color: coral !important;
-            color:white !important;
-        }
-        .sidebar .ui-icon {
-            margin-right: 0.5rem;
-        }
-        .sidebar .ui-state-active {
-            background-color: #5A57DD !important;
-            color: white !important;
-        }
-    </style>
-</h:head>
+            .sidebar {
+                width: 18%;
+                height: 100vh;
+                background-color: #FFFFFF;
+                padding: 0rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                border-right: 4px solid coral;
+            }
 
-<h:body>
-    <div class="sidebar">
-        <p:menu styleClass="custom-menu" >
-            <p:menuitem value="Dashboard" icon="pi pi-th-large"  />
+            .sidebar .ui-menuitem-link:hover,
+            .sidebar .ui-menuitem-link:hover .ui-menuitem-text,
+            .sidebar .ui-menuitem-link:hover .ui-icon {
+                color: white !important;
+                border-radius: 10px;
+            }
+
+            .sidebar-header {
+                font-size: 1rem;
+                font-weight: bold;
+                margin-bottom: 2rem;
+                color: Coral;
+                text-align: center;
+            }
+
+            .sidebar .ui-menu {
+                border: none;
+                background: transparent;
+                border-radius: 4px;
+            }
+
+            .sidebar .ui-menuitem-link {
+                color: #333;
+                font-weight:bold;
+                font-size: 1.3rem !important;
+                padding: 0.63rem 0.50rem !important;
+                color:black;
+                border-radius: 10px !important;
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.75rem; /* Add this line to increase spacing */
+
+            }
+
+            .sidebar .ui-menuitem-link:hover {
+                background-color: coral !important;
+                color: white !important;
+                border-radius: 10px !important;
+            }
+
+            .sidebar .ui-icon {
+                margin-right: 0.5rem;
+            }
+
+            .sidebar .ui-state-active {
+                background-color: #5A57DD !important;
+                color: white !important;
+            }
+            .sidebar .custom-menu{
+
+                width:100%;
+                padding: 0 1rem;
+                font-size: 1rem;
+                border-radius: 5px;
+            }
+
+            .logout-btn {
+                text-align: center;
+                margin-top: 2rem;
+                padding: 1rem 0;
+            }
+
+            .main-content {
+                margin-left: 250px;
+                padding: 2rem;
+            }
+
+            /* Style the form panel */
+            .table-form-panel {
+                max-width: 400px;
+                padding: 1rem;
+                border-radius: 12px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+
+            /* Form fields layout */
+            .table-form-panel .ui-inputtext,
+            .table-form-panel .ui-outputlabel {
+                display: block;
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            /* Style the submit button */
+
+
+            .top-bar-form {
+                width: 100%;
+                display: flex;
+                flex-direction: column; /* Change to column layout */
+                gap: 1rem;
+                padding: 1rem;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                box-sizing: border-box;
+            }
+
+            .form-group {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+            .top-bar-formm {
+                width: 100%;
+                display: flex;
+                flex-direction: column; /* Change to column layout */
+                gap: 1rem;
+                padding: 1rem;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                box-sizing: border-box;
+            }
+
+            .form-groupp {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+/*            .form-group1 {
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }*/
             
-            <p:menuitem value="Tables" icon="pi pi-table"  />
-            <p:menuitem value="Icons" icon="pi pi-star"  />
-            
-            <p:menuitem value="Error Pages" icon="pi pi-exclamation-triangle" />
-            <p:menuitem value="Documentation" icon="pi pi-book"  />
-        </p:menu>
-    </div>
-</h:body>
+
+            .main {
+                display: flex;             /* Makes it a flex container */
+                flex-direction: row;       /* Ensures children are laid out horizontally */
+                gap: 2rem;                 /* Optional: spacing between form groups */
+                flex-wrap: wrap;           /* Optional: allows wrapping on smaller screens */
+                justify-content: center;   /* Optional: center items horizontally */
+            }
+
+
+            /* Coral colored button */
+            /*            .coral-button {
+                            background-color: coral !important;
+                            border: none;
+                            color: white !important;
+                            padding: 0.6rem 1.2rem;
+                            border-radius: 6px;
+                            margin-top: 1rem;
+                        }*/
+            /*            .top-bar-form .form-group {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        }*/
+
+            .top-bar-form .ui-outputlabel {
+                font-weight: 500;
+                color: grey;
+                font-size: 1.5rem;
+                min-width: 100px;
+            }
+            .top-bar-formm .ui-outputlabel {
+                font-weight: 500;
+                color: grey;
+                font-size: 1.5rem;
+                min-width: 100px;
+                margin-left: 9rem;
+            }
+
+            .top-bar-form .ui-inputtext {
+                margin-left: 1rem;
+                width: 150px;
+            }
+            .top-bar-formm .ui-inputtext {
+                margin-left: 1rem;
+                width: 150px;
+            }
+
+            .coral-button {
+                align-self: center; /* Centers the button horizontally */
+                background-color: coral !important;
+                border: none !important;
+                color: white !important;
+                font-weight: bold;
+                padding: 0rem 1.5rem;
+                border-radius: 6px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+                cursor: pointer;
+            }
+            .coral-button:hover {
+                background-color: #ff5252 !important;
+            }
+
+            /*-----------------------------------*/
+
+            .top-bar-form {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                max-width: 100%;
+                margin: auto;
+            }
+            .top-bar-formm {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                max-width: 50%;
+                margin: auto;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: row;
+            }
+
+            .form-group label {
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+            .form-groupp {
+                display: flex;
+                flex-direction: row;
+                margin-left: -2rem;
+            }
+
+            .form-groupp label {
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+
+            .coral-button {
+                background-color: coral !important;
+                color: white !important;
+                border: none;
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                border-radius: 5px;
+            }
+
+            .coral-button:hover {
+                background-color: #e6735f !important;
+            }
+
+            .details-list {
+                list-style-type: none;
+                margin-left: 5rem;
+                padding: 0;
+            }
+
+            .details-list li {
+                margin-bottom: 1.5rem;
+                font-size:1.3rem;
+            }
+            .uu{
+                font-size: 1.4rem;
+                margin-left: 5rem;
+                font-weight: bold;
+
+            }
+
+            .uu .custom-menu{
+                margin-top: 5rem !important;
+            }
+
+            .form-grid {
+                margin-top: 1rem;
+                margin-bottom: 3rem;
+/*                row-gap: 6rem !important;*/
+                column-gap: -0.5rem;
+            }
+
+/*            .form-grid .custom-menu{
+                margin-bottom: 4rem;
+            }*/
+
+            .form-group .ui-outputlabel {
+                font-weight: bold;
+                margin-bottom: -0.5rem ! important;
+                font-size: 1.2rem; /* optional, improves visibility */
+            }
+            .form-groupp .ui-outputlabel {
+                font-weight: bold;
+                margin-bottom: -0.5rem ! important;
+                font-size: 1.2rem; /* optional, improves visibility */
+                width: 28%;
+            }
+
+            .form-group .ui-inputtext,
+            .form-group .ui-calendar {
+                padding: 0.5rem;
+                font-size: 1rem;
+            }
+            .form-groupp .ui-inputtext,
+            .form-groupp .ui-calendar {
+                padding: 0.5rem;
+                font-size: 1rem;
+            }
+
+        </style>
+    </h:head>
+
+    <h:body>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div>
+                <div class="sidebar-header"><h1>Bhagyoday</h1></div>
+
+                <p:menu styleClass="custom-menu">
+                    <p:menuitem value="Dashboard" icon="pi pi-th-large" />
+                    <p:menuitem value="Table Mangement" icon="pi pi-table"
+                                action="#{tableBean.showForm}" update="mainContent" />
+                    <p:menuitem value="Book Table" icon="pi pi-star" action="#{tableBean.showFormbooking()}" update="mainContent" />
+                    <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" />
+                    <p:menuitem value="Manage Category" icon="pi pi-book" />
+                </p:menu>
+            </div>
+
+            <div class="logout-btn">
+                <h:form>
+                    <p:commandButton value="Logout" icon="pi pi-sign-out"
+                                     action="#{loginBean.logout}"
+                                     styleClass="ui-button-danger" />
+                </h:form>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <!-- Main Content -->
+        <h:form id="mainContent" style=" margin-left: 2rem">
+            <div class="main-content">
+                <h:panelGroup rendered="#{tableBean.showTableForm}">
+                    <!-- Top bar form -->
+                    <div class="top-bar-form" >
+                        <div class="main">
+                            <div class="form-group">
+                                <p:outputLabel for="tableNumber" value="Table Number:" />
+                                <p:inputText id="tableNumber" value="#{tableBean.tableNumber}" placeholder="Enter number" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="capacity" value="Capacity-of-peoples:" />
+                                <p:inputText id="capacity" value="#{tableBean.capacity}" placeholder="Enter capacity" />
+                            </div>
+                        </div>
+
+                        <!-- Submit button below -->
+                        <p:commandButton value="#{tableBean.editMode ? 'Update' : 'Add-Table'}"
+                                         action="#{tableBean.submitTable}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </div>
+
+                    <!-- Data Table -->
+                    <p:dataTable value="#{tableBean.gettabledata()}" var="table" 
+                                 scrollable="true" scrollHeight="200"
+                                 style="margin-top: 2rem; width: 100%; height:100%">
+
+                        <!-- Table Number -->
+                        <p:column headerText="Table Number">
+                            <h:outputText value="#{table.tableNumber}" />
+                        </p:column>
+
+                        <!-- Capacity -->
+                        <p:column headerText="Capacity">
+                            <h:outputText value="#{table.capacity}" />
+                        </p:column>
+
+                        <!-- Update Button with SVG -->
+                        <p:column headerText="Update">
+                            <p:commandButton action="#{tableBean.editTable(table)}"
+                                             update="mainContent"
+                                             title="Edit"
+                                             styleClass="ui-button-flat ui-button-warning">
+                                <f:facet name="icon">
+                                    <span class="ui-icon" style="width: 20px; height: 20px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="coral" viewBox="0 0 24 24">
+                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 
+                                                  0-1.41l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 
+                                                  3.75 3.75 1.84-1.83z"/>
+                                        </svg>
+                                    </span>
+                                </f:facet>
+                            </p:commandButton>
+                        </p:column>
+
+                        <!-- Delete Button with SVG -->
+                        <p:column headerText="Delete">
+                            <p:column headerText="Delete">
+                                <p:commandButton value="Delete"
+                                                 action="#{tableBean.deleteTable(table)}"
+                                                 update="mainContent"
+                                                 styleClass="ui-button-danger"
+                                                 title="Delete" />
+                            </p:column>
+                        </p:column>
+
+                        <!-- Book Table Button -->
+                        <p:column headerText="Book Table">
+                            <p:commandButton value="Book"
+                                             update="mainContent"
+                                             styleClass="ui-button-success"
+                                             icon="pi pi-calendar-check"
+                                             title="Book Table" />
+
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{tableBean.showbookingForm}" id="mainContent">
+
+                    <!-- Top bar with Book Table button -->
+                    <h:panelGroup rendered="#{bookingbean.showBookingList}">
+                        <p:commandButton value="Book Table" icon="pi pi-plus"
+                                         action="#{bookingbean.showFormView}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </h:panelGroup>
+
+                    <!-- Booking Form -->
+                    <h:panelGroup rendered="#{bookingbean.showBookingForm}">
+                        <div class="top-bar-formm">
+                            <p:commandButton value="show bookings" icon="pi pi-plus"
+                                             action="#{bookingbean.showBookingListView()}"
+                                             update="mainContent"
+                                             styleClass="coral-button" />
+
+                            <div class="form-groupp">
+                                <p:outputLabel value="Table Number:" for="tableNum"/>
+                                <p:inputText id="tableNum" value="#{bookingbean.tableNumber}" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Capacity:" for="capacity3"/>
+                                <p:inputText id="capacity3" value="#{bookingbean.capacity}" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Customer Name:" for="customername"/>
+                                <p:inputText id="customername" value="#{bookingbean.customername}" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Mobile No:" for="mobileno"/>
+                                <p:inputText id="mobileno" value="#{bookingbean.mobileno}" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Booking Date:" for="bookingdate"/>
+                                <p:calendar id="bookingdate" value="#{bookingbean.bookingdate}" pattern="yyyy-MM-dd" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Booking Time:" for="bookingtime"/>
+                                <p:datePicker id="bookingtime" value="#{bookingbean.bookingtime}" pattern="HH:mm" timeOnly="true" hourFormat="24"/>
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Dine-in Date:" for="dinedate"/>
+                                <p:calendar id="dinedate" value="#{bookingbean.dineDate}" pattern="yyyy-MM-dd" />
+                            </div>
+                            <div class="form-groupp">
+                                <p:outputLabel value="Dine-in Time:" for="dinetime"/>
+                                <p:datePicker id="dinetime" value="#{bookingbean.dinetime}" pattern="HH:mm" timeOnly="true"  hourFormat="24"/>
+                            </div>
+
+                            <p:commandButton value="Submit" action="#{bookingbean.insertbook()}" update="mainContent"
+                                             styleClass="coral-button" />
+                        </div>
+                    </h:panelGroup>
+
+                    <!-- Booking List -->
+                    <h:panelGroup rendered="#{bookingbean.showBookingList}">
+                        <p:dataTable value="#{bookingbean.bookings}" var="b" style="margin-top: 1rem">
+                            <p:column headerText="Table Number">
+                                #{b.tableId.tableNumber}
+                            </p:column>
+                            <p:column headerText="Customer-Name">
+                                #{b.customername}
+                            </p:column>
+                            <p:column headerText="Action">
+                                <p:commandButton value="View Details" icon="pi pi-eye"
+                                                 action="#{bookingbean.showDetailsView(b)}"
+                                                 update="mainContent"
+                                                 styleClass="ui-button-secondary" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:panelGroup>
+
+                    <!-- Booking Details -->
+                    <h:panelGroup rendered="#{bookingbean.showBookingDetails}">
+                        <h1>Booking Details</h1>
+
+                        <div class="uu">
+                            <h:panelGrid columns="2" styleClass="form-grid">
+
+
+                                <h:outputLabel value="Table Number:" for="tableId5" />
+                                <p:inputText id="tableId5" value="#{bookingbean.currentBooking.tableId.tableNumber}" disabled="true" />
+
+                                <h:outputLabel value="Capacity:" for="capacity5" />
+                                <p:inputText id="capacity5" value="#{bookingbean.currentBooking.noofpeoples}" required="true" />
+
+                                <h:outputLabel value="Customer Name:" for="customername5" />
+                                <p:inputText id="customername5" value="#{bookingbean.currentBooking.customername}" required="true" />
+
+                                <h:outputLabel value="Mobile Number:" for="contactno5" />
+                                <p:inputText id="contactno5" value="#{bookingbean.currentBooking.contactno}" required="true" />
+
+                                <h:outputLabel value="Booking Date:" for="bookingDate5" />
+                                <p:calendar id="bookingDate5" value="#{bookingbean.currentBooking.bookingDate}" pattern="yyyy-MM-dd" required="true" />
+
+                                <h:outputLabel value="Booking Time:" for="bookingTime5" />
+                                <p:datePicker id="bookingTime5" value="#{bookingbean.currentBooking.bookingTime}" required="true" timeOnly="true"  hourFormat="24"/>
+
+                                <h:outputLabel value="Dine-in Date:" for="dineInDate5" />
+                                <p:calendar id="dineInDate5" value="#{bookingbean.currentBooking.dineInDate}" pattern="yyyy-MM-dd" required="true" />
+
+                                <h:outputLabel value="Dine-in Time:" for="dineInTime5" />
+                                <p:datePicker id="dineInTime5" value="#{bookingbean.currentBooking.dineInTime}" required="true" timeOnly="true" hourFormat="24"  />
+                            </h:panelGrid>
+                        </div>
+                        <p:commandButton value="Back to List" action="#{bookingbean.showBookingListView}" update="mainContent"
+                                         styleClass="coral-button" style="margin-left: 5rem; " />
+                        <p:commandButton value="Update" action="#{bookingbean.updatedetails}" update="mainContent"
+                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
+                        <p:commandButton value="Delete" action="#{bookingbean.deletebooking}" update="mainContent"
+                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
+                   
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>
+
+
+        </h:form>
+
+
+
+
+
+    </h:body>
 </html>
