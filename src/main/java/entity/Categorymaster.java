@@ -4,6 +4,7 @@
  */
 package entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -108,7 +109,7 @@ public class Categorymaster implements Serializable {
         this.restaurantId = restaurantId;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<Menumaster> getMenumasterCollection() {
         return menumasterCollection;
     }

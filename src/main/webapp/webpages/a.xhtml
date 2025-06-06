@@ -52,7 +52,7 @@
                 color: #333;
                 font-weight:bold;
                 font-size: 1.3rem !important;
-                padding: 0.63rem 0.50rem !important;
+                padding: 0.65rem 0.50rem !important;
                 color:black;
                 border-radius: 10px !important;
                 display: flex;
@@ -150,12 +150,30 @@
                 gap: 0.5rem;
                 justify-content: flex-start;
             }
-/*            .form-group1 {
+            .top-bar-formmm {
+                width: 100%;
+                display: flex;
+                flex-direction: column; /* Change to column layout */
+                gap: 1rem;
+                padding: 1rem;
+                background-color: #fff;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                box-sizing: border-box;
+            }
+
+            .form-grouppp {
                 display: flex;
                 gap: 0.5rem;
                 justify-content: flex-start;
-            }*/
-            
+            }
+            /*            .form-group1 {
+                            display: flex;
+                            gap: 0.5rem;
+                            justify-content: flex-start;
+                        }*/
+
 
             .main {
                 display: flex;             /* Makes it a flex container */
@@ -163,6 +181,13 @@
                 gap: 2rem;                 /* Optional: spacing between form groups */
                 flex-wrap: wrap;           /* Optional: allows wrapping on smaller screens */
                 justify-content: center;   /* Optional: center items horizontally */
+            }
+            .mainnn {
+                display: flex;             /* Makes it a flex container */
+                flex-direction: row;       /* Ensures children are laid out horizontally */
+                gap: 2rem;                 /* Optional: spacing between form groups */
+                flex-wrap: wrap;  
+                margin-left: 8rem;/* Optional: allows wrapping on smaller screens */
             }
 
 
@@ -194,12 +219,22 @@
                 min-width: 100px;
                 margin-left: 9rem;
             }
+            .top-bar-formmm .ui-outputlabel {
+                font-weight: 500;
+                color: grey;
+                font-size: 1.5rem;
+                min-width: 120px;
+            }
 
             .top-bar-form .ui-inputtext {
                 margin-left: 1rem;
                 width: 150px;
             }
             .top-bar-formm .ui-inputtext {
+                margin-left: 1rem;
+                width: 150px;
+            }
+            .top-bar-formmm .ui-inputtext {
                 margin-left: 1rem;
                 width: 150px;
             }
@@ -243,6 +278,17 @@
                 max-width: 50%;
                 margin: auto;
             }
+            .top-bar-formmm {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                max-width: 50%;
+                margin: auto;
+            }
 
             .form-group {
                 display: flex;
@@ -258,8 +304,17 @@
                 flex-direction: row;
                 margin-left: -2rem;
             }
+            .form-grouppp {
+                display: flex;
+                flex-direction: row;
+                margin-left: 0rem;
+            }
 
             .form-groupp label {
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+            .form-grouppp label {
                 margin-bottom: 0.5rem;
                 font-weight: bold;
             }
@@ -301,13 +356,13 @@
             .form-grid {
                 margin-top: 1rem;
                 margin-bottom: 3rem;
-/*                row-gap: 6rem !important;*/
+                /*                row-gap: 6rem !important;*/
                 column-gap: -0.5rem;
             }
 
-/*            .form-grid .custom-menu{
-                margin-bottom: 4rem;
-            }*/
+            /*            .form-grid .custom-menu{
+                            margin-bottom: 4rem;
+                        }*/
 
             .form-group .ui-outputlabel {
                 font-weight: bold;
@@ -315,6 +370,12 @@
                 font-size: 1.2rem; /* optional, improves visibility */
             }
             .form-groupp .ui-outputlabel {
+                font-weight: bold;
+                margin-bottom: -0.5rem ! important;
+                font-size: 1.2rem; /* optional, improves visibility */
+                width: 28%;
+            }
+            .form-grouppp .ui-outputlabel {
                 font-weight: bold;
                 margin-bottom: -0.5rem ! important;
                 font-size: 1.2rem; /* optional, improves visibility */
@@ -328,6 +389,11 @@
             }
             .form-groupp .ui-inputtext,
             .form-groupp .ui-calendar {
+                padding: 0.5rem;
+                font-size: 1rem;
+            }
+            .form-grouppp .ui-inputtext,
+            .form-grouppp .ui-calendar {
                 padding: 0.5rem;
                 font-size: 1rem;
             }
@@ -346,8 +412,9 @@
                     <p:menuitem value="Table Mangement" icon="pi pi-table"
                                 action="#{tableBean.showForm}" update="mainContent" />
                     <p:menuitem value="Book Table" icon="pi pi-star" action="#{tableBean.showFormbooking()}" update="mainContent" />
-                    <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" />
-                    <p:menuitem value="Manage Category" icon="pi pi-book" />
+                    <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" action="#{tableBean.showmenu()}" update="mainContent"/>
+                    <p:menuitem value="Manage Category" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
+                    <p:menuitem value="staff Management" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
                 </p:menu>
             </div>
 
@@ -557,9 +624,268 @@
                                          styleClass="ui-button-secondary" style="margin-left: 5rem; " />
                         <p:commandButton value="Delete" action="#{bookingbean.deletebooking}" update="mainContent"
                                          styleClass="ui-button-secondary" style="margin-left: 5rem; " />
-                   
+
                     </h:panelGroup>
                 </h:panelGroup>
+
+                <!--kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk-->
+                <h:panelGroup rendered="#{tableBean.showcategory}"  layout="block" style="display: flex; flex-direction: column; height: 100vh;">
+                    <!-- Top bar form -->
+                    <div class="top-bar-form" >
+                        <div class="main">
+                            <div class="form-group">
+                                <p:outputLabel for="category" value="Category" />
+                                <p:inputText id="category" value="#{menubean.categoryname}" placeholder="Enter categoryname" />
+                            </div>
+                            <p:commandButton value="#{menubean.editMode ? 'Update' : 'Add-Category'}"
+                                             action="#{menubean.submitTable()}"
+                                             update="mainContent"
+                                             styleClass="coral-button" />
+                        </div>
+
+                        <!-- Submit button below -->
+
+                    </div>
+
+                    <!-- Data Table -->
+                    <h:panelGroup  layout="block" style="flex: 1; overflow-y: auto;">
+
+                        <p:dataTable value="#{menubean.getcategorydata()}" var="table" 
+                                     scrollable="true" scrollHeight="100%"
+                                     style="margin-top: 2rem; width: 100%; height:100%">
+
+                            <!-- Table Number -->
+                            <p:column headerText="Category Name">
+                                <h:outputText value="#{table.categoryName}" />
+                            </p:column>
+
+
+
+                            <!-- Update Button with SVG -->
+                            <p:column headerText="Update">
+                                <p:commandButton value="Edit" action="#{menubean.editTable(table)}"
+                                                 update="mainContent"
+                                                 styleClass="ui-button-secondary"
+                                                 title="Edit" >
+                                    <!--                                    <f:facet name="icon">
+                                                                            <span class="ui-icon" style="width: 20px; height: 20px;">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="coral" viewBox="0 0 24 24">
+                                                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 
+                                                                                          0-1.41l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 
+                                                                                          3.75 3.75 1.84-1.83z"/>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </f:facet>-->
+                                </p:commandButton>
+                            </p:column>
+
+                            <!-- Delete Button with SVG -->
+                            <p:column headerText="Delete">
+                                <p:column headerText="Delete">
+                                    <p:commandButton value="Delete"
+                                                     action="#{menubean.deletecategory(table)}"
+                                                     update="mainContent"
+                                                     styleClass="ui-button-danger"
+                                                     title="Delete" />
+                                </p:column>
+                            </p:column>
+
+                            <!-- Book Table Button -->
+
+
+                        </p:dataTable>
+                    </h:panelGroup>
+
+
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{tableBean.showmenuform}">
+
+                    <h:panelGroup rendered="#{onlymenubean.showmenulist}">
+                        <p:commandButton value="Add Item" icon="pi pi-plus"
+                                         action="#{onlymenubean.showFormlistfunc}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup rendered="#{onlymenubean.showformlist}" layout="block" style="display: flex; flex-direction: column; height: 100vh;">
+
+                        <!-- Top bar form -->
+                        <div class="top-bar-formmm" >
+
+                            <div class="mainnn">
+                                <div class="form-grouppp">
+                                    <p:outputLabel for="item" value="Item Name:" />
+                                    <p:inputText id="item" value="#{onlymenubean.menuname}" placeholder="Enter name" />
+                                </div>
+                                <div class="form-grouppp">
+                                    <p:outputLabel for="price" value="Item Price:" />
+                                    <p:inputText id="price" value="#{onlymenubean.price}" placeholder="Enter price" />
+                                </div>
+                                <div class="form-grouppp">
+                                    <p:outputLabel for="categoryyy" value="Category:" />
+                                    <p:selectOneMenu id="categoryyy" value="#{onlymenubean.selectedcategoryformenu}">
+                                        <f:selectItem itemLabel="-- Select Category --" itemValue="" />
+                                        <f:selectItems value="#{menubean.getcategorydata()}"
+                                                       var="cat"
+                                                       itemLabel="#{cat.categoryName}"
+                                                       itemValue="#{cat.categoryid}" />
+                                    </p:selectOneMenu>
+                                </div>
+
+
+
+                                <div class="form-grouppp">
+                                    <p:outputLabel for="foodtype" value="Food Type:" />
+                                    <p:selectOneMenu id="foodtype" value="#{onlymenubean.foodtype}" style="width: 200px;"> 
+                                        <f:selectItem itemLabel="-- Select Food Type --" itemValue="" />
+                                        <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
+                                        <f:selectItem itemLabel="Non-Vegeterian" itemValue="non-veg" />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="form-grouppp">
+                                    <p:outputLabel for="description" value="Description:" />
+                                    <p:inputTextarea id="description"
+                                                     value="#{onlymenubean.description}"
+                                                     placeholder="Enter item description"
+                                                     rows="1" cols="30"
+                                                     autoResize="true" />
+                                </div>
+
+
+
+                                <!-- Submit button below -->
+
+
+                                <p:commandButton value="show items" icon="pi pi-plus"
+                                                 action="#{onlymenubean.showmenulistfunc()}"
+                                                 update="mainContent"
+                                                 styleClass="coral-button" />
+
+                                <p:commandButton value="#{onlymenubean.editMode ? 'Update' : 'Add-Item'}"
+                                                 action="#{onlymenubean.submitTable()}"
+                                                 update="mainContent"
+                                                 styleClass="ui-button-secondary" />
+                            </div>
+                        </div>
+
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{onlymenubean.showmenulist}" >
+
+                        <!-- Data Table -->
+                        <h:panelGroup  layout="block" >
+
+                            <div class="form-group" style="margin-bottom: 1rem; margin-top: 1rem;">
+                                <p:outputLabel for="categoryFilter" value="Filter by Category:" style="margin-right: 1rem;" />
+                                <p:selectOneMenu id="categoryFilter" value="#{onlymenubean.selectedCategoryFilter}">
+                                    <f:selectItem itemLabel="All" itemValue="" />
+                                    <f:selectItems value="#{menubean.getcategorydata()}" var="cat"
+                                                   itemLabel="#{cat.categoryName}" itemValue="#{cat.categoryid}" />
+                                    <p:ajax listener="#{onlymenubean.filterMenuByCategory}" update="menuTable" />
+                                </p:selectOneMenu>
+                            </div>
+                            <p:dataTable id="menuTable" value="#{onlymenubean.menus}" var="menu" 
+                                         style="margin-top: 2rem; width: 100%; height:100%">
+
+                                <!-- Table Number -->
+                                <p:column headerText="Item Name">
+                                    <h:outputText value="#{menu.itemName}" />
+                                </p:column>
+
+                                <!-- Capacity -->
+                                <p:column headerText="Price">
+                                    <h:outputText value="#{menu.itemPrice}" />
+                                </p:column>
+                                <p:column headerText="Category">
+                                    <h:outputText value="#{menu.categoryId.categoryName}" />
+                                </p:column>
+                                <p:column headerText="Availability">
+                                    <h:outputText value="#{menu.isAvalaible ? 'Available' : 'Unavailable'}" />
+                                </p:column>
+                                <p:column headerText="Action">
+                                    <p:commandButton value="View Details" icon="pi pi-eye"
+                                                     action="#{onlymenubean.showmenudetails(menu)}"
+                                                     update="mainContent"
+                                                     styleClass="ui-button-secondary" />
+                                </p:column>
+
+
+
+
+
+
+                            </p:dataTable>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{onlymenubean.menudetails}">
+                        <h1>Menu Details</h1>
+
+                        <div class="uu">
+                            <h:panelGrid columns="2" styleClass="form-grid">
+
+
+                                <h:outputLabel value="Item Name" for="item1" />
+                                <p:inputText id="item1" value="#{onlymenubean.menuname}"  />
+
+                                <p:outputLabel for="price1" value="Item Price:" />
+                                <p:inputText id="price1" value="#{onlymenubean.price}" />
+
+                                <p:outputLabel for="categoryyy1" value="Category:" />
+                                <p:selectOneMenu id="categoryyy1" value="#{onlymenubean.selectedcategoryformenu}">
+                                    <f:selectItem itemLabel="-- Select Category --" itemValue="" />
+                                    <f:selectItems value="#{menubean.getcategorydata()}"
+                                                   var="cat"
+                                                   itemLabel="#{cat.categoryName}"
+                                                   itemValue="#{cat.categoryid}" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="foodtype1" value="Food Type:" />
+                                <p:selectOneMenu id="foodtype1" value="#{onlymenubean.foodtype}" style="width: 200px;"> 
+                                    <f:selectItem itemLabel="-- Select Food Type --" itemValue="" />
+                                    <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
+                                    <f:selectItem itemLabel="Non-Vegeterian" itemValue="non-veg" />
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="description1" value="Description:" />
+                                <p:inputTextarea id="description1"
+                                                 value="#{onlymenubean.description}"
+                                                 placeholder="Enter item description"
+                                                 rows="1" cols="30"
+                                                 autoResize="true" />
+
+                                <p:outputLabel for="availability" value="Availability:" />
+
+                                <p:toggleSwitch id="availability" value="#{onlymenubean.avability}">
+                                    <p:ajax update="availabilityLabel" />
+                                </p:toggleSwitch>
+
+                                <!-- Dynamic Label -->
+                                <h:outputText id="availabilityLabel" 
+                                              value="#{onlymenubean.avability ? 'Available' : 'Unavailable'}"
+                                              style="font-weight: bold;" />
+
+
+
+                            </h:panelGrid>
+                        </div>
+                        <p:commandButton value="Back to List" action="#{onlymenubean.showformlistfunc}" update="mainContent"
+                                         styleClass="coral-button" style="margin-left: 5rem; " />
+                        <p:commandButton value="Update" action="#{onlymenubean.updatemenu()}" update="mainContent"
+                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
+                        <p:commandButton value="Delete" action="#{onlymenubean.deletemenu()}" update="mainContent"
+                                         styleClass="ui-button-danger" style="margin-left: 5rem; " />
+
+                    </h:panelGroup>
+
+
+
+                </h:panelGroup>
+
             </div>
 
 

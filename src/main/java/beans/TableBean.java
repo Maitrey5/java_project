@@ -45,10 +45,11 @@ public class TableBean implements Serializable {
     private int capacity;
     private boolean editMode = false;
     private Tablemaster selectedTable;
-    private LocalDate  bookingdate;
+    private LocalDate bookingdate;
     private LocalTime bookingtime;
     private String formattedDate;
-    
+    private Boolean showcategory;
+    private Boolean showmenuform;
 
     public boolean isEditMode() {
         return editMode;
@@ -83,8 +84,24 @@ public class TableBean implements Serializable {
         this.tableNumber = tableNumber;
     }
 
+    public Boolean getShowcategory() {
+        return showcategory;
+    }
+
+    public void setShowcategory(Boolean showcategory) {
+        this.showcategory = showcategory;
+    }
+
     public int getCapacity() {
         return capacity;
+    }
+
+    public Boolean getShowmenuform() {
+        return showmenuform;
+    }
+
+    public void setShowmenuform(Boolean showmenuform) {
+        this.showmenuform = showmenuform;
     }
 
     public boolean isShowbookingForm() {
@@ -94,7 +111,6 @@ public class TableBean implements Serializable {
     public void setShowbookingForm(boolean showbookingForm) {
         this.showbookingForm = showbookingForm;
     }
-    
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
@@ -102,33 +118,55 @@ public class TableBean implements Serializable {
 
     public void showForm() {
         showTableForm = true;
+        showcategory = false;
+        showmenuform = false;
+
         showbookingForm = false;
     }
+
     public void showFormbooking() {
         showTableForm = false;
+        showcategory = false;
+        showmenuform = false;
+
         showbookingForm = true;
 
     }
 
+    public void showcategoryy() {
+        showTableForm = false;
+        showbookingForm = false;
+        showmenuform = false;
+
+        showcategory = true;
+
+    }
+
+    public void showmenu() {
+        showTableForm = false;
+        showbookingForm = false;
+        showcategory = false;
+        showmenuform = true;
+
+    }
+
     public void submitTable() {
-        
+
         if (editMode && selectedTable != null) {
             // Update the selectedTable's fields
             selectedTable.setTableNumber(tableNumber);
             selectedTable.setCapacity(capacity);
-            
+
             System.err.println("###############################");
             System.err.println(selectedTable);
             System.err.println(tableNumber);
             System.err.println(capacity);
             System.err.println(keepRecord.getIi());
-            
+
             selectedTable.setCapacity(capacity);
             selectedTable.setTableNumber(tableNumber);
-            
-            
-     
-            em.update_table_to_restaurant(selectedTable ,  String.valueOf(selectedTable.getTableId()));
+
+            em.update_table_to_restaurant(selectedTable, String.valueOf(selectedTable.getTableId()));
 
             // Optionally update in DB
             // Reset edit mode
@@ -143,7 +181,6 @@ public class TableBean implements Serializable {
         // Clear form fields
         this.tableNumber = 0;
         this.capacity = 0;
-
 
         System.err.println("inside table bean ++++++++++++++++++++++++++++");
         System.err.println(keepRecord.getR_id());
@@ -178,8 +215,8 @@ public class TableBean implements Serializable {
 
 //        em.update_table_to_restaurant(String.valueOf(t.getTableId()), String.valueOf(keepRecord.getIi()), String.valueOf(t.getTableNumber()), String.valueOf(t.getCapacity()));
     }
-    
-     public void prepareBooking(Tablemaster t) {
+
+    public void prepareBooking(Tablemaster t) {
         this.tableNumber = t.getTableNumber();
         this.capacity = t.getCapacity();
         this.bookingdate = LocalDate.now();
@@ -189,7 +226,6 @@ public class TableBean implements Serializable {
 //        System.out.println(formattedDate);  // Output: 2025-05-29
 
     }
-
 
     public void deleteTable(Tablemaster t) {
 

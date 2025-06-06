@@ -54,6 +54,12 @@ public class updatedadminclient {
         webTarget.path(java.text.MessageFormat.format("update_transaction_to_staff/{0}/{1}/{2}/{3}/{4}/{5}", new Object[]{staff_transaction_id, restaurant_id, staff_id, amount, date, transaction_id})).request().put(null);
     }
 
+    public <T> T searchmenubycategory(Class<T> responseType, String categoryid, String rid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("searchmenubycategory/{0}/{1}", new Object[]{categoryid, rid}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void book_table_by_restaurant(String table_id, String restaurant_id, String booking_time, String dine_in_time, String booking_date, String dine_in_date, String no_of_peoples, String contact_no, String customer_name) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("book_table_by_restaurant/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}", new Object[]{table_id, restaurant_id, booking_time, dine_in_time, booking_date, dine_in_date, no_of_peoples, contact_no, customer_name})).request().post(null);
     }
@@ -105,7 +111,7 @@ public class updatedadminclient {
     }
 
     public void update_menu(String menu_id, String restaurant_id, String category_id, String item_name, String item_price, String description, String is_avalaible, String updated_at, String item_type) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("update_menu/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}", new Object[]{menu_id, restaurant_id, category_id, item_name, item_price, description, is_avalaible, updated_at, item_type})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("update_menu/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}", new Object[]{menu_id, restaurant_id, category_id, item_name, item_price, description, is_avalaible, updated_at, item_type})).request().post(null);
     }
 
     public void delete_order(String orderid) throws ClientErrorException {
@@ -127,7 +133,7 @@ public class updatedadminclient {
     }
 
     public void update_category(String category_id, String restaurant_id, String category_name, String updated_at) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("update_category/{0}/{1}/{2}/{3}", new Object[]{category_id, restaurant_id, category_name, updated_at})).request().put(null);
+        webTarget.path(java.text.MessageFormat.format("update_category/{0}/{1}/{2}/{3}", new Object[]{category_id, restaurant_id, category_name, updated_at})).request().post(null);
     }
 
     public void add_item_in_inventory(String restaurant_id, String quantity, String amount, String date, String time, String description, String transaction_id) throws ClientErrorException {

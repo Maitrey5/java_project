@@ -74,6 +74,16 @@ public class GenericRestResource {
         return em.search_table(rid, table_no);
 
     }
+    
+    @GET
+    @Path("searchmenubycategory/{categoryid}/{rid}")
+    @Produces("application/json")
+    public Collection<Menumaster> searchmenubycategory(@PathParam("categoryid") Integer categoryid ,@PathParam("rid") Integer rid){
+        
+        return em.searchmenubycategory(categoryid, rid);
+        
+    }
+    
 
     @POST
     @Path("/add/{restaurant_name}/{restaurant_address}/{restaurant_contactno}/{restaurant_email}/{restaurant_city}/{restaurant_state}/{restaurant_country}/{restaurant_pincode}/{created_at}/{updated_at}/{is_active}")
@@ -171,7 +181,7 @@ public class GenericRestResource {
         em.delete_menu(menu_id);
     }
 
-    @PUT
+    @POST
     @Path("update_menu/{menu_id}/{restaurant_id}/{category_id}/{item_name}/{item_price}/{description}/{is_avalaible}/{updated_at}/{item_type}")
     public void update_menu(
             @PathParam("menu_id") Integer menu_id,
@@ -226,7 +236,7 @@ public class GenericRestResource {
         em.delete_category(category_id);
     }
 
-    @PUT
+    @POST
     @Path("update_category/{category_id}/{restaurant_id}/{category_name}/{updated_at}")
     public void update_category(
             @PathParam("category_id") Integer category_id,
