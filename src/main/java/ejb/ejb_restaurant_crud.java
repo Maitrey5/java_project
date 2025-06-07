@@ -718,20 +718,21 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     }
 
     @Override
-    public void add_staff_to_restaurant(Integer restaurant_id, String name, String surname, Integer age, Integer salary, String id_number, Date date_of_joining, String image, String id_image) {
+    public void add_staff_to_restaurant(Integer restaurant_id, String name, String surname, Integer age, Integer salary, String id_number, Date date_of_joining, String id_type, String position) {
 
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
         Staffmaster s = new Staffmaster();
 
+        s.setRestaurantId(r);
         s.setAge(age);
         s.setName(name);
         s.setSurname(surname);
         s.setSalary(salary);
         s.setIdNumber(id_number);
         s.setDateOfJoining(date_of_joining);
-        s.setIdImage(id_image);
-        s.setImage(image);
+        s.setId_type(id_type);
+        s.setPosition(position);
 
         em.persist(s);
 
@@ -742,9 +743,11 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     }
 
     @Override
-    public void update_staff_to_restaurant(Integer Staff_id, Integer restaurant_id, String name, String surname, Integer age, Integer salary, String id_number, Date date_of_joining, String image, String id_image) {
+    public void update_staff_to_restaurant(Integer Staff_id, Integer restaurant_id, String name, String surname, Integer age, Integer salary, String id_number, Date date_of_joining, String id_type, String position) {
 
         Staffmaster s = em.find(Staffmaster.class, Staff_id);
+
+        System.err.println("hello in ejb");
 
         s.setAge(age);
         s.setName(name);
@@ -752,8 +755,8 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         s.setSalary(salary);
         s.setIdNumber(id_number);
         s.setDateOfJoining(date_of_joining);
-        s.setIdImage(id_image);
-        s.setImage(image);
+        s.setId_type(id_type);
+        s.setPosition(position);
 
     }
 

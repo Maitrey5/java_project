@@ -4,6 +4,10 @@
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    <context-param>
+        <param-name>javax.faces.UPLOADED_FILES_DIR</param-name>
+        <param-value>C:/uploads</param-value> <!-- Use full path in Windows -->
+    </context-param>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>

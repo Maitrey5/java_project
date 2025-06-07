@@ -537,7 +537,7 @@ public class GenericRestResource {
     }
 
     @POST
-    @Path("add_staff_to_restaurant/{restaurant_id}/{name}/{surname}/{age}/{salary}/{id_number}/{date_of_joining}/{image}/{id_image}")
+    @Path("add_staff_to_restaurant/{restaurant_id}/{name}/{surname}/{age}/{salary}/{id_number}/{date_of_joining}/{id_type}/{position}")
     public void add_staff_to_restaurant(
             @PathParam("restaurant_id") Integer restaurant_id,
             @PathParam("name") String name,
@@ -546,18 +546,18 @@ public class GenericRestResource {
             @PathParam("salary") Integer salary,
             @PathParam("id_number") String id_number,
             @PathParam("date_of_joining") String date_of_joining,
-            @PathParam("image") String image,
-            @PathParam("id_image") String id_image) throws ParseException {
+            @PathParam("id_type") String id_type,
+            @PathParam("position") String position) throws ParseException {
 
         Date date = null;
 
         date = new SimpleDateFormat("yyyy-MM-dd").parse(date_of_joining);
 
-        em.add_staff_to_restaurant(restaurant_id, name, surname, age, salary, id_number, date, image, id_image);
+        em.add_staff_to_restaurant(restaurant_id, name, surname, age, salary, id_number, date, id_type, position);
     }
 
-    @PUT
-    @Path("update_staff_to_restaurant/{Staff_id}/{restaurant_id}/{name}/{surname}/{age}/{salary}/{id_number}/{date_of_joining}/{image}/{id_image}")
+    @POST
+    @Path("update_staff_to_restaurant/{Staff_id}/{restaurant_id}/{name}/{surname}/{age}/{salary}/{id_number}/{date_of_joining}/{id_type}/{position}")
     public void update_staff_to_restaurant(
             @PathParam("Staff_id") Integer Staff_id,
             @PathParam("restaurant_id") Integer restaurant_id,
@@ -567,14 +567,14 @@ public class GenericRestResource {
             @PathParam("salary") Integer salary,
             @PathParam("id_number") String id_number,
             @PathParam("date_of_joining") String date_of_joining,
-            @PathParam("image") String image,
-            @PathParam("id_image") String id_image) throws ParseException {
+            @PathParam("id_type") String id_type,
+            @PathParam("position") String position) throws ParseException {
 
         Date date = null;
-
+        System.err.println("hello in rest");
         date = new SimpleDateFormat("yyyy-MM-dd").parse(date_of_joining);
 
-        em.update_staff_to_restaurant(Staff_id, restaurant_id, name, surname, age, salary, id_number, date, image, id_image);
+        em.update_staff_to_restaurant(Staff_id, restaurant_id, name, surname, age, salary, id_number, date, id_type, position);
     }
 
     @DELETE

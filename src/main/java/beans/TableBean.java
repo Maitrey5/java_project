@@ -50,6 +50,7 @@ public class TableBean implements Serializable {
     private String formattedDate;
     private Boolean showcategory;
     private Boolean showmenuform;
+    private Boolean showstaff;
 
     public boolean isEditMode() {
         return editMode;
@@ -108,6 +109,14 @@ public class TableBean implements Serializable {
         return showbookingForm;
     }
 
+    public Boolean getShowstaff() {
+        return showstaff;
+    }
+
+    public void setShowstaff(Boolean showstaff) {
+        this.showstaff = showstaff;
+    }
+
     public void setShowbookingForm(boolean showbookingForm) {
         this.showbookingForm = showbookingForm;
     }
@@ -120,6 +129,7 @@ public class TableBean implements Serializable {
         showTableForm = true;
         showcategory = false;
         showmenuform = false;
+        showstaff = false;
 
         showbookingForm = false;
     }
@@ -128,6 +138,7 @@ public class TableBean implements Serializable {
         showTableForm = false;
         showcategory = false;
         showmenuform = false;
+        showstaff = false;
 
         showbookingForm = true;
 
@@ -137,6 +148,7 @@ public class TableBean implements Serializable {
         showTableForm = false;
         showbookingForm = false;
         showmenuform = false;
+        showstaff = false;
 
         showcategory = true;
 
@@ -146,7 +158,18 @@ public class TableBean implements Serializable {
         showTableForm = false;
         showbookingForm = false;
         showcategory = false;
+        showstaff = false;
+
         showmenuform = true;
+
+    }
+
+    public void showstafffunc() {
+        showTableForm = false;
+        showbookingForm = false;
+        showcategory = false;
+        showmenuform = false;
+        showstaff = true;
 
     }
 

@@ -82,7 +82,7 @@ public interface ejb_restaurant_crudLocal {
         void delete_item_in_inventory(Integer inventory_id);
         Collection<Inventorymaster> get_inventory_item_by_restaurant(Integer restaurant_id);
         
-        void add_staff_to_restaurant(Integer restaurant_id, String name,String surname, Integer age,Integer salary, String id_number,Date date_of_joining,String image, String id_image);
+        void add_staff_to_restaurant(Integer restaurant_id, String name,String surname, Integer age,Integer salary, String id_number,Date date_of_joining,String id_type, String position);
         void update_staff_to_restaurant(Integer Staff_id,Integer restaurant_id, String name,String surname, Integer age,Integer salary, String id_number,Date date_of_joining,String image, String id_image);
         void delete_staff_to_restaurant(Integer Staff_id , Integer restaurant_id);
         Collection<Staffmaster> get_all_staff_by_restaurant(Integer restaurant_id);

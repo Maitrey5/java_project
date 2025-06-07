@@ -186,7 +186,7 @@
                 display: flex;             /* Makes it a flex container */
                 flex-direction: row;       /* Ensures children are laid out horizontally */
                 gap: 2rem;                 /* Optional: spacing between form groups */
-                flex-wrap: wrap;  
+                flex-wrap: wrap;
                 margin-left: 8rem;/* Optional: allows wrapping on smaller screens */
             }
 
@@ -398,6 +398,56 @@
                 font-size: 1rem;
             }
 
+
+            /*staffcss*/
+
+            .top-bar-formmmS {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                max-width: 90%;
+                margin: 2rem auto;
+                width: 100%;
+            }
+
+            .mainnnS {
+                display: flex;
+                flex-direction: row;
+                gap: 2rem;
+                flex-wrap: wrap;
+                margin-left: 0rem;
+            }
+
+            .form-groupppS {
+                display: flex;
+                flex-direction: row;
+                margin-left: 0rem;
+                gap: 0.5rem;
+                justify-content: flex-start;
+            }
+
+            .form-groupppS .ui-outputlabel {
+                font-weight: bold;
+                margin-bottom: -0.5rem ! important;
+                font-size: 1.2rem;
+                width: 28%;
+                color: grey;
+                min-width: 150px;
+                margin-left: 6rem;
+            }
+
+            .form-groupppS .ui-inputtext, .form-groupppS .ui-calendar {
+                padding: 0.5rem;
+                font-size: 1rem;
+                margin-left: 1rem;
+                width: 212px;
+
+            }
+
         </style>
     </h:head>
 
@@ -414,7 +464,7 @@
                     <p:menuitem value="Book Table" icon="pi pi-star" action="#{tableBean.showFormbooking()}" update="mainContent" />
                     <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" action="#{tableBean.showmenu()}" update="mainContent"/>
                     <p:menuitem value="Manage Category" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
-                    <p:menuitem value="staff Management" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
+                    <p:menuitem value="staff Category" icon="pi pi-book" action="#{tableBean.showstafffunc()}" update="mainContent"/>
                 </p:menu>
             </div>
 
@@ -431,6 +481,7 @@
         <!-- Main Content -->
         <h:form id="mainContent" style=" margin-left: 2rem">
             <div class="main-content">
+                <!--table-->
                 <h:panelGroup rendered="#{tableBean.showTableForm}">
                     <!-- Top bar form -->
                     <div class="top-bar-form" >
@@ -511,6 +562,7 @@
 
                 </h:panelGroup>
 
+                <!--booking-->
                 <h:panelGroup rendered="#{tableBean.showbookingForm}" id="mainContent">
 
                     <!-- Top bar with Book Table button -->
@@ -628,7 +680,7 @@
                     </h:panelGroup>
                 </h:panelGroup>
 
-                <!--kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk-->
+                <!--category-->
                 <h:panelGroup rendered="#{tableBean.showcategory}"  layout="block" style="display: flex; flex-direction: column; height: 100vh;">
                     <!-- Top bar form -->
                     <div class="top-bar-form" >
@@ -699,6 +751,7 @@
 
                 </h:panelGroup>
 
+                <!--menu-->
                 <h:panelGroup rendered="#{tableBean.showmenuform}">
 
                     <h:panelGroup rendered="#{onlymenubean.showmenulist}">
@@ -822,7 +875,7 @@
 
                     </h:panelGroup>
 
-                    <h:panelGroup rendered="#{onlymenubean.menudetails}">
+                    <h:panelGroup rendered="#{tableBean.showstaff}">
                         <h1>Menu Details</h1>
 
                         <div class="uu">
@@ -886,7 +939,181 @@
 
                 </h:panelGroup>
 
+                <!--staff-->
+
+
+                <h:panelGroup rendered="#{tableBean.showstaff}">
+
+                    <h:panelGroup rendered="#{staffbean.showstafflist}">
+                        <p:commandButton value="Add Staff" icon="pi pi-plus"
+                                         action="#{staffbean.showformlistfunc()}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </h:panelGroup>
+
+
+                    <h:panelGroup rendered="#{staffbean.showformlist}" layout="block" style="display: flex; flex-direction: column; height: 100vh;">
+
+                        <!-- Top bar form -->
+                        <div class="top-bar-formmmS" >
+                            <div class="mainnnS">
+
+
+                                <div class="form-groupppS">
+                                    <p:outputLabel for="staffname" value="Staff Name:" />
+                                    <p:inputText id="staffname" value="#{staffbean.name}" placeholder="Enter name" />
+
+                                    <p:outputLabel for="sur" value="Surname" />
+                                    <p:inputText id="sur" value="#{staffbean.surname}" placeholder="Enter surname" />
+                                </div>
+                                <div class="form-groupppS">
+                                    <p:outputLabel for="age" value="Age" />
+                                    <p:inputText id="age" value="#{staffbean.age}" placeholder="Enter age" />
+                                    <p:outputLabel for="sal" value="Salary" />
+                                    <p:inputText id="sal" value="#{staffbean.salary}" placeholder="Enter salary" />
+                                </div>
+                                <div class="form-groupppS">
+                                    <p:outputLabel for="id-type" value="id-type" />
+                                    <p:inputText id="id-type" value="#{staffbean.idtype}" placeholder="Enter id-type" />
+                                    <p:outputLabel for="idno" value="id-number" />
+                                    <p:inputText id="idno" value="#{staffbean.idno}" placeholder="Enter id-number" />
+                                </div>
+                                <div class="form-groupppS">
+                                    <p:outputLabel for="doj" value="Date-0f-joining" />
+                                    <p:datePicker id="doj" value="#{staffbean.datee}" placeholder="Select date" />
+
+                                    <p:outputLabel for="role" value="Select position:" />
+                                    <p:selectOneMenu id="role" value="#{staffbean.position}" style="width: 20%; margin-left: 2rem">
+                                        <f:selectItem itemLabel="-- Select Role --" itemValue="" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="Waiter" itemValue="waiter" />
+                                        <f:selectItem itemLabel="Chef" itemValue="chef" />
+                                        <f:selectItem itemLabel="Cleaner" itemValue="cleaner" />
+                                        <f:selectItem itemLabel="Other" itemValue="other" />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <div class="form-groupppS" style="margin-left: 20rem">
+
+                                    <p:commandButton value="Add-staff"
+                                                     action="#{staffbean.addstaff()}"
+                                                     update="mainContent"
+                                                     styleClass="ui-button-secondary" />
+
+
+                                    <p:commandButton value="show items" icon="pi pi-plus"
+                                                     action="#{staffbean.showstafflistfunc()}"
+                                                     update="mainContent"
+                                                     style="margin-left: 5rem"
+                                                     styleClass="coral-button" />
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </h:panelGroup>
+
+                    <h:panelGroup rendered="#{staffbean.showstafflist}" >
+
+                        <!-- Data Table -->
+                        <H1>staff list</H1>
+
+
+                        <h:panelGroup  layout="block" >
+
+                            
+                            <p:dataTable id="menuTable11" value="#{staffbean.staff}" var="s" 
+                                         style="margin-top: 2rem; width: 100%; height:100%">
+
+                                <!-- Table Number -->
+                                <p:column headerText="Staff Name">
+                                    <h:outputText value="#{s.name}" />
+                                </p:column>
+
+                                <!-- Capacity -->
+                                <p:column headerText="Position">
+                                    <h:outputText value="#{s.position}" />
+                                </p:column>
+
+                                <p:column headerText="Action">
+                                    <p:commandButton value="View Details" icon="pi pi-eye"
+                                                     action="#{staffbean.showstaffdetailsfunc(s)}"
+                                                     update="mainContent"
+                                                     styleClass="ui-button-secondary" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+
+
+                    <h:panelGroup rendered="#{staffbean.showstaffdetails}">
+                        <h1>staff Details</h1>
+
+                        <div class="uu">
+                            <h:panelGrid columns="2" styleClass="form-grid">
+
+
+                                <h:outputLabel value="Staff Name" for="item11" />
+                                <p:inputText id="item11" value="#{staffbean.name}"  />
+
+                                <p:outputLabel for="surname1" value="Staff surname" />
+                                <p:inputText id="surname1" value="#{staffbean.surname}" />
+                                
+                                <p:outputLabel for="age1" value="Age" />
+                                <p:inputText id="age1" value="#{staffbean.age}" />
+                                
+                                <p:outputLabel for="salary1" value="Salary:" />
+                                <p:inputText id="salary1" value="#{staffbean.salary}" />
+                                
+                                <p:outputLabel for="dat" value="Date-of-joining" />
+                                <p:datePicker id="dat" value="#{staffbean.datee}" />
+                                
+                                <p:outputLabel for="idt" value="Id-type" />
+                                <p:inputText id="idt" value="#{staffbean.idtype}" />
+                                
+                                <p:outputLabel for="idn" value="Id-number" />
+                                <p:inputText id="idn" value="#{staffbean.idno}" />
+
+                       
+
+                                <p:outputLabel for="ps1" value="Position:" />
+                                <p:selectOneMenu id="ps1" value="#{staffbean.position}" style="width: 200px;"> 
+                                    <f:selectItem itemLabel="-- Select position Type --" itemValue="" />
+                                    <f:selectItem itemLabel="waiter" itemValue="waiter" />
+                                    <f:selectItem itemLabel="chef" itemValue="chef" />
+                                    <f:selectItem itemLabel="cleaner" itemValue="cleaner" />
+                                    <f:selectItem itemLabel="other" itemValue="other" />
+                                </p:selectOneMenu>
+
+                              
+
+                            </h:panelGrid>
+                        </div>
+                        <p:commandButton value="Back to List" action="#{staffbean.showstafflistfunc()}" update="mainContent"
+                                         styleClass="coral-button" style="margin-left: 5rem; " />
+                        <p:commandButton value="Update" action="#{staffbean.updatestaff()}" update="mainContent"
+                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
+                        <p:commandButton value="Delete" action="#{staffbean.deletestaff()}" update="mainContent"
+                                         styleClass="ui-button-danger" style="margin-left: 5rem; " />
+
+                    </h:panelGroup>
+
+
+
+                </h:panelGroup>
+
+
+
+
             </div>
+
+
+
 
 
         </h:form>

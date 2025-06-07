@@ -43,8 +43,7 @@ import java.util.Date;
     @NamedQuery(name = "Staffmaster.findBySalary", query = "SELECT s FROM Staffmaster s WHERE s.salary = :salary"),
     @NamedQuery(name = "Staffmaster.findByIdNumber", query = "SELECT s FROM Staffmaster s WHERE s.idNumber = :idNumber"),
     @NamedQuery(name = "Staffmaster.findByDateOfJoining", query = "SELECT s FROM Staffmaster s WHERE s.dateOfJoining = :dateOfJoining"),
-    @NamedQuery(name = "Staffmaster.findByImage", query = "SELECT s FROM Staffmaster s WHERE s.image = :image"),
-    @NamedQuery(name = "Staffmaster.findByIdImage", query = "SELECT s FROM Staffmaster s WHERE s.idImage = :idImage")})
+    @NamedQuery(name = "Staffmaster.findByposition", query = "SELECT s FROM Staffmaster s WHERE s.position = :position")})
 public class Staffmaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,13 +83,13 @@ public class Staffmaster implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
-    @Column(name = "image")
-    private String image;
+    @Column(name = "id_type")
+    private String id_type;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "id_image")
-    private String idImage;
+    @Size(min = 1, max = 10)
+    @Column(name = "position")
+    private String position;
     @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
     @ManyToOne(optional = false)
     private Restaurantmaster restaurantId;
@@ -104,7 +103,7 @@ public class Staffmaster implements Serializable {
         this.staffid = staffid;
     }
 
-    public Staffmaster(Integer staffid, String name, String surname, int age, int salary, String idNumber, Date dateOfJoining, String image, String idImage) {
+    public Staffmaster(Integer staffid, String name, String surname, int age, int salary, String idNumber, Date dateOfJoining, String id_type, String position) {
         this.staffid = staffid;
         this.name = name;
         this.surname = surname;
@@ -112,8 +111,8 @@ public class Staffmaster implements Serializable {
         this.salary = salary;
         this.idNumber = idNumber;
         this.dateOfJoining = dateOfJoining;
-        this.image = image;
-        this.idImage = idImage;
+        this.id_type = id_type;
+        this.position = position;
     }
 
     public Integer getStaffid() {
@@ -172,22 +171,23 @@ public class Staffmaster implements Serializable {
         this.dateOfJoining = dateOfJoining;
     }
 
-    public String getImage() {
-        return image;
+    public String getId_type() {
+        return id_type;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId_type(String id_type) {
+        this.id_type = id_type;
     }
 
-    public String getIdImage() {
-        return idImage;
+    public String getPosition() {
+        return position;
     }
 
-    public void setIdImage(String idImage) {
-        this.idImage = idImage;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
+    
     public Restaurantmaster getRestaurantId() {
         return restaurantId;
     }
