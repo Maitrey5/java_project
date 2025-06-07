@@ -5,7 +5,7 @@
     <artifactId>restaurant_management_system</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>restaurant_management_system-1.0-SNAPSHOT</name>
+    <name>restaurant_management_system</name>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
