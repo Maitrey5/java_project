@@ -32,6 +32,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .form-container {
     background-color: rgba(255, 255, 255, 0.9);
     width: 80%;
@@ -41,7 +42,8 @@ body {
     text-align: center;
 }
 
-input, select {
+input,
+select {
     width: 40%;
     padding: 10px 20px;
     margin: 10px 10px;
@@ -62,6 +64,14 @@ input, select {
     border-radius: 4px !important;
     transition: background-color 0.3s;
 
+}
+
+.login-link {
+    color: #ff5252 !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    margin-top: 1rem !important;
 }
 
 
@@ -87,11 +97,11 @@ input, select {
 
 
 .btn :hover {
-    background-color:#ff5252;
+    background-color: #ff5252;
 }
 
 .success-toast {
-    position: fixed ;
+    position: fixed;
     top: 20px;
     right: -300px;
     background-color: greenyellow !important;
@@ -103,11 +113,11 @@ input, select {
 }
 
 .ui-growl-item-container.ui-growl-info {
-    background-color: green !important ;
+    background-color: green !important;
     color: white !important;
     border: none !important;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /*.ui-growl {
@@ -133,6 +143,7 @@ input, select {
 .ui-growl-icon-info {
     color: white !important;
 }
+
 @keyframes slideIn {
     to {
         right: 20px;

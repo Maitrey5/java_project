@@ -1,0 +1,146 @@
+/* global.css */
+/* ===== Global Variables ===== */
+:root {
+    --bg-background: #0f172a;
+    --text-foreground: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.1);
+    --text-card-foreground: #e2e8f0;
+    --bg-primary: #ea580c;
+    --text-primary-foreground: #fff7ed;
+    --bg-secondary: #1e293b;
+    --text-secondary-foreground: #cbd5e1;
+    --bg-muted: #334155;
+    --text-muted-foreground: #94a3b8;
+    --bg-destructive: #dc2626;
+    --text-destructive-foreground: #fee2e2;
+    --bg-white: #ffffff;
+    --text-white: #ffffff;
+    --text-gray-900: #0f172a;
+    --text-gray-700: #334155;
+    --text-gray-600: #475569;
+    --text-gray-400: #94a3b8;
+    --text-gray-300: #cbd5e1;
+    --bg-orange-600: #ea580c;
+    --bg-orange-700: #c2410c;
+    --text-orange-500: #f97316;
+    --text-orange-400: #fb923c;
+    --text-orange-300: #fdba74;
+    --bg-blue-600: #2563eb;
+    --bg-blue-700: #1d4ed8;
+    --text-blue-500: #3b82f6;
+    --text-blue-400: #60a5fa;
+    --text-blue-300: #93c5fd;
+    --bg-purple-900: #4c1d95;
+    --bg-slate-900: #0f172a;
+    --border-gray-200: #e2e8f0;
+    --border-white-20: rgba(255, 255, 255, 0.2);
+    --bg-white-10: rgba(255, 255, 255, 0.1);
+    --bg-white-20: rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Base Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-foreground);
+    overflow-x: hidden;
+    background: var(--bg-background);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.section-content {
+    max-width: 1200px;
+    width: 100%;
+    z-index: 2;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--bg-orange-600), var(--bg-orange-700));
+    color: var(--text-white);
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.4);
+}
+
+/* ===== Form Elements ===== */
+.email-input {
+    padding: 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--border-white-20);
+    background: var(--bg-white-10);
+    color: var(--text-white);
+    font-size: 1rem;
+    width: 250px;
+    backdrop-filter: blur(10px);
+}
+
+.email-input::placeholder {
+    color: var(--text-gray-400);
+}
+
+/* ===== PrimeFaces Overrides ===== */
+.ui-panel {
+    background: transparent;
+    border: none;
+}
+
+.ui-panel-content {
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .hero-description {
+        font-size: 1rem;
+    }
+    
+    .hero-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .email-input {
+        width: 100%;
+    }
+}

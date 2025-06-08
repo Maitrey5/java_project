@@ -109,7 +109,7 @@ ground-position: center;
     text-decoration: underline;
 }
 
-.login-button {
+.register-button {
     background-color: coral;
     color: white;
     border: none;
@@ -123,8 +123,26 @@ ground-position: center;
     transition: background-color 0.3s;
 }
 
-.login-button:hover {
+.register-button:hover {
     background-color: #ff5252;
+}
+
+.login-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    width: 40%;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 1rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #45a049;
 }
 
 .social-login {
@@ -174,4 +192,41 @@ ground-position: center;
 
 .footer-links span {
     color: #ccc;
+}
+
+.form-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.register-link,
+.back-link {
+    /* color: #FB923C;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease; */
+    /* color: #ff5252 !important; */
+    color: #FB923C;
+    text-decoration: none;
+    font-weight: bold !important;
+    /* font-size: 16px !important; */
+    font-size: 0.9rem;
+    margin-top: 1rem !important;
+}
+
+.register-link:hover,
+.back-link:hover {
+    color: #EA580C;
+    text-decoration: underline;
+}
+
+.back-link {
+    color: #666;
+}
+
+.back-link:hover {
+    color: #333;
 }

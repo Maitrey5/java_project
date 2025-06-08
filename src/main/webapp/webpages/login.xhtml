@@ -1,41 +1,57 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pt="jakarta.faces.passthrough">
-    <h:head>
-        <title>Facelet Title</title>
-        <link href="../assests/css/loginpage.css" rel="stylesheet" type="text/css">
-        </link>
-    </h:head>
-    <h:body  styleClass="bg-form">
-        
-            <div class="login-container">
-                <h:form>
-                    <h1>Login</h1>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:pt="jakarta.faces.passthrough"
+>
+  <h:head>
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="#{request.contextPath}/assests/css/loginpage.css"
+    />
+  </h:head>
+  <h:body styleClass="bg-form">
+    <div class="login-container">
+      <h:form>
+        <h1>Login</h1>
 
-                    <div class="form-group">
-                        <h:inputText id="email" value="#{loginBean.username}" 
-                                     styleClass="form-input" 
-                                     pt:placeholder="Enter Email Address"/>
-                    </div>
+        <div class="form-group">
+          <h:inputText
+            id="email"
+            value="#{loginBean.username}"
+            styleClass="form-input"
+            pt:placeholder="Enter Email Address"
+          />
+        </div>
 
-                    <div class="form-group">
-                        <h:inputSecret id="password" value="#{loginBean.password}" 
-                                       styleClass="form-input" 
-                                       pt:placeholder="Password"/>
-                    </div>
+        <div class="form-group">
+          <h:inputSecret
+            id="password"
+            value="#{loginBean.password}"
+            styleClass="form-input"
+            pt:placeholder="Password"
+          />
+        </div>
 
-                    
-                    <h:commandButton value="LOGIN" action="#{loginBean.login()}" 
-                                     styleClass="login-button"/>
-                    <h:commandButton value="REGISTER" action="#{loginBean.register()}" 
-                                     styleClass="login-button"/>
+        <h:commandButton
+          value="LOGIN"
+          action="#{loginBean.login()}"
+          styleClass="login-button"
+        />
 
-                    
-                </h:form>
-            </div>
-        
-    </h:body>
+        <div class="form-links">
+          <h:outputLink value="register.jsf" styleClass="register-link"
+            >Don't have an account? Register here</h:outputLink
+          >
+          <h:outputLink value="landing.jsf" styleClass="back-link"
+            >Back to Home</h:outputLink
+          >
+        </div>
+      </h:form>
+    </div>
+  </h:body>
 </html>

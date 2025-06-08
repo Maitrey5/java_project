@@ -1,68 +1,101 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="jakarta.faces.html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:pt="jakarta.faces.passthrough"
-      xmlns:p="http://primefaces.org/ui">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="jakarta.faces.html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:pt="jakarta.faces.passthrough"
+  xmlns:p="http://primefaces.org/ui"
+>
+  <h:head>
+    <title>Facelet Title</title>
+    <link href="../assests/css/Reg.css" rel="stylesheet" type="text/css" />
+  </h:head>
+  <h:body styleClass="bg-form">
+    <h:form>
+      <div class="form-container">
+        <h1>Register</h1>
 
-    <h:head>
-        <title>Facelet Title</title>
-        <link href="../assests/css/Reg.css" rel="stylesheet" type="text/css" >
-        </link>
+        <h:inputText
+          id="restaurant_name"
+          value="#{registerBean.restaurant_name}"
+          pt:placeholder="Restaurant Name"
+          required="true"
+        >
+          <f:validateLength minimum="3" maximum="50" />
+        </h:inputText>
+        <h:message for="restaurant_name" style="color: red" />
 
+        <h:inputText
+          value="#{registerBean.restaurant_address}"
+          pt:placeholder="Restaurant Address"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_contactno}"
+          pt:placeholder="Contact No"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_email}"
+          pt:placeholder="Email"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_city}"
+          pt:placeholder="City"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_state}"
+          pt:placeholder="State"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_country}"
+          pt:placeholder="Country"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.restaurant_pincode}"
+          pt:placeholder="Pincode"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.username}"
+          pt:placeholder="username"
+          required="true"
+        />
+        <h:inputText
+          value="#{registerBean.password}"
+          pt:placeholder="password"
+          required="true"
+        />
 
-    </h:head>
-    <h:body styleClass="bg-form">
+        <p:commandButton
+          value="Register"
+          action="#{registerBean.register}"
+          update="msgs"
+          validateClient="true"
+          styleClass="btn"
+          oncomplete="if (!args.validationFailed) handleRedirect();"
+        />
 
+        <br />
+        <!-- <h:outputLink value="login.jsf">Back to Login</h:outputLink> -->
+        <div class="form-links">
+          <h:outputLink value="login.jsf" styleClass="login-link"
+            >Already have an account? Login here</h:outputLink
+          >
+        </div>
+      </div>
+    </h:form>
 
+    <p:growl id="msgs" showDetail="true" life="2000" />
 
-
-
-        <h:form>
-            <div class="form-container">
-                <h1>Register</h1>
-
-                <h:inputText id="restaurant_name" value="#{registerBean.restaurant_name}" pt:placeholder="Restaurant Name" required="true" >
-                    <f:validateLength minimum="3" maximum="50"/>
-                </h:inputText>
-                <h:message for="restaurant_name" style="color:red"/>
-
-                <h:inputText value="#{registerBean.restaurant_address}" pt:placeholder="Restaurant Address" required="true" />
-                <h:inputText value="#{registerBean.restaurant_contactno}" pt:placeholder="Contact No" required="true" />
-                <h:inputText value="#{registerBean.restaurant_email}" pt:placeholder="Email" required="true" />
-                <h:inputText value="#{registerBean.restaurant_city}" pt:placeholder="City" required="true" />
-                <h:inputText value="#{registerBean.restaurant_state}" pt:placeholder="State" required="true" />
-                <h:inputText value="#{registerBean.restaurant_country}" pt:placeholder="Country" required="true" />
-                <h:inputText value="#{registerBean.restaurant_pincode}" pt:placeholder="Pincode" required="true" />
-                <h:inputText value="#{registerBean.username}" pt:placeholder="username" required="true" />
-                <h:inputText value="#{registerBean.password}" pt:placeholder="password" required="true" />
-
-                <p:commandButton value="Register"
-                                 action="#{registerBean.register}"
-                                 update="msgs"
-                                 validateClient="true"
-                                 styleClass="btn"
-                                 oncomplete="if (!args.validationFailed) handleRedirect();" />
-
-
-                <br/>
-                <h:outputLink value="login.jsf">Back to Login</h:outputLink>
-            </div>
-        </h:form>
-
-
-
-        <p:growl id="msgs" showDetail="true" life="2000" />
-
-        <h:outputScript>
-            function handleRedirect() {
-            setTimeout(function () {
-            window.location.href = 'login.jsf';
-            }, 2000); // 3-second delay before redirect
-            }
-        </h:outputScript>
-
-    </h:body>
-
+    <h:outputScript>
+      function handleRedirect() { setTimeout(function () { window.location.href
+      = 'login.jsf'; }, 2000); // 3-second delay before redirect }
+    </h:outputScript>
+  </h:body>
 </html>

@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://java.sun.com/jsf/core"
+>
+  <h:head>
+    <title>QuickServe - Restaurant Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Comprehensive restaurant management platform for modern dining establishments"
+    />
+
+    <!-- Global CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="#{request.contextPath}/assests/css/global.css"
+    />
+    <!-- Landing Page CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="#{request.contextPath}/assests/css/landing.css"
+    />
+
+    <!-- PrimeIcons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/primeicons/6.0.1/primeicons.min.css"
+    />
+  </h:head>
+
+  <h:body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <i class="pi pi-chart-bar brand-icon"></i>
+          <span class="brand-text">QuickServe</span>
+        </div>
+        <div class="nav-actions">
+          <p:commandButton
+            value="Login"
+            styleClass="btn-outline-secondary"
+            onclick="window.location.href='#{request.contextPath}/webpages/login.jsf'"
+            type="button"
+          />
+          <p:commandButton
+            value="Register"
+            styleClass="btn-primary-nav"
+            onclick="window.location.href='#{request.contextPath}/webpages/register.jsf'"
+            style="
+              background: #fb923c;
+              color: white;
+              border: none;
+              padding: 10px 20px;
+              border-radius: 6px;
+              font-weight: 600;
+              transition: all 0.3s ease;
+              cursor: pointer;
+            "
+          />
+        </div>
+      </div>
+    </nav>
+
+    <div class="landing-container">
+      <!-- Hero Section -->
+      <section class="hero-section" id="hero">
+        <div class="hero-background">
+          <div class="hero-overlay"></div>
+          <div class="hero-particles"></div>
+        </div>
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i class="pi pi-star-fill"></i>
+            <span>Modern Restaurant Solution</span>
+          </div>
+
+          <h1 class="hero-title">
+            Transform Your Restaurant with
+            <span
+              class="hero-highlight"
+              style="
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: 800;
+                font-size: 1.1em;
+                padding: 0 8px;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                display: inline-block;
+                letter-spacing: 0.5px;
+                position: relative;
+                border-bottom: 3px solid #ff6b6b;
+              "
+              >QuickServe</span
+            >
+          </h1>
+
+          <p class="hero-description">
+            Streamline operations, boost efficiency, and delight customers with
+            our comprehensive restaurant management platform. From table
+            reservations to staff management, we've got you covered.
+          </p>
+
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">50%</div>
+              <div class="stat-label">Faster Service</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">30%</div>
+              <div class="stat-label">More Revenue</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">99%</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+          </div>
+
+          <div class="hero-actions" style="margin-bottom: 80px">
+            <div class="cta-group">
+              <!-- <p:inputText
+                placeholder="Enter your restaurant email"
+                styleClass="email-input"
+                value="#{landingBean.email}"
+              /> -->
+              <p:commandButton
+                value="JOIN US"
+                icon="pi pi-arrow-right"
+                onclick="window.location.href='#{request.contextPath}/webpages/register.jsf'"
+                styleClass="btn-primary-hero"
+                actionListener="#{landingBean.registerRestaurant}"
+              />
+            </div>
+            <p class="cta-subtext">
+              <!-- <i class="pi pi-check-circle"></i>
+              No Credit Card Required • 14-Day Free Trial -->
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="scroll-indicator"
+          style="
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+          "
+        >
+          <p:commandButton
+            icon="pi pi-chevron-down"
+            styleClass="scroll-btn pulse"
+            onclick="scrollToSection('login-section')"
+            type="button"
+            style="
+              background: transparent;
+              border: none;
+              color: #ff6b6b;
+              font-size: 24px;
+              cursor: pointer;
+              padding: 10px;
+              transition: transform 0.3s ease;
+            "
+          />
+        </div>
+      </section>
+
+      <!-- Login Section -->
+      <section class="login-section" id="login-section">
+        <div class="section-container">
+          <div class="section-header">
+            <h2 class="section-title">
+              Already Registered?<br />
+              Welcome Back!
+            </h2>
+            <p class="section-subtitle">Access your restaurant dashboard</p>
+          </div>
+
+          <div class="login-grid">
+            <!-- Admin Login Card -->
+            <div class="login-card admin-card">
+              <div class="card-header">
+                <div
+                  class="card-icon admin-icon"
+                  style="
+                    background: linear-gradient(135deg, #4ecdc4, #45b7d1);
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 12px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 24px;
+                  "
+                >
+                  <i class="pi pi-shield"></i>
+                </div>
+                <div class="card-title-group">
+                  <h3 class="card-title">Admin Portal</h3>
+                  <p class="card-subtitle">Restaurant Management</p>
+                </div>
+              </div>
+
+              <div class="card-content">
+                <ul class="feature-list">
+                  <li>
+                    <i class="pi pi-check"></i> Complete restaurant oversight
+                  </li>
+                  <li>
+                    <i class="pi pi-check"></i> Staff management and scheduling
+                  </li>
+                  <li><i class="pi pi-check"></i> Analytics and reporting</li>
+                  <li><i class="pi pi-check"></i> Menu and pricing control</li>
+                </ul>
+              </div>
+
+              <div class="card-actions">
+                <p:commandButton
+                  value="Admin Login"
+                  icon="pi pi-sign-in"
+                  styleClass="btn-admin"
+                  onclick="window.location.href='#{request.contextPath}/webpages/login.jsf'"
+                  style="
+                    background: #fb923c;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    box-shadow: 0 4px 15px rgba(251, 146, 60, 0.2);
+                    width: 100%;
+                    text-align: center;
+                  "
+                />
+              </div>
+            </div>
+
+            <!-- Staff Login Card -->
+            <div class="login-card staff-card">
+              <div class="card-header">
+                <div class="card-icon staff-icon">
+                  <i class="pi pi-users"></i>
+                </div>
+                <div class="card-title-group">
+                  <h3 class="card-title">Staff Portal</h3>
+                  <p class="card-subtitle">Daily Operations</p>
+                </div>
+              </div>
+
+              <div class="card-content">
+                <ul class="feature-list">
+                  <li><i class="pi pi-check"></i> Order management</li>
+                  <li><i class="pi pi-check"></i> Table assignments</li>
+                  <li><i class="pi pi-check"></i> Customer service</li>
+                  <li><i class="pi pi-check"></i> Daily tasks tracking</li>
+                </ul>
+              </div>
+
+              <div class="card-actions">
+                <p:commandButton
+                  value="Staff Login"
+                  icon="pi pi-sign-in"
+                  styleClass="btn-staff"
+                  actionListener="#{landingBean.staffLogin}"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="scroll-indicator"
+          style="
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+          "
+        >
+          <p:commandButton
+            icon="pi pi-chevron-down"
+            styleClass="scroll-btn"
+            onclick="scrollToSection('features-section')"
+            type="button"
+            style="
+              background: transparent;
+              border: none;
+              color: #ff6b6b;
+              font-size: 24px;
+              cursor: pointer;
+              padding: 10px;
+              transition: transform 0.3s ease;
+            "
+          />
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features-section" id="features-section">
+        <div class="section-container">
+          <div class="section-header">
+            <div class="section-badge">
+              <i class="pi pi-star"></i>
+              <span>Complete Solution</span>
+            </div>
+            <h2 class="section-title">
+              Everything You Need to Run Your Restaurant
+            </h2>
+            <p class="section-subtitle">
+              Powerful features designed for modern restaurant management
+            </p>
+          </div>
+
+          <div class="features-grid">
+            <!-- Menu Management -->
+            <div class="feature-card">
+              <div
+                class="feature-icon menu-icon"
+                style="
+                  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+                  width: 60px;
+                  height: 60px;
+                  border-radius: 15px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: white;
+                  font-size: 28px;
+                  margin-bottom: 20px;
+                "
+              >
+                <i class="pi pi-list"></i>
+              </div>
+              <h3 class="feature-title">Menu Management</h3>
+              <p class="feature-description">
+                Create, edit, and organize your menu items with ease. Set
+                prices, categories, and availability in real-time.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Digital Menu</span>
+                <span class="benefit-tag">Price Control</span>
+                <span class="benefit-tag">Categories</span>
+              </div>
+            </div>
+
+            <!-- Staff Management -->
+            <div class="feature-card">
+              <div class="feature-icon staff-icon">
+                <i class="pi pi-users"></i>
+              </div>
+              <h3 class="feature-title">Staff Management</h3>
+              <p class="feature-description">
+                Manage your team efficiently. Assign roles, track performance,
+                and streamline daily operations.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Role Assignment</span>
+                <span class="benefit-tag">Performance</span>
+                <span class="benefit-tag">Scheduling</span>
+              </div>
+            </div>
+
+            <!-- Order Management -->
+            <div class="feature-card">
+              <div class="feature-icon order-icon">
+                <i class="pi pi-shopping-cart"></i>
+              </div>
+              <h3 class="feature-title">Order Management</h3>
+              <p class="feature-description">
+                Take orders seamlessly, track order status, and manage table
+                assignments with precision and speed.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Order Tracking</span>
+                <span class="benefit-tag">Table Management</span>
+                <span class="benefit-tag">Quick Service</span>
+              </div>
+            </div>
+
+            <!-- Analytics & Reports -->
+            <!-- <div class="feature-card">
+              <div class="feature-icon analytics-icon">
+                <i class="pi pi-chart-line"></i>
+              </div>
+              <h3 class="feature-title">Analytics and Reports</h3>
+              <p class="feature-description">
+                Get insights into your business with comprehensive reports and
+                real-time analytics dashboard.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Real-time Data</span>
+                <span class="benefit-tag">Custom Reports</span>
+                <span class="benefit-tag">Insights</span>
+              </div>
+            </div> -->
+
+            <!-- Inventory Management -->
+            <!-- <div class="feature-card">
+              <div class="feature-icon inventory-icon">
+                <i class="pi pi-box"></i>
+              </div>
+              <h3 class="feature-title">Inventory Control</h3>
+              <p class="feature-description">
+                Track ingredients, manage suppliers, and get alerts for low
+                stock items automatically.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Stock Tracking</span>
+                <span class="benefit-tag">Alerts</span>
+                <span class="benefit-tag">Suppliers</span>
+              </div>
+            </div> -->
+
+            <!-- Customer Management -->
+            <!-- <div class="feature-card">
+              <div class="feature-icon customer-icon">
+                <i class="pi pi-heart"></i>
+              </div>
+              <h3 class="feature-title">Customer Experience</h3>
+              <p class="feature-description">
+                Build customer loyalty with reservation system, feedback
+                collection, and personalized service.
+              </p>
+              <div class="feature-benefits">
+                <span class="benefit-tag">Reservations</span>
+                <span class="benefit-tag">Feedback</span>
+                <span class="benefit-tag">Loyalty</span>
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+        <div
+          class="scroll-indicator"
+          style="
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+          "
+        >
+          <p:commandButton
+            icon="pi pi-chevron-up"
+            styleClass="scroll-btn"
+            onclick="scrollToSection('hero')"
+            type="button"
+            title="Back to top"
+            style="
+              background: transparent;
+              border: none;
+              color: #ff6b6b;
+              font-size: 24px;
+              cursor: pointer;
+              padding: 10px;
+              transition: transform 0.3s ease;
+            "
+          />
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <!--
+      <section class="cta-section">
+        <div class="section-container">
+          <div class="cta-content">
+            <h2 class="cta-title">Ready to Transform Your Restaurant?</h2>
+            <p class="cta-description">
+              Join thousands of successful restaurant owners who have
+              streamlined their operations with QuickServe.
+            </p>
+            <div class="cta-actions">
+              <p:commandButton
+                value="Start Free Trial"
+                icon="pi pi-arrow-right"
+                styleClass="btn-primary-large"
+                actionListener="#{landingBean.registerRestaurant}"
+              />
+              <p:commandButton
+                value="Schedule Demo"
+                icon="pi pi-calendar"
+                styleClass="btn-outline-white"
+                actionListener="#{landingBean.scheduleDemo}"
+              />
+            </div>
+            <p class="cta-guarantee">
+              <i class="pi pi-shield"></i>
+              30-day money-back guarantee
+            </p>
+          </div>
+        </div>
+      </section>
+        -->
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <i class="pi pi-chart-bar brand-icon"></i>
+          <span class="brand-text">QuickServe</span>
+        </div>
+        <div class="footer-links">
+          <p:commandLink value="Privacy Policy" styleClass="footer-link" />
+          <p:commandLink value="Terms of Service" styleClass="footer-link" />
+          <p:commandLink value="Support" styleClass="footer-link" />
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="text/javascript">
+      //<![CDATA[
+      function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      // Scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      }, observerOptions);
+
+      // Observe sections for animation
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(
+          ".login-section, .features-section, .cta-section"
+        );
+        sections.forEach((section) => observer.observe(section));
+
+        // Parallax effect for hero
+        window.addEventListener("scroll", function () {
+          const scrolled = window.pageYOffset;
+          const parallax = document.querySelector(".hero-particles");
+          if (parallax) {
+            parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
+          }
+        });
+      });
+
+      // Navigation scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+      //]]>
+    </script>
+  </h:body>
+</html>
+
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>QuickServe - Restaurant Management</title>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="#{request.contextPath}/assests/css/landing.css"
+            />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+
+    <h:body>
+        <div class="landing-container">
+
+            Section 1: Hero Section 
+            <div class="hero-section" id="hero">
+                <div class="hero-content">
+                    <div class="brand-logo">
+                        <i class="pi pi-chart-bar brand-icon"></i>
+                    </div>
+
+                    <h:panelGroup styleClass="hero-text">
+                        <h1 class="hero-title">QuickServe</h1>
+                        <h2 class="hero-subtitle">Restaurant Management</h2>
+                        <p class="hero-description">
+                            Streamline your restaurant operations with our comprehensive management platform.<br/>
+                            From order taking to staff management, we've got you covered.
+                        </p>
+                    </h:panelGroup>
+
+                    <div class="hero-actions">
+                        <p:commandButton value="Register Your Restaurant" 
+                                         styleClass="btn-primary" 
+                                         actionListener="#{landingBean.registerRestaurant}" />
+                        <p:inputText placeholder="Enter your email" 
+                                     styleClass="email-input" 
+                                     value="#{landingBean.email}" />
+                    </div>
+                </div>
+
+                <div class="scroll-indicator">
+                    <p:commandButton icon="pi pi-chevron-down" 
+                                     styleClass="scroll-btn" 
+                                     onclick="scrollToSection('login-section')" 
+                                     type="button" />
+                </div>
+            </div>
+
+            Section 2: Login Section 
+            <div class="login-section" id="login-section">
+                <div class="section-content">
+                    <h2 class="section-title">Already have an account?</h2>
+
+                    <div class="login-cards">
+                        <p:panel styleClass="login-card admin-card">
+                            <div class="card-icon">
+                                <i class="pi pi-shield"></i>
+                            </div>
+                            <h3>Admin Login</h3>
+                            <p>Access the admin dashboard to manage your restaurant</p>
+                            <p:commandButton value="Admin Login" 
+                                             icon="pi pi-sign-in" 
+                                             styleClass="btn-admin" 
+                                             actionListener="#{landingBean.adminLogin}" />
+                        </p:panel>
+
+                        <p:panel styleClass="login-card staff-card">
+                            <div class="card-icon">
+                                <i class="pi pi-users"></i>
+                            </div>
+                            <h3>Staff Login</h3>
+                            <p>Access the staff dashboard to manage orders and tables</p>
+                            <p:commandButton value="Staff Login" 
+                                             icon="pi pi-sign-in" 
+                                             styleClass="btn-staff" 
+                                             actionListener="#{landingBean.staffLogin}" />
+                        </p:panel>
+                    </div>
+                </div>
+
+                <div class="scroll-indicator">
+                    <p:commandButton icon="pi pi-chevron-down" 
+                                     styleClass="scroll-btn" 
+                                     onclick="scrollToSection('features-section')" 
+                                     type="button" />
+                </div>
+            </div>
+
+            Section 3: Features Section 
+            <div class="features-section" id="features-section">
+                <div class="section-content">
+                    <h2 class="section-title">Everything You Need to Run Your Restaurant</h2>
+                    <p class="section-subtitle">Powerful features designed for modern restaurant management</p>
+
+                    <div class="features-grid">
+                        <p:panel styleClass="feature-card">
+                            <div class="feature-icon menu-icon">
+                                <i class="pi pi-chart-bar"></i>
+                            </div>
+                            <h3>Menu Management</h3>
+                            <p>Create, edit, and organize your menu items with ease. Set prices, categories, and availability.</p>
+                        </p:panel>
+
+                        <p:panel styleClass="feature-card">
+                            <div class="feature-icon staff-icon">
+                                <i class="pi pi-users"></i>
+                            </div>
+                            <h3>Staff Management</h3>
+                            <p>Manage your team efficiently. Assign roles, track performance, and streamline operations.</p>
+                        </p:panel>
+
+                        <p:panel styleClass="feature-card">
+                            <div class="feature-icon order-icon">
+                                <i class="pi pi-calendar"></i>
+                            </div>
+                            <h3>Order Management</h3>
+                            <p>Take orders seamlessly, track order status, and manage table assignments with precision.</p>
+                        </p:panel>
+
+                        <p:panel styleClass="feature-card">
+                            <div class="feature-icon analytics-icon">
+                                <i class="pi pi-chart-line"></i>
+                            </div>
+                            <h3>Analytics and Reports</h3>
+                            <p>Get insights into your business with comprehensive reports and real-time analytics.</p>
+                        </p:panel>
+                    </div>
+                </div>
+
+                <div class="scroll-to-top">
+                    <p:commandButton icon="pi pi-chevron-up" 
+                                     styleClass="scroll-btn" 
+                                     onclick="scrollToSection('hero')" 
+                                     type="button" 
+                                     title="Back to top" />
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            function scrollToSection(sectionId) {
+                document.getElementById(sectionId).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+
+            // Add scroll animations
+            window.addEventListener('scroll', function () {
+                var sections = document.querySelectorAll('.login-section, .features-section');
+                sections.forEach(function (section) {
+                    var rect = section.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.75) {
+                        section.classList.add('animate-in');
+                    }
+                });
+            });
+            //]]>
+        </script>
+    </h:body>
+</html>-->

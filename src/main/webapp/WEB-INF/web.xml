@@ -23,7 +23,9 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>webpages/loginpage.xhtml</welcome-file>
+        <!--<welcome-file>webpages/login.jsf</welcome-file>-->        
+        <welcome-file>webpages/landing.jsf</welcome-file>
+
     </welcome-file-list>
     <mime-mapping>
         <extension>ttf</extension>
