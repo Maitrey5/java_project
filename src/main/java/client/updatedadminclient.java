@@ -223,6 +223,13 @@ public class updatedadminclient {
     public void update_staff_to_restaurant(String Staff_id, String restaurant_id, String name, String surname, String age, String salary, String id_number, String date_of_joining, String image, String id_image) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("update_staff_to_restaurant/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}", new Object[]{Staff_id, restaurant_id, name, surname, age, salary, id_number, date_of_joining, image, id_image})).request().post(null);
     }
+    
+    
+    public <T> T searchtablebyrestaurant(Class<T> responseType, String rid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("searchtablebyrestaurant/{0}", new Object[]{rid}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
 
     public void close() {
         client.close();

@@ -35,7 +35,7 @@ import java.util.Collection;
     @NamedQuery(name = "Tablemaster.findAll", query = "SELECT t FROM Tablemaster t"),
     @NamedQuery(name = "Tablemaster.findByTableId", query = "SELECT t FROM Tablemaster t WHERE t.tableNumber = :tableNumber and t.restaurantId = :restaurantId"),
     @NamedQuery(name = "Tablemaster.findByTableNumber", query = "SELECT t FROM Tablemaster t WHERE t.tableNumber = :tableNumber"),
-    @NamedQuery(name = "Tablemaster.findByCapacity", query = "SELECT t FROM Tablemaster t WHERE t.capacity = :capacity")})
+    @NamedQuery(name = "Tablemaster.findByrestaurant", query = "SELECT t FROM Tablemaster t WHERE t.restaurantId = :restaurantId")})
 public class Tablemaster implements Serializable {
 
     private static final long serialVersionUID = 1L;

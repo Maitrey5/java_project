@@ -62,6 +62,16 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
     
     
+    
+    @Override
+    public Collection<Tablemaster> searchtablebyrestaurant(Integer rid) {
+        
+        Restaurantmaster r = em.find(Restaurantmaster.class,rid);
+        
+        Collection<Tablemaster> tt = em.createNamedQuery("Tablemaster.findByrestaurant").setParameter("restaurantId", r).getResultList();
+        
+        return tt;
+    }
 
     @Override
     public void add_user_of_restaurant(String username, String password, Integer restaurant_id, String role) {
@@ -321,6 +331,8 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
     @Override
     public Collection<Categorymaster> get_categories_by_restaurant(Integer restaurant_id) {
+        
+        System.err.println("hello     kkkkkkkkkkkkkkk mmm");
 
         Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, restaurant_id);
 
@@ -575,7 +587,9 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         tt.remove(tb);
         r.setTablemasterCollection(tt);
 
+        System.err.println("hello iiiiiiiiiiiiiiiiiiiiiiiiiii");
         em.remove(tb);
+//        em.persist(r);
 
     }
 
@@ -887,5 +901,6 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
         return r.getTransactionmasterCollection();
     }
+
 
 }

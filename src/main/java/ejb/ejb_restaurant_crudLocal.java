@@ -31,6 +31,7 @@ public interface ejb_restaurant_crudLocal {
     
         Tablemaster search_table(Integer rid , Integer table_no);
         Collection<Menumaster> searchmenubycategory(Integer categoryid , Integer rid);
+        Collection<Tablemaster> searchtablebyrestaurant(Integer rid);
 
         Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
         void delete_restaurant(Integer restaurant_id);

@@ -7,6 +7,7 @@ package beans;
 import client.updatedadminclient;
 import entity.Tablebooking;
 import entity.Tablemaster;
+import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
 import jakarta.enterprise.context.Dependent;
 import jakarta.faces.view.ViewScoped;
@@ -62,6 +63,10 @@ public class bookingbean implements Serializable {
 
     public bookingbean() {
 
+        showBookingList = true;
+        showBookingForm = false;
+        showBookingDetails = false;
+
         this.bookingdate = LocalDate.now();
         this.bookingtime = LocalTime.now();
         this.dineDate = LocalDate.now();
@@ -70,7 +75,47 @@ public class bookingbean implements Serializable {
         bookings = fetchAllBookings(); // implement this
 
     }
+    
+    @PostConstruct
+    public void init() {
+        if (keepRecord != null) {
+            tables = gettabledata();
+        } else {
+            System.err.println("keepRecord is NULL in onlymenubean.init()");
+        }
+    }
 
+//    @Po
+//    public void booktable(Tablemaster t){
+//    
+//        TableBean.
+//        System.out.println("beans.bookingbean.booktable()oooooooooooooooooooo");
+//        
+//        showBookingList = false;
+//        showBookingForm = true;
+//        showBookingDetails = false;
+//        
+//        this.tableNumber =t.getTableNumber();
+//
+//    
+//    }
+
+    
+    public Collection<Tablemaster> gettabledata() {
+
+        Integer k = keepRecord.getIi();
+        rs = em.searchtablebyrestaurant(Response.class, String.valueOf(k));
+
+        if (rs.getStatus() == 200) {
+            tables = rs.readEntity(gtables);
+        } else {
+            System.err.println("Error response: " + rs.getStatus());
+            System.err.println("Error body: " + rs.readEntity(String.class));
+        }
+
+        return tables;
+
+    }
     public void insertbook() {
         System.err.println("uioooooooooooooooooooo");
 
@@ -91,6 +136,7 @@ public class bookingbean implements Serializable {
 
         em.book_table_by_restaurant(String.valueOf(tt.getTableId()), String.valueOf(keepRecord.getIi()), btime, dtime, formattedDateb, formattedDated, String.valueOf(capacity), mobileno, customername);
         bookings = fetchAllBookings();
+        showBookingListView();
     }
 
     public void prepareBooking(Tablemaster t) {
@@ -240,6 +286,14 @@ public class bookingbean implements Serializable {
         return selectedTable;
     }
 
+    public Collection<Tablemaster> getTables() {
+        return tables;
+    }
+
+    public void setTables(Collection<Tablemaster> tables) {
+        this.tables = tables;
+    }
+
     public void setSelectedTable(Tablemaster selectedTable) {
         this.selectedTable = selectedTable;
     }
@@ -336,6 +390,8 @@ public class bookingbean implements Serializable {
 
         em.update_table_by_restaurant(String.valueOf(currentBooking.getTablebookingid()), String.valueOf(currentBooking.getTableId().getTableId()), String.valueOf(keepRecord.getIi()), btime, dtime, formattedDateb, formattedDated, String.valueOf(currentBooking.getNoofpeoples()), currentBooking.getContactno(), currentBooking.getCustomername());
         bookings = fetchAllBookings();
+                showBookingListView();
+
 
     }
 
