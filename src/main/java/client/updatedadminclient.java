@@ -188,6 +188,12 @@ public class updatedadminclient {
         webTarget.path(java.text.MessageFormat.format("delete_item_in_inventory/{0}", new Object[]{inventory_id})).request().delete();
     }
 
+    
+    public <T> T getusers(Class<T> responseType, String restaurant_id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getusers/{0}", new Object[]{restaurant_id}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
     public void add_menu(String restaurant_id, String category_id, String item_name, String item_price, String description, String is_avalaible, String updated_at, String item_type) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("add_menu/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", new Object[]{restaurant_id, category_id, item_name, item_price, description, is_avalaible, updated_at, item_type})).request().post(null);
     }

@@ -28,7 +28,7 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
+    @NamedQuery(name = "User.findByrestaurantid", query = "SELECT u FROM User u WHERE u.restaurantId = :restaurantId")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;

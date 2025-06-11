@@ -15,6 +15,7 @@ import entity.Staffmaster;
 import entity.Tablebooking;
 import entity.Tablemaster;
 import entity.Transactionmaster;
+import entity.User;
 import jakarta.ejb.Local;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -97,5 +98,7 @@ public interface ejb_restaurant_crudLocal {
         Collection<Transactionmaster> get_all_transaction_by_restaurant(Integer restaurant_id);
 
         void add_user_of_restaurant(String username , String password ,Integer restaurant_id , String role );
+        Collection<User> getusers(Integer restaurant_id);
+        //Collection<User> getusers(Integer restaurant_id);
 
 }

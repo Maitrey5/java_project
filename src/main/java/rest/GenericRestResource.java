@@ -319,6 +319,15 @@ public class GenericRestResource {
     }
 
     @GET
+    @Path("getusers/{restaurant_id}")
+    @Produces("application/json")
+    public Collection<User> getusers(@PathParam("restaurant_id") Integer restaurant_id) {
+
+        System.err.println("resttttttttttttttttt"+restaurant_id);
+        return em.getusers(restaurant_id);
+    }
+
+    @GET
     @Path("get_orders_by_restaurant/{restaurant_id}")
     @Produces("application/json")
     public Collection<Ordermaster> get_orders_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {

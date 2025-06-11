@@ -465,6 +465,7 @@
                     <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" action="#{tableBean.showmenu()}" update="mainContent"/>
                     <p:menuitem value="Manage Category" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
                     <p:menuitem value="staff Category" icon="pi pi-book" action="#{tableBean.showstafffunc()}" update="mainContent"/>
+                    <p:menuitem value="add user" icon="pi pi-book" action="#{tableBean.showuserfunc()}" update="mainContent"/>
                 </p:menu>
             </div>
 
@@ -1101,6 +1102,60 @@
 
 
                 </h:panelGroup>
+                
+                
+                    <h:panelGroup rendered="#{tableBean.showuser}">
+                    <!-- Top bar form -->
+                    <div class="top-bar-form" >
+                        <div class="main">
+                            <div class="form-group">
+                                <p:outputLabel for="q1" value="Username" />
+                                <p:inputText id="q1" value="#{adduserbean.username}" placeholder="Enter username" />
+                            </div>
+                            <div class="form-group">
+                                <p:outputLabel for="q2" value="Password" />
+                                <p:inputText id="q2" value="#{adduserbean.password}" placeholder="Enter password" />
+                            </div>
+                        </div>
+
+                        <!-- Submit button below -->
+                        <p:commandButton value="Add-user"
+                                         action="#{adduserbean.adduser()}"
+                                         update="mainContent"
+                                         styleClass="coral-button" />
+                    </div>
+
+                    <!-- Data Table -->
+                    <p:dataTable value="#{adduserbean.user}" var="uu"
+                                 style="margin-top: 2rem; width: 100%; height:100%">
+
+                        <!-- Table Number -->
+                        <p:column headerText="Username">
+                            <h:outputText value="#{uu.username}" />
+                        </p:column>
+
+                       
+
+                        <!-- Delete Button with SVG -->
+                        <p:column headerText="Delete">
+                            <p:column headerText="Delete">
+                                <p:commandButton value="Delete"
+                                                 
+                                                 update="mainContent"
+                                                 styleClass="ui-button-danger"
+                                                 title="Delete" />
+                            </p:column>
+                        </p:column>
+                        
+
+                        <!-- Book Table Button -->
+
+
+                    </p:dataTable>
+
+
+                </h:panelGroup>
+
 
 
 
