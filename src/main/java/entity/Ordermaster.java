@@ -104,6 +104,8 @@ public class Ordermaster implements Serializable {
     }
 
     @XmlTransient
+//    @JsonbTransient
+
     public Collection<OrderMenuJointable> getOrderMenuJointableCollection() {
         return orderMenuJointableCollection;
     }
@@ -113,6 +115,8 @@ public class Ordermaster implements Serializable {
     }
 
     @XmlTransient
+//        @JsonbTransient
+
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
     }

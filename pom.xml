@@ -25,7 +25,7 @@
             <version>8.0.33</version>
         </dependency>
         <dependency>
-            <groupId>org.primefaces</groupId>
+            <groupId>org.primefaces</groupId>   
             <artifactId>primefaces</artifactId>
             <version>14.0.0</version>
             <classifier>jakarta</classifier>

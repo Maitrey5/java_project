@@ -197,6 +197,8 @@ public class Staffmaster implements Serializable {
     }
 
     @XmlTransient
+//        @JsonbTransient
+
     public Collection<StaffTransaction> getStaffTransactionCollection() {
         return staffTransactionCollection;
     }
