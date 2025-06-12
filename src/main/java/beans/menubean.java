@@ -100,7 +100,12 @@ public class menubean implements Serializable {
 //    }
     public Collection<Categorymaster> getcategorydata() {
 
+        System.err.println("inside method!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         rs = em.get_categories_by_restaurant(Response.class, String.valueOf(keepRecord.getIi()));
+//           System.err.println("❌ Error: " + rs.getStatus());
+//               System.err.println("❌ Body: " + rs.readEntity(String.class)); // read HTML error as text
+
+
         category = rs.readEntity(gcategory);
         return category;
     }

@@ -24,7 +24,6 @@ import record.KeepRecord;
  */
 @Named(value = "tableBean")
 @ViewScoped
-
 public class TableBean implements Serializable {
 
     @Inject
@@ -47,6 +46,24 @@ public class TableBean implements Serializable {
     private Boolean showcategory;
     private Boolean showmenuform;
     private Boolean showstaff;
+    private Boolean showuser;
+
+    public Boolean getShowuser() {
+        return showuser;
+    }
+
+    public void setShowuser(Boolean showuser) {
+        this.showuser = showuser;
+    }
+
+    public void showuserfunc() {
+        showTableForm = false;
+        showbookingForm = false;
+        showcategory = false;
+        showmenuform = false;
+        showstaff = false;
+        showuser = true;
+    }
 
     public boolean isEditMode() {
         return editMode;
@@ -60,7 +77,6 @@ public class TableBean implements Serializable {
         return selectedTable;
     }
 
-    // Getters and Setters
     public void setSelectedTable(Tablemaster selectedTable) {
         this.selectedTable = selectedTable;
     }
@@ -126,7 +142,7 @@ public class TableBean implements Serializable {
         showcategory = false;
         showmenuform = false;
         showstaff = false;
-
+        showuser = false;
         showbookingForm = false;
     }
 
@@ -135,9 +151,8 @@ public class TableBean implements Serializable {
         showcategory = false;
         showmenuform = false;
         showstaff = false;
-
+        showuser = false;
         showbookingForm = true;
-
     }
 
     public void showcategoryy() {
@@ -145,9 +160,8 @@ public class TableBean implements Serializable {
         showbookingForm = false;
         showmenuform = false;
         showstaff = false;
-
+        showuser = false;
         showcategory = true;
-
     }
 
     public void showmenu() {
@@ -155,9 +169,8 @@ public class TableBean implements Serializable {
         showbookingForm = false;
         showcategory = false;
         showstaff = false;
-
+        showuser = false;
         showmenuform = true;
-
     }
 
     public void showstafffunc() {
@@ -165,74 +178,42 @@ public class TableBean implements Serializable {
         showbookingForm = false;
         showcategory = false;
         showmenuform = false;
+        showuser = false;
         showstaff = true;
-
     }
 
     public void submitTable() {
-
         if (editMode && selectedTable != null) {
-            // Update the selectedTable's fields
             selectedTable.setTableNumber(tableNumber);
             selectedTable.setCapacity(capacity);
-
-            System.err.println("###############################");
-            System.err.println(selectedTable);
-            System.err.println(tableNumber);
-            System.err.println(capacity);
-            System.err.println(keepRecord.getIi());
-
-            selectedTable.setCapacity(capacity);
-            selectedTable.setTableNumber(tableNumber);
-
             em.update_table_to_restaurant(selectedTable, String.valueOf(selectedTable.getTableId()));
-
-            // Optionally update in DB
-            // Reset edit mode
             editMode = false;
             selectedTable = null;
         } else {
             em.add_table_to_restaurant(String.valueOf(keepRecord.getIi()), String.valueOf(tableNumber), String.valueOf(capacity));
-
-            // Insert new table logic
         }
-
-        // Clear form fields
         this.tableNumber = 0;
         this.capacity = 0;
-
-        System.err.println("inside table bean ++++++++++++++++++++++++++++");
-        System.err.println(keepRecord.getR_id());
-        System.err.println(keepRecord.getIi());
-
-        // Add save logic here (e.g., database insert)
     }
 
     public Collection<Tablemaster> gettabledata() {
-
         Integer k = keepRecord.getIi();
         rs = em.get_tables_by_restaurant(Response.class, String.valueOf(k));
-
         if (rs.getStatus() == 200) {
             tables = rs.readEntity(gtables);
         } else {
             System.err.println("Error response: " + rs.getStatus());
             System.err.println("Error body: " + rs.readEntity(String.class));
         }
-
         return tables;
-
     }
 
     public void editTable(Tablemaster t) {
-
         this.tableNumber = t.getTableNumber();
         this.capacity = t.getCapacity();
         this.selectedTable = t;
         this.selectedTable.setRestaurantId(t.getRestaurantId());
         this.editMode = true;
-
-//        em.update_table_to_restaurant(String.valueOf(t.getTableId()), String.valueOf(keepRecord.getIi()), String.valueOf(t.getTableNumber()), String.valueOf(t.getCapacity()));
     }
 
     public void prepareBooking(Tablemaster t) {
@@ -240,30 +221,29 @@ public class TableBean implements Serializable {
         this.capacity = t.getCapacity();
         this.bookingdate = LocalDate.now();
         this.bookingtime = LocalTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        this.formattedDate = bookingdate.format(formatter);
-//        System.out.println(formattedDate);  // Output: 2025-05-29
-
     }
 
     public void deleteTable(Tablemaster t) {
-
         em.delete_table_by_restaurant(String.valueOf(t.getTableId()));
     }
 
     public void bookTable() {
-        // Your logic here
+        // Implement booking logic here
+        resetForm();
     }
 
     private void resetForm() {
-        tableNumber = 0;
-        capacity = 0;
+        this.tableNumber = 0;
+        this.capacity = 0;
+        this.bookingdate = null;
+        this.bookingtime = null;
+        this.showbookingForm = false;
     }
 
-    /**
-     * Creates a new instance of TableBean
-     */
     public TableBean() {
+        this.showcategory = false;
+        this.showmenuform = false;
+        this.showstaff = false;
+        this.showuser = false;
     }
-
 }

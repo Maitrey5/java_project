@@ -56,8 +56,15 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
     }
 
-    
-    
+    @Override
+    public Collection<Tablemaster> searchtablebyrestaurant(Integer rid) {
+
+        Restaurantmaster r = em.find(Restaurantmaster.class, rid);
+
+        Collection<Tablemaster> tt = em.createNamedQuery("Tablemaster.findByrestaurant").setParameter("restaurantId", r).getResultList();
+
+        return tt;
+    }
 
     @Override
     public void add_user_of_restaurant(String username, String password, Integer restaurant_id, String role) {
@@ -160,28 +167,29 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
         return r;
     }
-    
-    @Override
-    public Tablemaster search_table(Integer rid , Integer table_no){
-    
-        Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class,rid);
 
-        Tablemaster t = (Tablemaster) em.createNamedQuery("Tablemaster.findByTableId").setParameter("tableNumber",table_no).setParameter("restaurantId",r).getSingleResult();
-        
+    @Override
+    public Tablemaster search_table(Integer rid, Integer table_no) {
+
+        Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, rid);
+
+        Tablemaster t = (Tablemaster) em.createNamedQuery("Tablemaster.findByTableId").setParameter("tableNumber", table_no).setParameter("restaurantId", r).getSingleResult();
+
         return t;
     }
-    @Override
-    public Collection<Menumaster> searchmenubycategory(Integer categoryid , Integer rid){
-        
-        Categorymaster c = (Categorymaster ) em.find(Categorymaster.class,categoryid);
-        Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class,rid);
 
-        Collection<Menumaster> t = em.createNamedQuery("Menumaster.findByCategoryId").setParameter("categoryId",c).setParameter("restaurantId",r).getResultList();
+    @Override
+    public Collection<Menumaster> searchmenubycategory(Integer categoryid, Integer rid) {
+
+        Categorymaster c = (Categorymaster) em.find(Categorymaster.class, categoryid);
+        Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, rid);
+
+        Collection<Menumaster> t = em.createNamedQuery("Menumaster.findByCategoryId").setParameter("categoryId", c).setParameter("restaurantId", r).getResultList();
 
         return t;
-        
+
     }
-    
+
     @Override
     public void add_menu(Integer restaurant_id, Integer category_id, String item_name, Integer item_price, String description, Boolean is_avalaible, Date updated_at, String item_type) {
 
@@ -307,7 +315,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         Categorymaster c = (Categorymaster) em.find(Categorymaster.class, category_id);
 
         Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, restaurant_id);
-        System.err.println("in ejbbbbbbbs "+category_id+"res  "+restaurant_id+"category name "+category_name+updated_at);
+        System.err.println("in ejbbbbbbbs " + category_id + "res  " + restaurant_id + "category name " + category_name + updated_at);
         c.setRestaurantId(r);
         c.setCategoryName(category_name);
         c.setUpdatedAt(updated_at);
@@ -317,6 +325,8 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
     @Override
     public Collection<Categorymaster> get_categories_by_restaurant(Integer restaurant_id) {
+
+        System.err.println("hello     kkkkkkkkkkkkkkk mmm");
 
         Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, restaurant_id);
 
@@ -531,7 +541,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
     @Override
     public void add_table_to_restaurant(Integer restaurant_id, Integer table_number, Integer capacity) {
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
-        
+
         System.err.println("in ejb");
         System.err.println(restaurant_id);
         System.err.println(table_number);
@@ -571,7 +581,9 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         tt.remove(tb);
         r.setTablemasterCollection(tt);
 
+        System.err.println("hello iiiiiiiiiiiiiiiiiiiiiiiiiii");
         em.remove(tb);
+//        em.persist(r);
 
     }
 
@@ -589,11 +601,11 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
 
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
-        System.err.println(" in ejd time @@@@@ "+booking_time);
-        System.err.println(" in ejd time @@@@@ "+booking_time.getClass());
+        System.err.println(" in ejd time @@@@@ " + booking_time);
+        System.err.println(" in ejd time @@@@@ " + booking_time.getClass());
 
-        System.err.println(" in ejd date @@@@@ "+booking_date);
-        System.err.println(" in ejd date @@@@@ "+booking_date.getClass());
+        System.err.println(" in ejd date @@@@@ " + booking_date);
+        System.err.println(" in ejd date @@@@@ " + booking_date.getClass());
         Tablebooking tt = new Tablebooking();
         tt.setRestaurantId(r);
         tt.setTableId(tb);
@@ -882,6 +894,15 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
         return r.getTransactionmasterCollection();
+    }
+
+    @Override
+    public Collection<User> getusers(Integer restaurant_id) {
+        System.err.println("uuuuuuuuuuuu111111111111 in ejb " + restaurant_id);
+        Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
+        Collection<User> uu = em.createNamedQuery("User.findByrestaurantid").setParameter("restaurantId", r).getResultList();
+        System.err.println("uuuuuuuuuuuu in ejb " + uu);
+        return uu;
     }
 
 }

@@ -212,4 +212,25 @@ public class LoginBean implements Serializable {
         
         return rid;
     }
+    
+    public String logout() {
+    try {
+        System.err.println("in logout logiut lohgout");
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        
+        // Invalidate the session
+        request.getSession().invalidate();
+
+        // Optionally log out from container-managed security
+        request.logout();
+
+        // Redirect to login page
+        return "/webpages/login.jsf?faces-redirect=true";
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+    }
+}
 }

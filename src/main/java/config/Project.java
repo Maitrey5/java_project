@@ -24,6 +24,8 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
         },
         priority = 30)
 
+
+
 @ApplicationScoped
 public class Project {
 

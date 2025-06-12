@@ -74,16 +74,15 @@ public class GenericRestResource {
         return em.search_table(rid, table_no);
 
     }
-    
+
     @GET
     @Path("searchmenubycategory/{categoryid}/{rid}")
     @Produces("application/json")
-    public Collection<Menumaster> searchmenubycategory(@PathParam("categoryid") Integer categoryid ,@PathParam("rid") Integer rid){
-        
+    public Collection<Menumaster> searchmenubycategory(@PathParam("categoryid") Integer categoryid, @PathParam("rid") Integer rid) {
+
         return em.searchmenubycategory(categoryid, rid);
-        
+
     }
-    
 
     @POST
     @Path("/add/{restaurant_name}/{restaurant_address}/{restaurant_contactno}/{restaurant_email}/{restaurant_city}/{restaurant_state}/{restaurant_country}/{restaurant_pincode}/{created_at}/{updated_at}/{is_active}")
@@ -255,6 +254,7 @@ public class GenericRestResource {
     @Path("get_categories_by_restaurant/{restaurant_id}")
     @Produces("application/json")
     public Collection<Categorymaster> get_categories_by_restaurant(@PathParam("restaurant_id") Integer restaurant_id) {
+        System.err.println("jkdkaj");
         return em.get_categories_by_restaurant(restaurant_id);
     }
 
@@ -308,6 +308,23 @@ public class GenericRestResource {
     @Path("delete_order/{orderid}")
     public void delete_order(@PathParam("orderid") Integer orderid) {
         em.delete_order(orderid);
+    }
+
+    @GET
+    @Path("searchtablebyrestaurant/{rid}")
+    @Produces("application/json")
+    public Collection<Tablemaster> searchtablebyrestaurant(@PathParam("rid") Integer rid) {
+
+        return em.searchtablebyrestaurant(rid);
+    }
+
+    @GET
+    @Path("getusers/{restaurant_id}")
+    @Produces("application/json")
+    public Collection<User> getusers(@PathParam("restaurant_id") Integer restaurant_id) {
+
+        System.err.println("resttttttttttttttttt"+restaurant_id);
+        return em.getusers(restaurant_id);
     }
 
     @GET
@@ -461,8 +478,8 @@ public class GenericRestResource {
 //        dine_in_timee = Time.valueOf(dine_in_time);
         booking_datee = new SimpleDateFormat("yyyy-MM-dd").parse(booking_date);
         dine_in_datee = new SimpleDateFormat("yyyy-MM-dd").parse(dine_in_date);
-        
-         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         LocalTime bookingTime = LocalTime.parse(booking_time, timeFormatter);
         LocalTime dineInTime = LocalTime.parse(dine_in_time, timeFormatter);

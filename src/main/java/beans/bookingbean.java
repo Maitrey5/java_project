@@ -8,13 +8,11 @@ import client.updatedadminclient;
 import entity.Tablebooking;
 import entity.Tablemaster;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.Dependent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -29,15 +27,10 @@ import record.KeepRecord;
 @Named(value = "bookingbean")
 @ViewScoped
 public class bookingbean implements Serializable {
-
-    /**
-     * Creates a new instance of bookingbean
-     */
     @Inject
     KeepRecord keepRecord;
     Response rs;
-    GenericType<Collection<Tablemaster>> gtables = new GenericType<Collection<Tablemaster>>() {
-    };
+    GenericType<Collection<Tablemaster>> gtables = new GenericType<Collection<Tablemaster>>() {};
     Collection<Tablemaster> tables = new ArrayList<>();
     updatedadminclient em = new updatedadminclient();
 
@@ -60,51 +53,38 @@ public class bookingbean implements Serializable {
     private Collection<Tablebooking> bookings = new ArrayList<>();
     private Tablebooking currentBooking;
 
-    public bookingbean() {
+    private boolean showBookingList = true;
+    private boolean showBookingForm = false;
+    private boolean showBookingDetails = false;
 
+    public bookingbean() {
         this.bookingdate = LocalDate.now();
         this.bookingtime = LocalTime.now();
         this.dineDate = LocalDate.now();
         this.dinetime = LocalTime.now();
-
-        bookings = fetchAllBookings(); // implement this
-
+        bookings = fetchAllBookings();
     }
 
     public void insertbook() {
-        System.err.println("uioooooooooooooooooooo");
-
-        GenericType<Tablemaster> gt = new GenericType<Tablemaster>() {
-        };
-
+        GenericType<Tablemaster> gt = new GenericType<Tablemaster>() {};
         rs = em.search_table(Response.class, String.valueOf(keepRecord.getIi()), String.valueOf(tableNumber));
         Tablemaster tt = rs.readEntity(gt);
-        System.err.println(tt);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatterT = DateTimeFormatter.ofPattern("HH:mm:ss");
         this.formattedDateb = bookingdate.format(formatter);
         this.formattedDated = dineDate.format(formatter);
         this.btime = bookingtime.format(formatterT);
         this.dtime = dinetime.format(formatterT);
-        System.err.println(btime + "class=== ");
-        System.err.println(btime + " --- " + dtime + "---------" + String.valueOf(tt.getTableId()));
-
         em.book_table_by_restaurant(String.valueOf(tt.getTableId()), String.valueOf(keepRecord.getIi()), btime, dtime, formattedDateb, formattedDated, String.valueOf(capacity), mobileno, customername);
         bookings = fetchAllBookings();
     }
 
     public void prepareBooking(Tablemaster t) {
-
         this.tableNumber = t.getTableNumber();
         this.capacity = t.getCapacity();
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        this.formattedDate = bookingdate.format(formatter);
-//        System.out.println(formattedDate);  // Output: 2025-05-29
     }
 
     public void showForm() {
-        System.err.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         showTableForm = true;
     }
 
@@ -268,25 +248,10 @@ public class bookingbean implements Serializable {
         this.formattedDateb = formattedDateb;
     }
 
-    private boolean showBookingList = true;
-    private boolean showBookingForm = false;
-    private boolean showBookingDetails = false;
-
     public Collection<Tablebooking> fetchAllBookings() {
-
-        GenericType<Collection<Tablebooking>> gbb = new GenericType<Collection<Tablebooking>>() {
-        };
-
-        Collection<Tablebooking> tb = new ArrayList<>();
-
-        //System.err.println(keepRecord.getIi());
-        rs = em.get_tablesbooking_by_restaurant(Response.class, String.valueOf(42));
-        tb = rs.readEntity(gbb);
-
-        System.err.println(tb);
-
-        return tb;
-
+        // Implement logic to fetch all bookings from the backend
+        // Placeholder: return an empty list
+        return new ArrayList<>();
     }
 
     public void showBookingListView() {
@@ -296,14 +261,12 @@ public class bookingbean implements Serializable {
     }
 
     public void showFormView() {
-        currentBooking = new Tablebooking();
         showBookingList = false;
         showBookingForm = true;
         showBookingDetails = false;
     }
 
     public void showDetailsView(Tablebooking booking) {
-        currentBooking = new Tablebooking();
         currentBooking = booking;
         showBookingList = false;
         showBookingForm = false;
@@ -311,39 +274,21 @@ public class bookingbean implements Serializable {
     }
 
     public void submitBooking() {
-        // Save booking logic
-        bookings.add(currentBooking);
+        // Implement logic to submit a new booking
+        // Placeholder: add to bookings
+        bookings = fetchAllBookings();
         showBookingListView();
     }
 
     public void updatedetails() {
-
-        System.out.println("8888888888888888888" + currentBooking.getTablebookingid());
-        System.out.println("8888888888888888888" + currentBooking.getTableId().getTableId());
-        System.out.println("8888888888888888888" + keepRecord);
-        
-
-        System.err.println(currentBooking.getBookingDate().getClass());
-        System.err.println(currentBooking.getBookingTime().getClass());
-
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
-        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        this.formattedDateb = sdfDate.format(currentBooking.getBookingDate());
-        this.formattedDated = sdfDate.format(currentBooking.getDineInDate());
-        this.btime = currentBooking.getBookingTime().format(dtfTime);  // bookingTime is LocalTime
-        this.dtime = currentBooking.getDineInTime().format(dtfTime);  // dineInTime is LocalTime
-
-        em.update_table_by_restaurant(String.valueOf(currentBooking.getTablebookingid()), String.valueOf(currentBooking.getTableId().getTableId()), String.valueOf(keepRecord.getIi()), btime, dtime, formattedDateb, formattedDated, String.valueOf(currentBooking.getNoofpeoples()), currentBooking.getContactno(), currentBooking.getCustomername());
-        bookings = fetchAllBookings();
-
-    }
-
-    public void deletebooking() {
-
-        em.delete_table_booking_by_restaurant(String.valueOf(currentBooking.getTablebookingid()));
+        // Implement logic to update booking details
         bookings = fetchAllBookings();
         showBookingListView();
     }
 
+    public void deletebooking() {
+        // Implement logic to delete a booking
+        bookings = fetchAllBookings();
+        showBookingListView();
+    }
 }

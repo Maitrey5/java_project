@@ -15,6 +15,7 @@ import entity.Staffmaster;
 import entity.Tablebooking;
 import entity.Tablemaster;
 import entity.Transactionmaster;
+import entity.User;
 import jakarta.ejb.Local;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -31,6 +32,7 @@ public interface ejb_restaurant_crudLocal {
     
         Tablemaster search_table(Integer rid , Integer table_no);
         Collection<Menumaster> searchmenubycategory(Integer categoryid , Integer rid);
+        Collection<Tablemaster> searchtablebyrestaurant(Integer rid);
 
         Integer add_restaurant(String restaurant_name, String restaurant_address, String restaurant_contactno, String restaurant_email, String restaurant_city, String restaurant_state, String restaurant_country, Integer restaurant_pincode, Date created_at, Date updated_at, Boolean is_active);
         void delete_restaurant(Integer restaurant_id);
@@ -96,5 +98,7 @@ public interface ejb_restaurant_crudLocal {
         Collection<Transactionmaster> get_all_transaction_by_restaurant(Integer restaurant_id);
 
         void add_user_of_restaurant(String username , String password ,Integer restaurant_id , String role );
+        Collection<User> getusers(Integer restaurant_id);
+        //Collection<User> getusers(Integer restaurant_id);
 
 }
