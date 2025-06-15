@@ -12,6 +12,7 @@ import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
+import jakarta.annotation.PostConstruct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -64,7 +65,38 @@ public class bookingbean implements Serializable {
         this.dinetime = LocalTime.now();
         bookings = fetchAllBookings();
     }
+    
+    @PostConstruct
+    public void init() {
+        if (keepRecord != null) {
+            tables = gettabledata();
+        } else {
+            System.err.println("keepRecord is NULL in onlymenubean.init()");
+        }
+    }
 
+    public void booktable(Tablemaster t) {
+        showBookingList = false;
+        showBookingForm = true;
+        showBookingDetails = false;
+        this.tableNumber = t.getTableNumber();
+    }
+
+    public Collection<Tablemaster> gettabledata() {
+
+        Integer k = keepRecord.getIi();
+        rs = em.searchtablebyrestaurant(Response.class, String.valueOf(k));
+
+        if (rs.getStatus() == 200) {
+            tables = rs.readEntity(gtables);
+        } else {
+            System.err.println("Error response: " + rs.getStatus());
+            System.err.println("Error body: " + rs.readEntity(String.class));
+        }
+
+        return tables;
+
+    }
     public void insertbook() {
         GenericType<Tablemaster> gt = new GenericType<Tablemaster>() {};
         rs = em.search_table(Response.class, String.valueOf(keepRecord.getIi()), String.valueOf(tableNumber));
@@ -249,9 +281,16 @@ public class bookingbean implements Serializable {
     }
 
     public Collection<Tablebooking> fetchAllBookings() {
-        // Implement logic to fetch all bookings from the backend
-        // Placeholder: return an empty list
-        return new ArrayList<>();
+        GenericType<Collection<Tablebooking>> gbookings = new GenericType<Collection<Tablebooking>>() {};
+        rs = em.get_tablesbooking_by_restaurant(Response.class, String.valueOf(keepRecord.getIi()));
+        
+        if (rs.getStatus() == 200) {
+            return rs.readEntity(gbookings);
+        } else {
+            System.err.println("Error fetching bookings: " + rs.getStatus());
+            System.err.println("Error body: " + rs.readEntity(String.class));
+            return new ArrayList<>();
+        }
     }
 
     public void showBookingListView() {

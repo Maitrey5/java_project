@@ -24,7 +24,7 @@ public interface ejbforwaitersLocal {
 
     Collection<Menumaster> get_all_menuitems_by_restaurant(Integer restaurant_id);
 
-    void add_order_to_restaurant(Integer restaurant_id, Date oreder_date, Integer table_id, Integer noofpeople, List<Integer> menuids, List<Integer> quantity);
+    void add_order_to_restaurant(Integer restaurant_id, Date oreder_date, Integer table_id, Integer noofpeople, Integer amount ,List<Integer> menuids, List<Integer> quantity );
     //void update_order_to_restaurant(Integer order_id , Integer restaurant_id,Date oreder_date, Integer table_id , Integer noofpeople ,Collection<Integer> menuids);
 
     public void update_item_to_order(Integer ordermenuid, Integer menuid, Integer qunatity);

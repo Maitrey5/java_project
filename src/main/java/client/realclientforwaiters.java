@@ -42,8 +42,8 @@ public class realclientforwaiters {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public void add_order_to_restaurant(Object requestEntity, String restaurant_id, String order_date, String table_id, String noofpeople) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("add_order_to_restaurant/{0}/{1}/{2}/{3}", new Object[]{restaurant_id, order_date, table_id, noofpeople})).request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
+    public void add_order_to_restaurant(Object requestEntity, String restaurant_id, String order_date, String table_id, String noofpeople,String amount) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("add_order_to_restaurant/{0}/{1}/{2}/{3}/{4}", new Object[]{restaurant_id, order_date, table_id, noofpeople,amount})).request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
     }
 
     public <T> T get_bills_by_restaurant(Class<T> responseType, String restaurant_id) throws ClientErrorException {

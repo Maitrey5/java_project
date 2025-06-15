@@ -43,7 +43,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
     }
 
     @Override
-    public void add_order_to_restaurant(Integer restaurant_id, Date oreder_date, Integer table_id, Integer noofpeople, List<Integer> menuids, List<Integer> quantity) {
+    public void add_order_to_restaurant(Integer restaurant_id, Date oreder_date, Integer table_id, Integer noofpeople,Integer amount, List<Integer> menuids, List<Integer> quantity) {
 
         Restaurantmaster r = (Restaurantmaster) em.find(Restaurantmaster.class, restaurant_id);
         Tablemaster t = (Tablemaster) em.find(Tablemaster.class, table_id);
@@ -54,6 +54,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
         o.setNoofpeople(noofpeople);
         o.setTableId(t);
         o.setOrederDate(oreder_date);
+        o.setTotalamount(amount);
 
         Collection<OrderMenuJointable> coll_menu_ord = new ArrayList<>();
 

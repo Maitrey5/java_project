@@ -53,13 +53,14 @@ public class GenericRestResourceforwaiters {
      */
     
     @POST
-    @Path("add_order_to_restaurant/{restaurant_id}/{order_date}/{table_id}/{noofpeople}")
+    @Path("add_order_to_restaurant/{restaurant_id}/{order_date}/{table_id}/{noofpeople}/{amount}")
     @Consumes("application/json")
     public void add_order_to_restaurant(
             @PathParam("restaurant_id") Integer restaurant_id,
             @PathParam("order_date") String oreder_date,
             @PathParam("table_id") Integer table_id,
             @PathParam("noofpeople") Integer noofpeople,
+            @PathParam("amount") Integer amount,
             orderdetails orders
            ) throws ParseException {
         
@@ -67,7 +68,7 @@ public class GenericRestResourceforwaiters {
 
                 order_date = new SimpleDateFormat("yyyy-MM-dd").parse(oreder_date);
 
-        em.add_order_to_restaurant(restaurant_id, order_date, table_id, noofpeople, orders.menuids, orders.quantity);
+        em.add_order_to_restaurant(restaurant_id, order_date, table_id, noofpeople, amount ,orders.menuids, orders.quantity );
     }
 //
     @PUT

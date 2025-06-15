@@ -2,287 +2,326 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <h:head>
-        <title>Admin Dashboard</title>
+        <title>Take New Order</title>
         <style>
-            body {
-                margin: 0;
+            .sidebar {
+                width: 280px;
+                background-color: #ffffff;
+                height: 100vh;
+                padding: 30px 10px;
+                box-shadow: 8px 0 10px rgba(0,0,0,0.05);
+                float: left;
                 font-family: 'Segoe UI', sans-serif;
             }
 
-            .sidebar {
-                width: 250px;
-                height: 100vh;
-                background-color: #f8f9fa;
-                padding: 1rem;
-                position: fixed;
-                top: 0;
-                left: 0;
-                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                border-right: 4px solid coral;
-            }
-
-            .sidebar .ui-menuitem-link:hover,
-            .sidebar .ui-menuitem-link:hover .ui-menuitem-text,
-            .sidebar .ui-menuitem-link:hover .ui-icon {
-                color: white !important;
-            }
-
-            .sidebar-header {
-                font-size: 1rem;
-                font-weight: bold;
-                margin-bottom: 2rem;
-                color: Coral;
-                text-align: center;
-            }
-
-            .sidebar .ui-menu {
-                border: none;
-                background: transparent;
-            }
-
-            .sidebar .ui-menuitem-link {
-                color: #333;
-                font-weight: 700;
-                padding: 0.75rem 1rem;
-                border-radius: 8px;
+            .sidebar h2 {
                 display: flex;
                 align-items: center;
-            }
-
-            .sidebar .ui-menuitem-link:hover {
-                background-color: coral !important;
-                color: white !important;
-            }
-
-            .sidebar .ui-icon {
-                margin-right: 0.5rem;
-            }
-
-            .sidebar .ui-state-active {
-                background-color: #5A57DD !important;
-                color: white !important;
-            }
-
-            .logout-btn {
-                text-align: center;
-                margin-top: 2rem;
-                padding: 1rem 0;
-            }
-
-            .main-content {
-                margin-left: 250px;
-                padding: 2rem;
-            }
-
-            /* Style the form panel */
-            .table-form-panel {
-                max-width: 400px;
-                padding: 1rem;
-                border-radius: 12px;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            }
-
-            /* Form fields layout */
-            .table-form-panel .ui-inputtext,
-            .table-form-panel .ui-outputlabel {
-                display: block;
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-
-            /* Style the submit button */
-
-
-            .top-bar-form {
-                width: 100%;
-                display: flex;
-                flex-direction: column; /* Change to column layout */
-                gap: 1rem;
-                padding: 1rem;
-                background-color: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                margin-bottom: 1rem;
-                box-sizing: border-box;
-            }
-
-            .form-group {
-                display: flex;
-                gap: 0.5rem;
-                justify-content: flex-start;
-            }
-
-            .main {
-                display: flex;             /* Makes it a flex container */
-                flex-direction: row;       /* Ensures children are laid out horizontally */
-                gap: 2rem;                 /* Optional: spacing between form groups */
-                flex-wrap: wrap;           /* Optional: allows wrapping on smaller screens */
-                justify-content: center;   /* Optional: center items horizontally */
-            }
-
-
-            /* Coral colored button */
-            /*            .coral-button {
-                            background-color: coral !important;
-                            border: none;
-                            color: white !important;
-                            padding: 0.6rem 1.2rem;
-                            border-radius: 6px;
-                            margin-top: 1rem;
-                        }*/
-            /*            .top-bar-form .form-group {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.5rem;
-                        }*/
-
-            .top-bar-form .ui-outputlabel {
-                font-weight: 500;
-                color: grey;
-                font-size: 1.5rem;
-                min-width: 100px;
-            }
-
-            .top-bar-form .ui-inputtext {
-                margin-left: 1rem;
-                width: 150px;
-            }
-
-            .coral-button {
-                align-self: center; /* Centers the button horizontally */
-                background-color: coral !important;
-                border: none !important;
-                color: white !important;
+                font-size: 28px;
                 font-weight: bold;
-                padding: 0rem 1.5rem;
-                border-radius: 6px;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-                cursor: pointer;
+                color: #1f2937;
+                margin-bottom: 40px;
             }
-            .coral-button:hover {
-                background-color: #ff5252 !important;
+
+            .menu-button {
+
+                display: flex;
+                align-items: center;
+                padding: 3px 7px;
+                font-size: 1.3rem !important;
+                font-weight: bold;
+                color: #000000;
+                transition: background-color 0.3s ease;
+                width: 98%;
+                text-align: left;
             }
+
+            body .ui-button {
+                background: #FFFFFF;
+                color: black;
+                margin-bottom: 1rem;
+                outline: 0 none;
+                border:none;
+                border-radius: 8px !important;
+                transition: box-shadow .4s, opacity .2s;
+            }
+            /*            .menu-button i {
+                            margin-right: 10px;
+                            font-size: 1.2em;
+                        }*/
+
+            .menu-button:hover {
+                background-color: whitesmoke !important;
+                color: black !important;
+                border-radius:6px !important;
+            }
+
+            .menu-button.active {
+                background-color: coral !important; /* green */
+                color: white !important;
+            }
+
+            /*            .menu-button.active i {
+                            color: white !important;
+                        }*/
+            .main-content {
+                margin-left: 280px;
+                padding: 20px;
+                font-family: 'Segoe UI', sans-serif;
+
+            }
+            .menu-item-card {
+                max-width: 28%;
+
+                border: 2px solid black;
+                border-radius: 10px;
+                padding: 16px;
+                margin: 8px;
+                width: 240px;
+                flex: 1 1 1 30%;  /* Reduced from ~33% to 30% */
+                box-sizing: border-box;
+
+            }
+            .price {
+                color: green;
+                font-weight: bold;
+            }
+
+            body .ui-panel .ui-panel-titlebar {
+                border: 2px solid #dee2e6;
+                background: #f8f9fa;
+                color: black;
+                padding: 0.5rem;
+                font-weight: bold;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+            }
+
+            body .ui-tabs .ui-tabs-nav li.ui-tabs-header a {
+                color: black;
+                padding: 0;
+                font-weight: 700;
+                display: block;
+                line-height: 1;
+                transition: background-color .2s, color .2s, border-color .2s, box-shadow .2s, opacity .2s;
+            }
+            .add-order-btn {
+                background-color: #0d1224 !important;   /* Dark navy */
+                color: white !important;
+                border: none !important;
+                font-weight: 600;
+                border-radius: 10px;
+                padding: 0.3rem 1.2rem;
+                width: 100%;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: none;
+            }
+
+            .add-order-btn:hover {
+                background-color: #1a203a !important;
+            }
+            .menu-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px; /* space between cards */
+            }
+
+
+            /*-*/
+
+            .order-item-box {
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                padding: 12px;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-family: 'Segoe UI', sans-serif;
+                background-color: #ffffff;
+            }
+
+            .item-details {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .item-name {
+                font-weight: 600;
+                color: #111827;
+                font-size: 1rem;
+            }
+
+            .item-price {
+                color: #6b7280;
+                font-size: 0.9rem;
+            }
+
+            .quantity-controls {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .qty-btn, .delete-btn {
+                border-radius: 8px !important;
+                background-color: #f9fafb !important;
+                border: 1px solid #e5e7eb !important;
+                color: #111827 !important;
+                padding: 6px 8px;
+                font-size: 0.9rem;
+            }
+
+            .qty-btn:hover, .delete-btn:hover {
+                background-color: #e5e7eb !important;
+            }
+
+            .quantity {
+                font-weight: bold;
+                width: 20px;
+                text-align: center;
+            }
+
+
+
 
         </style>
     </h:head>
 
     <h:body>
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div>
-                <div class="sidebar-header"><h1>Bhagyoday</h1></div>
+        <h:form id="orderForm">
 
-                <p:menu styleClass="custom-menu">
-                    <p:menuitem value="Dashboard" icon="pi pi-th-large" />
-                    <p:menuitem value="Tables" icon="pi pi-table"
-                                action="#{tableBean.showForm}" update="mainContent" />
-                    <p:menuitem value="Icons" icon="pi pi-star" />
-                    <p:menuitem value="Error Pages" icon="pi pi-exclamation-triangle" />
-                    <p:menuitem value="Documentation" icon="pi pi-book" />
-                </p:menu>
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h2><i class="pi pi-users" style="font-size: 1.5em; color: #22c55e; margin-right: 10px;" /> Staff Panel</h2>
+
+                <p:commandButton value="Back to Home" icon="pi pi-home"
+                                 action="#{navigationBean.goHome()}"
+                                 styleClass="menu-button #{navigationBean.activePage eq 'home' ? 'active' : ''}"
+                                 update="orderForm" />
+
+                <p:commandButton value="Dashboard" icon="pi pi-th-large"
+                                 action="#{navigationBean.goDashboard}"
+                                 styleClass="menu-button #{navigationBean.activePage eq 'dashboard' ? 'active' : ''}"
+                                 update="orderForm" />
+
+                <p:commandButton value="Take Order" icon="pi pi-plus"
+                                 action="#{navigationBean.goOrder}"
+                                 styleClass="menu-button #{navigationBean.activePage eq 'order' ? 'active' : ''}" 
+                                 update="orderForm"/>
+
+                <p:commandButton value="Table Status" icon="pi pi-users"
+                                 action="#{navigationBean.goTableStatus}"
+                                 styleClass="menu-button #{navigationBean.activePage eq 'table' ? 'active' : ''}" 
+                                 update="orderForm" />
+
+                <p:commandButton value="Order History" icon="pi pi-calendar"
+                                 action="#{navigationBean.goOrderHistory}"
+                                 styleClass="menu-button #{navigationBean.activePage eq 'history' ? 'active' : ''}"
+                                 update="orderForm" />
             </div>
 
-            <div class="logout-btn">
-                <h:form>
-                    <p:commandButton value="Logout" icon="pi pi-sign-out"
-                                     action="#{loginBean.logout}"
-                                     styleClass="ui-button-danger" />
-                </h:form>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <!-- Main Content -->
-        <h:form id="mainContent">
+            <!-- Main Content -->
             <div class="main-content">
-                <h:panelGroup rendered="#{tableBean.showTableForm}">
-                    <!-- Top bar form -->
-                    <div class="top-bar-form">
-                        <div class="main">
-                            <div class="form-group">
-                                <p:outputLabel for="tableNumber" value="Table Number:" />
-                                <p:inputText id="tableNumber" value="#{tableBean.tableNumber}" placeholder="Enter number" />
+                <h1>Take New Order</h1>
+
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- Menu Items Section -->
+                    <p:panel header="Menu Items" style="width: 70%;">
+                        <p:tabView>
+                            <c:forEach items="#{orderBean.categoryList}" var="category">
+                                <p:tab title="#{category.categoryName}">
+                                    <div class="menu-container">
+                                        <ui:repeat value="#{orderBean.getItemsByCategory(category)}" var="item">
+                                            <div class="menu-item-card">
+                                                <h2>#{item.itemName}</h2>
+                                                <p>#{item.description}</p>
+                                                <p class="price">$#{item.itemPrice}</p>
+                                                <p:commandButton value="Add to Order"
+                                                                 icon="pi pi-plus"
+                                                                 styleClass="add-order-btn"
+                                                                 action="#{orderBean.addToOrder(item)}"
+                                                                 update=":orderForm:orderPanel"/>
+                                            </div>
+                                        </ui:repeat>
+                                    </div>
+                                </p:tab>
+                            </c:forEach>
+                        </p:tabView>
+                    </p:panel>
+                    <!-- Current Order Section -->
+                    <p:panel id="orderPanel" header="Current Order" style="width: 28%; min-height: 300px;">
+                        <h:outputText value="Select Table" style=" font-weight: bold"/>
+                        <p:selectOneMenu value="#{orderBean.selectedTable}" style="width:100%; margin-bottom:2rem">
+                            <f:selectItem itemLabel="Choose a table" itemValue="" />
+                            <f:selectItems value="#{orderBean.tables}" var="t"
+                                           itemLabel="#{t.tableNumber}" itemValue="#{t.tableId}" />
+                        </p:selectOneMenu>
+                        <h:outputText value="Select No-of-peoples" style=" font-weight: bold"/>
+                        <p:inputText value="#{orderBean.noofpeoples}"
+                                     style="width: 100%; margin-bottom: 1rem;" />
+
+
+
+                        <p:spacer height="10" />
+                        <h:outputText value="Order Items:" style="font-weight: bold; margin-bottom: 2rem;" />
+
+                        <ui:repeat value="#{orderBean.orderItems}" var="oi">
+                            <div class="order-item-box">
+                                <div class="item-details">
+                                    <div class="item-name">#{oi.itemName}</div>
+                                    <div class="item-price">$#{oi.itemPrice} each</div>
+                                </div>
+
+                                <div class="quantity-controls">
+                                    <p:commandButton icon="pi pi-minus"
+                                                     action="#{orderBean.decrementQuantity(oi)}"
+                                                     process="@form"
+                                                     update=":orderForm:orderPanel"
+                                                     styleClass="qty-btn" />
+
+                                    <span class="quantity">#{orderBean.map[oi.menuId]}</span>
+
+                                    <p:commandButton icon="pi pi-plus"
+                                                     action="#{orderBean.incrementQuantity(oi.menuId)}"
+                                                     process="@form"
+                                                     update=":orderForm:orderPanel"
+                                                     styleClass="qty-btn" />
+
+                                    <p:commandButton icon="pi pi-trash"
+                                                     process="@form"
+                                                     action="#{orderBean.removequantity(oi)}"
+                                                     update=":orderForm:orderPanel"
+                                                     styleClass="delete-btn" />
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <p:outputLabel for="capacity" value="Capacity-of-peoples:" />
-                                <p:inputText id="capacity" value="#{tableBean.capacity}" placeholder="Enter capacity" />
-                            </div>
+                        </ui:repeat>
+
+                        <h:outputText rendered="#{empty orderBean.orderItems}" value="No items added yet." />
+
+                        <hr />
+                        <div style="display: flex; justify-content: space-between; font-weight: bold;">
+                            <span>Total:</span>
+                            <h:outputText value="$#{orderBean.price}" />
                         </div>
 
-                        <!-- Submit button below -->
-                        <p:commandButton value="Submit"
-                                         action="#{tableBean.submitTable}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </div>
-
-                    <!-- Data Table -->
-                    <p:dataTable  var="table" 
-                                  scrollable="true" scrollHeight="200"
-                                  style="margin-top: 2rem; width: 100%;">
-
-                        <!-- Table Number -->
-                        <p:column headerText="Table Number">
-                            <h:outputText value="#{table.tableNumber}" />
-                        </p:column>
-
-                        <!-- Capacity -->
-                        <p:column headerText="Capacity">
-                            <h:outputText value="#{table.capacity}" />
-                        </p:column>
-
-                        <!-- Update Button with SVG -->
-                        <p:column headerText="Update">
-                            <p:commandButton action="#{tableBean.editTable(table)}"
-                                             update="mainContent"
-                                             title="Edit"
-                                             styleClass="ui-button-flat ui-button-warning">
-                                <f:facet name="icon">
-                                    <span class="ui-icon" style="width: 20px; height: 20px;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="coral" viewBox="0 0 24 24">
-                                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 
-                                                  0-1.41l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 
-                                                  3.75 3.75 1.84-1.83z"/>
-                                        </svg>
-                                    </span>
-                                </f:facet>
-                            </p:commandButton>
-                        </p:column>
-
-                        <!-- Delete Button with SVG -->
-                        <p:column headerText="Delete">
-                            <p:column headerText="Delete">
-                                <p:commandButton value="Delete"
-                                                 action="#{tableBean.deleteTable(table)}"
-                                                 update="mainContent"
-                                                 styleClass="ui-button-danger"
-                                                 title="Delete" />
-                            </p:column>
-                        </p:column>
-
-                        <!-- Book Table Button -->
-                        <p:column headerText="Book Table">
-                            <p:commandButton value="Book"
-                                             update="mainContent"
-                                             styleClass="ui-button-success"
-                                             icon="pi pi-calendar-check"
-                                             title="Book Table" />
-
-                        </p:column>
-
-                    </p:dataTable>
-
-
-                </h:panelGroup>
+                        <p:commandButton value="Submit Order"
+                                         styleClass="add-order-btn"
+                                         action="#{orderBean.submitorder}"
+                                         update="@form" />
+                    </p:panel>
+                </div>
             </div>
-        </h:form>
 
+        </h:form>
     </h:body>
 </html>
