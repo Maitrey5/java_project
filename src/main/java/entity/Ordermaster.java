@@ -55,6 +55,10 @@ public class Ordermaster implements Serializable {
     @NotNull
     @Column(name = "noofpeople")
     private int noofpeople;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "totalamount")
+    private int totalamount;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private Collection<OrderMenuJointable> orderMenuJointableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
@@ -115,6 +119,14 @@ public class Ordermaster implements Serializable {
     @XmlTransient
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
+    }
+
+    public int getTotalamount() {
+        return totalamount;
+    }
+
+    public void setTotalamount(int totalamount) {
+        this.totalamount = totalamount;
     }
 
     public void setBillmasterCollection(Collection<Billmaster> billmasterCollection) {

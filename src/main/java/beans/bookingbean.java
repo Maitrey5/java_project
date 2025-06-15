@@ -76,6 +76,9 @@ public class bookingbean implements Serializable {
 
     }
     
+    
+    
+    
     @PostConstruct
     public void init() {
         if (keepRecord != null) {
