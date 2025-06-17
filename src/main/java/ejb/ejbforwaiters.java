@@ -15,6 +15,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
         o.setTableId(t);
         o.setOrederDate(oreder_date);
         o.setTotalamount(amount);
+        o.setIscompleted(false);
 
         Collection<OrderMenuJointable> coll_menu_ord = new ArrayList<>();
 
@@ -133,6 +135,8 @@ public class ejbforwaiters implements ejbforwaitersLocal {
 
         Menumaster m = (Menumaster) em.find(Menumaster.class, menuid);
         Ordermaster oo = (Ordermaster) em.find(Ordermaster.class, orderid);
+        
+        Integer k = oo.getTotalamount();
 
         OrderMenuJointable orr = new OrderMenuJointable();
         orr.setMenuId(m);
@@ -142,6 +146,9 @@ public class ejbforwaiters implements ejbforwaitersLocal {
         Integer i = 0;
         i = (m.getItemPrice()) * (qunatity);
         orr.setTotalPrice(i);
+        
+        k=k+i;
+        oo.setTotalamount(k);
 
         em.persist(orr);
 
@@ -205,7 +212,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
     }
 
     @Override
-    public void add_bill_to_restaurant(Integer order_id, Integer restaurant_id, Integer total_amount, Integer discount, Integer final_amount, Integer final_payble_amount_with_tax, Date datetime, String modeofpayment, Integer transaction_id) {
+    public void add_bill_to_restaurant(Integer order_id, Integer restaurant_id, Integer total_amount, Integer discount, Integer final_amount, Integer final_payble_amount_with_tax, Timestamp datetime, String modeofpayment, Integer transaction_id) {
 
         Ordermaster om = em.find(Ordermaster.class, order_id);
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
@@ -247,7 +254,7 @@ public class ejbforwaiters implements ejbforwaitersLocal {
     }
 
     @Override
-    public void add_transaction_to_restaurant(Integer restaurant_id, Integer amount, String transaction_type, String description, Date Date, Time time) {
+    public void add_transaction_to_restaurant(Integer restaurant_id, Integer amount, String transaction_type, String description, Date Date,Timestamp time) {
 
         Restaurantmaster r = em.find(Restaurantmaster.class, restaurant_id);
 
@@ -270,4 +277,34 @@ public class ejbforwaiters implements ejbforwaitersLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    @Override
+    public Collection<OrderMenuJointable> get_menuitems_by_order(Integer orderid) {
+        
+        Ordermaster om = em.find(Ordermaster.class,orderid);
+        System.err.println("ooooooooooo"+om);
+        Collection<OrderMenuJointable> oo = em.createNamedQuery("OrderMenuJointable.findByOrderid").setParameter("orderId",om).getResultList();
+        
+        return oo;
+        
+    }
+
+    @Override
+    public Menumaster search_menu_by_id(Integer mid) {
+        
+        Menumaster m  = em.find(Menumaster.class,mid);
+        
+        return m;
+        
+    }
+
+    @Override
+    public void ordercompleted(Integer oderid) {
+        
+        Ordermaster o = em.find(Ordermaster.class,oderid);
+        o.setIscompleted(true);
+        
+    }
+    
+    
 }

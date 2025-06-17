@@ -4,6 +4,7 @@
  */
 package entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -59,6 +60,10 @@ public class Ordermaster implements Serializable {
     @NotNull
     @Column(name = "totalamount")
     private int totalamount;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "iscompleted")
+    private boolean iscompleted;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
     private Collection<OrderMenuJointable> orderMenuJointableCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
@@ -107,7 +112,7 @@ public class Ordermaster implements Serializable {
         this.noofpeople = noofpeople;
     }
 
-    @XmlTransient
+    @JsonbTransient
     public Collection<OrderMenuJointable> getOrderMenuJointableCollection() {
         return orderMenuJointableCollection;
     }
@@ -116,7 +121,15 @@ public class Ordermaster implements Serializable {
         this.orderMenuJointableCollection = orderMenuJointableCollection;
     }
 
-    @XmlTransient
+    public boolean isIscompleted() {
+        return iscompleted;
+    }
+
+    public void setIscompleted(boolean iscompleted) {
+        this.iscompleted = iscompleted;
+    }
+
+    @JsonbTransient
     public Collection<Billmaster> getBillmasterCollection() {
         return billmasterCollection;
     }
@@ -173,5 +186,5 @@ public class Ordermaster implements Serializable {
     public String toString() {
         return "entity.Ordermaster[ orderId=" + orderId + " ]";
     }
-    
+
 }

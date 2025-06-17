@@ -99,6 +99,8 @@ public class updatedadminclient {
         resource = resource.path(java.text.MessageFormat.format("get_tablesbooking_by_restaurant/{0}", new Object[]{restaurant_id}));
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
+    
+    
 
     public void delete_transaction_to_staff(String staff_transaction_id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("delete_transaction_to_staff/{0}", new Object[]{staff_transaction_id})).request().delete();

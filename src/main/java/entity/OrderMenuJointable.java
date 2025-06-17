@@ -29,6 +29,7 @@ import java.io.Serializable;
 @NamedQueries({
     @NamedQuery(name = "OrderMenuJointable.findAll", query = "SELECT o FROM OrderMenuJointable o"),
     @NamedQuery(name = "OrderMenuJointable.findByOrdermenuid", query = "SELECT o FROM OrderMenuJointable o WHERE o.ordermenuid = :ordermenuid"),
+    @NamedQuery(name = "OrderMenuJointable.findByOrderid", query = "SELECT o FROM OrderMenuJointable o WHERE o.orderId = :orderId"),
     @NamedQuery(name = "OrderMenuJointable.findByQuantity", query = "SELECT o FROM OrderMenuJointable o WHERE o.quantity = :quantity"),
     @NamedQuery(name = "OrderMenuJointable.findByTotalPrice", query = "SELECT o FROM OrderMenuJointable o WHERE o.totalPrice = :totalPrice")})
 public class OrderMenuJointable implements Serializable {

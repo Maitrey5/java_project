@@ -8,19 +8,20 @@ import client.realclientforwaiters;
 import client.updatedadminclient;
 import entity.Categorymaster;
 import entity.Menumaster;
+import entity.OrderMenuJointable;
 import entity.Ordermaster;
 import entity.Tablemaster;
 import jakarta.annotation.PostConstruct;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.Dependent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,9 @@ public class OrderBean implements Serializable {
 
     @Inject
     KeepRecord keepRecord;
+
+    @Inject
+    private Navigationbean navbean;  // Inject OrderBean here
 
     updatedadminclient em = new updatedadminclient();
     Response rs;
@@ -60,6 +64,12 @@ public class OrderBean implements Serializable {
 
     Collection<Menumaster> menus = new ArrayList<>();
 
+    Collection<OrderMenuJointable> oo;
+    GenericType<Collection<OrderMenuJointable>> ooo = new GenericType<Collection<OrderMenuJointable>>() {
+    };
+
+    private String paymentMethod;
+
     /**
      * Creates a new instance of OrderBean
      */
@@ -72,6 +82,10 @@ public class OrderBean implements Serializable {
     private Integer selectedTable;
     private Integer price;
     private String noofpeoples;
+    boolean flag = false;
+    Integer oderid;
+    Ordermaster selectedorder;
+    Integer discountPercentage;
 
     //private List<String> tables = Arrays.asList("T1", "T2", "T3", "T4");
     @PostConstruct
@@ -151,7 +165,7 @@ public class OrderBean implements Serializable {
     }
 
     public void addToOrder(Menumaster item) {
-        
+
         System.err.println("bkjbjkcbajkbckjabj" + item);
 //        orderItems.add(item);
 //        map.put(item.getMenuId(), 1);
@@ -169,21 +183,79 @@ public class OrderBean implements Serializable {
 
     }
 
+    public void updateorder(Ordermaster order) {
+
+        Collection<OrderMenuJointable> oo;
+        GenericType<Collection<OrderMenuJointable>> ooo = new GenericType<Collection<OrderMenuJointable>>() {
+        };
+        navbean.goOrder();
+
+        this.selectedTable = order.getTableId().getTableId();
+        this.noofpeoples = String.valueOf(order.getNoofpeople());
+        this.oderid = order.getOrderId();
+
+        this.flag = true;
+//        rs = ew.get_menuitems_by_order(Response.class,String.valueOf(order.getOrderId()));
+//        oo = rs.readEntity(ooo);
+//        
+//        for(OrderMenuJointable l : oo)
+//        {
+//            orderItems.add(l.getMenuId());
+//            map.put(l.getMenuId().getMenuId(),l.getQuantity());
+//        }
+
+    }
+
+    public void vieworder(Ordermaster o) {
+
+        navbean.goview();
+        System.err.println("navvvvvvvvvvvvvvvvvvvvv");
+       
+        this.selectedorder = o;
+
+        rs = ew.get_menuitems_by_order(Response.class, String.valueOf(o.getOrderId()));
+        this.oo = rs.readEntity(ooo);
+//        
+        System.err.println("kokonxkkkkkkkkkkkkkkkk");
+//        for(OrderMenuJointable l : oo)
+//        {
+//            orderItems.add(l.getMenuId());
+//            map.put(l.getMenuId().getMenuId(),l.getQuantity());
+//        }        
+
+    }
+
     public void submitorder() {
 
-        List<Integer> menuids = new ArrayList<>(map.keySet());
-        List<Integer> quantities = new ArrayList<>(map.values());
+        if (flag == true) {
+            for (Menumaster oo : orderItems) {
+                Integer k = map.get(oo.getMenuId());
 
-        LocalDate d = LocalDate.now();
-        String dateString = d.toString();
+                ew.add_item_to_order(String.valueOf(oderid), String.valueOf(oo.getMenuId()), String.valueOf(k));
+            }
 
-        orderdetails o = new orderdetails();
+            orderItems = null;
+            map = null;
+            flag = false;
+        } else {
 
-        o.setMenuids(menuids);
-        o.setQuantity(quantities);
-        System.err.println("price == " + price + "no-of-peoples " + noofpeoples);
+            List<Integer> menuids = new ArrayList<>(map.keySet());
+            List<Integer> quantities = new ArrayList<>(map.values());
 
-        ew.add_order_to_restaurant(o, String.valueOf(keepRecord.getIi()), dateString, String.valueOf(selectedTable), noofpeoples, String.valueOf(price));
+            LocalDate d = LocalDate.now();
+            String dateString = d.toString();
+
+            orderdetails o = new orderdetails();
+
+            o.setMenuids(menuids);
+            o.setQuantity(quantities);
+            System.err.println("price == " + price + "no-of-peoples " + noofpeoples);
+
+            ew.add_order_to_restaurant(o, String.valueOf(keepRecord.getIi()), dateString, String.valueOf(selectedTable), noofpeoples, String.valueOf(price));
+
+            orderItems = null;
+            map = null;
+        }
     }
 
     // Getters and setters...
@@ -259,5 +331,66 @@ public class OrderBean implements Serializable {
     public void setMenus(Collection<Menumaster> menus) {
         this.menus = menus;
     }
+
+    public Ordermaster getSelectedorder() {
+        return selectedorder;
+    }
+
+    public void setSelectedorder(Ordermaster selectedorder) {
+        this.selectedorder = selectedorder;
+    }
+
+    public Collection<OrderMenuJointable> getOo() {
+        return oo;
+    }
+
+    public void setOo(Collection<OrderMenuJointable> oo) {
+        this.oo = oo;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Integer getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Integer discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+    
+    public void generatebill(Ordermaster o)
+    {
+        ew.ordercompleted(String.valueOf(o.getOrderId()));
+        
+        int d = (o.getTotalamount()*discountPercentage)/100;
+        int f = o.getTotalamount() - d ;
+        
+         LocalDate currentDate = LocalDate.now();
+        
+        // Format to desired pattern, e.g., "dd-MM-yyyy"
+        DateTimeFormatter formatterr = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = currentDate.format(formatterr);
+        
+        LocalDateTime currentDateTime = LocalDateTime.now();
+
+        // Define the desired format
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
+        // Convert to string
+        String formattedDateTime = currentDateTime.format(formatter);
+       
+        
+        ew.add_transaction_to_restaurant(String.valueOf(keepRecord.getIi()),String.valueOf(f),"credit","bill",formattedDate,formattedDateTime);
+        ew.add_bill_to_restaurant(String.valueOf(o.getOrderId()),String.valueOf(keepRecord.getIi()),String.valueOf(o.getTotalamount()),String.valueOf(discountPercentage),String.valueOf(f),String.valueOf(f), formattedDateTime,paymentMethod, String.valueOf(1));
+        
+        
+    }
+    
 
 }

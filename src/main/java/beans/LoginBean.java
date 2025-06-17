@@ -150,7 +150,7 @@ public class LoginBean implements Serializable {
 
                     System.err.println("waiter");
 
-                    return "/webpages/User";
+                    return "/webpages/b";
                 }
 
             } else {

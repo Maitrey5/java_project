@@ -63,6 +63,7 @@ public interface ejb_restaurant_crudLocal {
         Collection<Ordermaster> get_orders_by_restaurant(Integer restaurant_id);
         
         
+        
         //void add_bill_to_restaurant(Integer order_id, Integer restaurant_id,Integer total_amount,Integer discount,Integer final_amount,Integer final_payble_amount_with_tax , Date datetime, String modeofpayment , Integer transaction_id);
         Collection<Billmaster> get_bills_by_restaurant(Integer restaurant_id);
         

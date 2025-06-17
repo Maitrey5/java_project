@@ -45,6 +45,12 @@ public class Navigationbean implements Serializable {
     public void goOrderHistory() {
         activePage = "history";
     }
+    public void goview() {
+        System.err.println("viewwwwwwwwwwwwwwwwwww");
+        activePage = "view";
+                System.err.println("viewwwwwwwwwwwwwwwwwww====="+activePage);
+
+    }
 
     public String getActivePage() {
         return activePage;

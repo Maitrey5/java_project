@@ -9,6 +9,8 @@
         <title>Take New Order</title>
         <style>
             .sidebar {
+                    position: fixed;               /* Make sidebar sticky */
+
                 width: 280px;
                 background-color: #ffffff;
                 height: 100vh;
@@ -191,7 +193,191 @@
                 text-align: center;
             }
 
+            /*-order*/
 
+
+
+            .order-card {
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                padding: 1rem;
+                margin: 1rem 0;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                background-color: #fff;
+                position: relative;
+                justify-content:space-between;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                transition: box-shadow 0.3s ease-in-out;
+            }
+
+            .order-card:hover {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .order-header {
+                display: flex;
+                justify-content: space-between;
+                font-weight: bold;
+                margin-bottom: 0.0 rem;
+                margin-right:1.5rem;
+            }
+
+            .order-id {
+                font-size: 1.2rem;
+            }
+
+            .order-status {
+                padding: 0.2rem 0.6rem;
+                border-radius: 0.5rem;
+                font-size: 0.9rem;
+                text-transform: capitalize;
+            }
+
+            .completed {
+                background-color: #e0f2f1;
+                color: #00695c;
+            }
+
+            .in-progress {
+                background-color: #e3f2fd;
+                color: #1565c0;
+            }
+
+            .order-info {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin: 0.1rem 0;
+                font-size: 0.95rem;
+                justify-content: space-between;
+            }
+
+            .order-footer {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 1rem;
+            }
+
+            .order-total {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+
+            .details-btn {
+                background-color: #111827;
+                color: #fff;
+                border-radius: 6px;
+            }
+
+            body .ui-panel .ui-panel-titlebar {
+                border: 2px solid #dee2e6;
+                background: #f8f9fa;
+                color: black;
+                padding: 0.5rem 8px;
+                font-weight: bold;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                height: 3rem;
+            }
+
+            /*view details */
+
+            .back-btn {
+                margin-bottom: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin-bottom: 1.5rem;
+
+            }
+
+            .order-container {
+                display: flex;
+                gap: 2rem;
+            }
+
+            .order-cardd {
+                width: 50%;
+                background-color: #fff;
+                padding: 2rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+
+            .order-label {
+                font-weight: bold;
+                margin-top: 1rem;
+            }
+
+
+            .grid-layout {
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* 2 columns */
+                gap: 1.5rem 2rem; /* row-gap, column-gap */
+            }
+
+            .order-value {
+                margin-bottom: 1rem;
+
+                color: #333;
+            }
+
+            .field-box {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .status-pill {
+                background-color: #0d1224;
+                color: white;
+                padding: 0.3rem 1rem;
+                border-radius: 999px;
+                font-weight: bold;
+                display: inline-block;
+                width: fit-content;
+
+            }
+
+            .item-box {
+                background-color: #f5f7fa;
+                padding: 1rem;
+                margin-bottom: 1rem;
+                border-radius: 8px;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .total {
+                font-weight: bold;
+                text-align: right;
+                font-size: 1.2rem;
+            }
+
+            .payment-section {
+                margin-top: 2rem;
+                display: flex;
+                align-items: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .payment-dropdown {
+                min-width: 200px;
+            }
+
+            .generate-bill-btn {
+                background-color: #0d1224;
+                color: white;
+                font-weight: bold;
+                border-radius: 8px;
+                padding: 0.5rem 1.5rem;
+            }
 
 
         </style>
@@ -207,33 +393,32 @@
                 <p:commandButton value="Back to Home" icon="pi pi-home"
                                  action="#{navigationBean.goHome()}"
                                  styleClass="menu-button #{navigationBean.activePage eq 'home' ? 'active' : ''}"
-                                 update="orderForm" />
+                                 update="@form" />
 
                 <p:commandButton value="Dashboard" icon="pi pi-th-large"
                                  action="#{navigationBean.goDashboard}"
                                  styleClass="menu-button #{navigationBean.activePage eq 'dashboard' ? 'active' : ''}"
-                                 update="orderForm" />
+                                 update="@form" />
 
                 <p:commandButton value="Take Order" icon="pi pi-plus"
                                  action="#{navigationBean.goOrder}"
                                  styleClass="menu-button #{navigationBean.activePage eq 'order' ? 'active' : ''}" 
-                                 update="orderForm"/>
-
-                <p:commandButton value="Table Status" icon="pi pi-users"
-                                 action="#{navigationBean.goTableStatus}"
-                                 styleClass="menu-button #{navigationBean.activePage eq 'table' ? 'active' : ''}" 
-                                 update="orderForm" />
+                                 update="@form"/>
 
                 <p:commandButton value="Order History" icon="pi pi-calendar"
                                  action="#{navigationBean.goOrderHistory}"
                                  styleClass="menu-button #{navigationBean.activePage eq 'history' ? 'active' : ''}"
-                                 update="orderForm" />
+                                 update="@form" />
+                <div class="logout-btn" style="margin-top: 14rem; margin-left: 2.5rem">
+                    <p:commandButton value="Logout" icon="pi pi-sign-out"
+                                     action="#{loginBean.logout()}"
+                                     styleClass="ui-button-danger" />
+            </div>
             </div>
 
             <!-- Main Content -->
-            <div class="main-content">
+            <h:panelGroup rendered="#{navigationBean.activePage eq 'order'}" layout="block" styleClass="main-content">
                 <h1>Take New Order</h1>
-
                 <div style="display: flex; justify-content: space-between;">
                     <!-- Menu Items Section -->
                     <p:panel header="Menu Items" style="width: 70%;">
@@ -308,7 +493,7 @@
 
                         <h:outputText rendered="#{empty orderBean.orderItems}" value="No items added yet." />
 
-                        <hr />
+                        <hr/>
                         <div style="display: flex; justify-content: space-between; font-weight: bold;">
                             <span>Total:</span>
                             <h:outputText value="$#{orderBean.price}" />
@@ -320,8 +505,169 @@
                                          update="@form" />
                     </p:panel>
                 </div>
-            </div>
+            </h:panelGroup>
 
+
+            <h:panelGroup rendered="#{navigationBean.activePage eq 'history'}" layout="block" styleClass="main-content">
+
+                <p:panel header="📝 Your Order History" style="width: 90%; font-weight:bold;  margin: 0 auto; font-size: 1.3rem">
+
+                    <ui:repeat value="#{orderhistorybean.order}" var="order">
+                        <div class="order-card"     >
+                            <div class="order-header">
+                                <div>
+                                    ORD - <h:outputText value="#{order.orderId}" styleClass="order-id" style="margin-right: 1rem" />
+                                    <h:outputText value="#{order.iscompleted ? 'completed' : 'in-progress'}"
+                                                  styleClass="order-status #{order.iscompleted ? 'completed' : 'in-progress'}" />
+                                </div>
+
+                                <div>
+
+                                    <h:outputText value="$#{order.totalamount}" styleClass="order-total" style=" font-weight: bold" />
+
+                                </div>
+
+                            </div>
+
+                            <div class="order-info">
+                                <div>
+                                    <i class="pi pi-chair"></i>
+                                    <h:outputText value="Table #{order.tableId.tableNumber}" />
+                                </div>
+
+                                <div>
+                                    <i class="pi pi-calendar"></i>
+                                    <h:outputText value="#{order.orederDate}" >
+                                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                                    </h:outputText>
+                                </div>
+
+
+
+
+                                <div class="order-footer" >
+                                    <p:commandButton value="Update-order" icon="pi pi-pencil" action="#{orderBean.updateorder(order)}" update="@form" styleClass="details-btn" style="background-color:#0d1224 ; color: white; font-weight: bold" rendered="#{not order.iscompleted}" />
+                                    <p:commandButton value="View Details" icon="pi pi-eye" styleClass="details-btn" action="#{orderBean.vieworder(order)}" style="font-weight: bold ;" update="@form"/>
+                                </div>
+                            </div>
+
+                        </div>
+                    </ui:repeat>
+                </p:panel>
+            </h:panelGroup>
+
+
+            <h:panelGroup rendered="#{navigationBean.activePage eq 'view'}" layout="block" styleClass="main-content">
+
+                <p:commandButton value="← Back to Orders" action="#{navigationBean.goOrderHistory()}" styleClass="back-btn ui-button-secondary" update="@form" style="background-color:#0d1224" />
+
+                <h1>Order Details - <h:outputText value="#{orderBean.selectedorder.orderId}" /></h1>
+
+                <!-- Main container -->
+                <div class="order-container">
+
+                    <!-- Order Information -->
+                    <div class="order-cardd">
+                        <div class="section-title">Order Information</div>
+
+                        <div class="grid-layout">
+                            <!-- Order Number -->
+                            <div class="field-box">
+                                <div class="order-label">Order Number</div>
+                                <div class="order-value">#{orderBean.selectedorder.orderId}</div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="field-box">
+                                <div class="order-label">Status</div>
+                                <div class="order-value">
+                                    <span class="status-pill">
+                                        #{orderBean.selectedorder.iscompleted ? 'completed' : 'in-progress'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Table -->
+                            <div class="field-box">
+                                <div class="order-label">Table</div>
+                                <div class="order-value">#{orderBean.selectedorder.tableId.tableNumber}</div>
+                            </div>
+
+                            <!-- Date -->
+                            <div class="field-box">
+                                <div class="order-label">Date</div>
+                                <div class="order-value">
+                                    <h:outputText value="#{orderBean.selectedorder.orederDate}">
+                                        <f:convertDateTime pattern="M/d/yyyy" />
+                                    </h:outputText>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Section -->
+                        <div class="payment-section">
+                            <h:panelGroup rendered="#{not orderBean.selectedorder.iscompleted}">
+
+                                <div class="field-box" >
+                                    <div class="order-label">Payment Method</div>
+                                    <p:selectOneMenu value="#{orderBean.paymentMethod}" styleClass="payment-dropdown">
+                                        <f:selectItem itemLabel="Select" itemValue="" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Cash" itemValue="Cash" />
+                                        <f:selectItem itemLabel="Online" itemValue="Online" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="field-box">
+                                    <div class="order-label" style="margin-left: 8rem">Discount (%)</div>
+                                    <p:inputNumber value="#{orderBean.discountPercentage}" 
+                                                   minValue="0" 
+                                                   maxValue="100" 
+                                                   decimalPlaces="0"
+                                                   styleClass="discount-input"
+                                                   style="margin-left: 8rem"
+                                                   placeholder="Enter discount %" />
+                                </div>
+
+                            </h:panelGroup>
+
+
+
+
+                            <div class="field-box">
+
+                                <p:commandButton value="Generate Bill" icon="pi pi-print"
+                                                 update="@form"
+                                                 styleClass="generate-bill-btn"
+                                                 action="#{orderBean.generatebill(orderBean.selectedorder)}"
+                                                 rendered="#{not orderBean.selectedorder.iscompleted}"
+                                                 style="margin-top: 1rem; margin-left: 7rem; background-color: red ; color: white"  />
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="order-cardd">
+                        <div class="section-title">Order Items</div>
+
+                        <ui:repeat value="#{orderBean.oo}" var="item">
+                            <div class="item-box">
+                                <div>
+                                    <div><strong>#{item.menuId.itemName}</strong></div>
+                                    <div style="font-size: 0.9rem;">Qty: #{item.quantity}</div>
+                                </div>
+                                <div>$#{item.totalPrice}</div>
+                            </div>
+                        </ui:repeat>
+
+                        <hr />
+                        <div class="total">
+                            Total: $#{orderBean.selectedorder.totalamount}
+                        </div>
+                    </div>
+                </div>
+
+            </h:panelGroup>
         </h:form>
+
     </h:body>
 </html>

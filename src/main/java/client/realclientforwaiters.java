@@ -42,8 +42,20 @@ public class realclientforwaiters {
         return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public void add_order_to_restaurant(Object requestEntity, String restaurant_id, String order_date, String table_id, String noofpeople,String amount) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("add_order_to_restaurant/{0}/{1}/{2}/{3}/{4}", new Object[]{restaurant_id, order_date, table_id, noofpeople,amount})).request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
+    public void add_order_to_restaurant(Object requestEntity, String restaurant_id, String order_date, String table_id, String noofpeople, String amount) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("add_order_to_restaurant/{0}/{1}/{2}/{3}/{4}", new Object[]{restaurant_id, order_date, table_id, noofpeople, amount})).request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).post(jakarta.ws.rs.client.Entity.entity(requestEntity, jakarta.ws.rs.core.MediaType.APPLICATION_JSON));
+    }
+
+    public <T> T get_menuitems_by_order(Class<T> responseType, String orderid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("get_menuitems_by_order/{0}", new Object[]{orderid}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T search_menu_by_id(Class<T> responseType, String mid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("search_menu_by_id/{0}", new Object[]{mid}));
+        return resource.request(jakarta.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T get_bills_by_restaurant(Class<T> responseType, String restaurant_id) throws ClientErrorException {
@@ -73,6 +85,12 @@ public class realclientforwaiters {
     public void add_item_to_order(String ordermenuid, String menuid, String qunatity) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("add_item_to_order/{0}/{1}/{2}", new Object[]{ordermenuid, menuid, qunatity})).request().post(null);
     }
+    
+    
+    public void ordercompleted(String oderid) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("ordercompleted/{0}", new Object[]{oderid})).request().post(null);
+    }
+
 
     public <T> T search_menu(Class<T> responseType, String itemname, String restaurantId) throws ClientErrorException {
         WebTarget resource = webTarget;
@@ -87,5 +105,5 @@ public class realclientforwaiters {
     public void close() {
         client.close();
     }
-    
+
 }

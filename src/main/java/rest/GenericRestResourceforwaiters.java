@@ -7,6 +7,7 @@ package rest;
 import ejb.ejbforwaitersLocal;
 import entity.Billmaster;
 import entity.Menumaster;
+import entity.OrderMenuJointable;
 import entity.Ordermaster;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.core.Context;
@@ -22,6 +23,8 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -37,7 +40,8 @@ import java.util.List;
 @RequestScoped
 public class GenericRestResourceforwaiters {
 
-    @EJB ejbforwaitersLocal em;
+    @EJB
+    ejbforwaitersLocal em;
     @Context
     private UriInfo context;
 
@@ -48,10 +52,11 @@ public class GenericRestResourceforwaiters {
     }
 
     /**
-     * Retrieves representation of an instance of rest.GenericRestResourceforwaiters
+     * Retrieves representation of an instance of
+     * rest.GenericRestResourceforwaiters
+     *
      * @return an instance of java.lang.String
      */
-    
     @POST
     @Path("add_order_to_restaurant/{restaurant_id}/{order_date}/{table_id}/{noofpeople}/{amount}")
     @Consumes("application/json")
@@ -62,33 +67,35 @@ public class GenericRestResourceforwaiters {
             @PathParam("noofpeople") Integer noofpeople,
             @PathParam("amount") Integer amount,
             orderdetails orders
-           ) throws ParseException {
-        
-                Date order_date = null;
+    ) throws ParseException {
 
-                order_date = new SimpleDateFormat("yyyy-MM-dd").parse(oreder_date);
+        Date order_date = null;
 
-        em.add_order_to_restaurant(restaurant_id, order_date, table_id, noofpeople, amount ,orders.menuids, orders.quantity );
+        order_date = new SimpleDateFormat("yyyy-MM-dd").parse(oreder_date);
+
+        em.add_order_to_restaurant(restaurant_id, order_date, table_id, noofpeople, amount, orders.menuids, orders.quantity);
     }
 //
+
     @PUT
     @Path("update_item_to_order/{ordermenuid}/{menuid}/{qunatity}")
     public void update_item_to_order(
             @PathParam("ordermenuid") Integer ordermenuid,
             @PathParam("menuid") Integer menuid,
             @PathParam("qunatity") Integer qunatity) {
-        
+
         em.update_item_to_order(ordermenuid, menuid, qunatity);
     }
 //
+
     @DELETE
     @Path("delete_item_to_order/{ordermenuid}/{menuid}")
     public void delete_item_to_order(
             @PathParam("ordermenuid") Integer ordermenuid,
             @PathParam("menuid") Integer menuid) {
-        
+
         em.delete_item_to_order(ordermenuid, menuid);
-        
+
     }
 
     @POST
@@ -97,8 +104,22 @@ public class GenericRestResourceforwaiters {
             @PathParam("ordermenuid") Integer ordermenuid,
             @PathParam("menuid") Integer menuid,
             @PathParam("qunatity") Integer qunatity) {
-        
+
         em.add_item_to_order(ordermenuid, menuid, qunatity);
+    }
+
+    @POST
+    @Path("ordercompleted/{oderid}")
+    public void ordercompleted(@PathParam("oderid") Integer oderid) {
+
+        em.ordercompleted(oderid);
+    }
+
+    @GET
+    @Path("get_menuitems_by_order/{orderid}")
+    @Produces("application/json")
+    public Collection<OrderMenuJointable> get_menuitems_by_order(@PathParam("orderid") Integer orderid) {
+        return em.get_menuitems_by_order(orderid);
     }
 
     @DELETE
@@ -123,15 +144,16 @@ public class GenericRestResourceforwaiters {
             @PathParam("discount") Integer discount,
             @PathParam("final_amount") Integer final_amount,
             @PathParam("final_payble_amount_with_tax") Integer final_payble_amount_with_tax,
-            @PathParam("datetime") String datetime,
+            @PathParam("datetime") String timestamp,
             @PathParam("modeofpayment") String modeofpayment,
             @PathParam("transaction_id") Integer transaction_id) throws ParseException {
-        
-         Date order_date = null;
 
-                order_date = new SimpleDateFormat("yyyy-MM-dd").parse(datetime);
-        
-        em.add_bill_to_restaurant(order_id, restaurant_id, total_amount, discount, final_amount, final_payble_amount_with_tax, order_date, modeofpayment, transaction_id);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        java.util.Date parsedDate = sdf.parse(timestamp);
+        Timestamp ts = new Timestamp(parsedDate.getTime());
+
+        em.add_bill_to_restaurant(order_id, restaurant_id, total_amount, discount, final_amount, final_payble_amount_with_tax, ts, modeofpayment, transaction_id);
     }
 
     @GET
@@ -155,6 +177,13 @@ public class GenericRestResourceforwaiters {
         return em.get_all_menuitems_by_restaurant(restaurant_id);
     }
 
+    @GET
+    @Path("search_menu_by_id/{mid}")
+    @Produces("application/json")
+    public Menumaster search_menu_by_id(@PathParam("mid") Integer mid) {
+        return em.search_menu_by_id(mid);
+    }
+
     @POST
     @Path("add_transaction_to_restaurant/{restaurant_id}/{amount}/{transaction_type}/{description}/{Date}/{time}")
     public void add_transaction_to_restaurant(
@@ -162,19 +191,16 @@ public class GenericRestResourceforwaiters {
             @PathParam("amount") Integer amount,
             @PathParam("transaction_type") String transaction_type,
             @PathParam("description") String description,
-            @PathParam("Date") String Date,
-            @PathParam("time") String time) throws ParseException {
-        
-                  Date d = null;
-                  Date t = null;
+            @PathParam("Date") String date,
+            @PathParam("time") String timestamp) throws ParseException {
+        // Parse date string (dd-MM-yyyy) to java.util.DateF
+        Date d = new SimpleDateFormat("dd-MM-yyyy").parse(date);
 
-
-        d = new SimpleDateFormat("yyyy-MM-dd").parse(Date);
-        Time parsedTime = Time.valueOf(time); // for "14:30:00"
-        
-        
-        
-        em.add_transaction_to_restaurant(restaurant_id, amount, transaction_type, description, d, parsedTime);
+        // Parse timestamp string (dd-MM-yyyy HH:mm:ss) to java.sql.Timestamp
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        java.util.Date parsedDate = sdf.parse(timestamp);
+        Timestamp ts = new Timestamp(parsedDate.getTime());
+        em.add_transaction_to_restaurant(restaurant_id, amount, transaction_type, description, d, ts);
     }
 
 }

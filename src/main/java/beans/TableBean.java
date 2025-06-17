@@ -5,21 +5,18 @@
 package beans;
 
 import client.updatedadminclient;
+import entity.Ordermaster;
 import entity.Tablemaster;
 import jakarta.inject.Named;
-import jakarta.enterprise.context.Dependent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.GenericType;
 import jakarta.ws.rs.core.Response;
 import java.io.Serializable;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import record.KeepRecord;
 
 /**
@@ -33,6 +30,8 @@ public class TableBean implements Serializable {
 
     @Inject
     KeepRecord keepRecord;
+    @Inject
+    OrderBean orderbean;
     Response rs;
     GenericType<Collection<Tablemaster>> gtables = new GenericType<Collection<Tablemaster>>() {
     };
@@ -52,6 +51,8 @@ public class TableBean implements Serializable {
     private Boolean showmenuform;
     private Boolean showstaff;
     private Boolean showuser;
+    private Boolean showorder;
+    private boolean detailorder;
 
     public Boolean getShowuser() {
         return showuser;
@@ -152,6 +153,8 @@ public class TableBean implements Serializable {
         showmenuform = false;
         showstaff = false;
         showuser = false;
+        showorder = false;
+        detailorder =false;
 
         showbookingForm = false;
     }
@@ -162,6 +165,8 @@ public class TableBean implements Serializable {
         showmenuform = false;
         showstaff = false;
         showuser = false;
+        showorder = false;
+        detailorder =false;
 
         showbookingForm = true;
 
@@ -173,6 +178,9 @@ public class TableBean implements Serializable {
         showmenuform = false;
         showstaff = false;
         showuser = false;
+        showorder = false;
+                detailorder =false;
+
 
         showcategory = true;
 
@@ -184,8 +192,25 @@ public class TableBean implements Serializable {
         showcategory = false;
         showstaff = false;
         showuser = false;
+        showorder = false;
+        detailorder =false;
 
         showmenuform = true;
+
+    }
+
+    public void vieworders() {
+
+        showTableForm = false;
+        showbookingForm = false;
+        showcategory = false;
+        showstaff = false;
+        showuser = false;
+                detailorder =false;
+
+
+        showmenuform = false;
+                showorder = true;
 
     }
 
@@ -195,8 +220,26 @@ public class TableBean implements Serializable {
         showcategory = false;
         showmenuform = false;
         showuser = false;
+        showorder = false;
+        detailorder =false;
 
         showstaff = true;
+
+
+    }
+    public void showdetailorder(Ordermaster o) {
+        showTableForm = false;
+        showbookingForm = false;
+        showcategory = false;
+        showmenuform = false;
+        showuser = false;
+        showorder = false;
+
+        showstaff = false;
+        
+        orderbean.vieworder(o);
+        detailorder =true;
+
 
     }
 
@@ -290,6 +333,25 @@ public class TableBean implements Serializable {
         tableNumber = 0;
         capacity = 0;
     }
+
+    public Boolean getShoworder() {
+        return showorder;
+    }
+
+    public void setShoworder(Boolean showorder) {
+        this.showorder = showorder;
+    }
+
+    public boolean isDetailorder() {
+        return detailorder;
+    }
+
+    public void setDetailorder(boolean detailorder) {
+        this.detailorder = detailorder;
+    }
+    
+    
+    
 
     /**
      * Creates a new instance of TableBean

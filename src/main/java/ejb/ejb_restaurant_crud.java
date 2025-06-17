@@ -209,6 +209,7 @@ public class ejb_restaurant_crud implements ejb_restaurant_crudLocal {
         m.setItemType(item_type);
         m.setIsAvalaible(is_avalaible);
         m.setUpdatedAt(updated_at);
+        
 
         em.persist(c);
 
