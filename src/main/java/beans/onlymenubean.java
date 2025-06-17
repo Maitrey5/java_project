@@ -72,11 +72,25 @@ public class onlymenubean implements Serializable {
     }
 
     public void showFormlistfunc() {
-
-        this.showmenulist = false;
-        this.menudetails = false;
-        this.showformlist = true;
-
+        // Clear all form fields when showing the form
+        clearFormFields();
+        
+        showmenulist = false;
+        showformlist = true;
+        menudetails = false;
+    }
+    
+    private void clearFormFields() {
+        // Reset all form fields to default values
+        this.menuname = null;
+        this.price = null;
+        this.description = null;
+        this.foodtype = null;
+        this.selectedcategoryformenu = null;
+        this.avability = true;
+        // Reset edit mode
+        this.editMode = false;
+        this.selectedmenu = null;
     }
 
     public void showmenulistfunc() {
@@ -118,6 +132,9 @@ public class onlymenubean implements Serializable {
 
             em.add_menu(String.valueOf(keepRecord.getIi()), String.valueOf(selectedcategoryformenu), menuname, String.valueOf(price), description, String.valueOf(true), formatted, foodtype);
             menus = getmenudata();
+            
+            // Clear form fields after successfully adding a menu item
+            clearFormFields();
         }
     }
 

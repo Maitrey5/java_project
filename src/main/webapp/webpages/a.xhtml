@@ -1,1176 +1,2369 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+  <h:head>
+    <title>Admin Dashboard</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", sans-serif;
+        overflow-x: hidden;
+      }
 
-    <h:head>
-        <title>Admin Dashboard</title>
-        <style>
-            body {
-                margin: 0;
-                font-family: 'Segoe UI', sans-serif;
-            }
+      /* Sidebar Styles */
+      .sidebar {
+        width: 300px; /* Increased width to accommodate longer menu items */
+        height: 100vh;
+        background: linear-gradient(180deg, #ffffff, #f8f9fa);
+        padding: 1.5rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 3px 0 10px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-right: 4px solid coral;
+        transition: width 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
+      }
 
-            .sidebar {
-                width: 18%;
-                height: 100vh;
-                background-color: #FFFFFF;
-                padding: 0rem;
-                position: fixed;
-                top: 0;
-                left: 0;
-                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                border-right: 4px solid coral;
-            }
+      /* Collapsed Sidebar */
+      .sidebar.collapsed {
+        width: 80px;
+        padding: 1.5rem 0.5rem;
+      }
 
-            .sidebar .ui-menuitem-link:hover,
-            .sidebar .ui-menuitem-link:hover .ui-menuitem-text,
-            .sidebar .ui-menuitem-link:hover .ui-icon {
-                color: white !important;
-                border-radius: 10px;
-            }
+      .sidebar.collapsed .sidebar-header h1,
+      .sidebar.collapsed .ui-menuitem-text,
+      .sidebar.collapsed .logout-btn span {
+        display: none;
+      }
 
-            .sidebar-header {
-                font-size: 1rem;
-                font-weight: bold;
-                margin-bottom: 2rem;
-                color: Coral;
-                text-align: center;
-            }
+      /* css for highilting the active menu */
+      .sidebar .ui-menuitem-link.active {
+        background-color: coral !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
 
-            .sidebar .ui-menu {
-                border: none;
-                background: transparent;
-                border-radius: 4px;
-            }
+      .sidebar .ui-menuitem-link.active .ui-icon,
+      .sidebar .ui-menuitem-link.active .ui-menuitem-text {
+        color: white !important;
+      }
 
-            .sidebar .ui-menuitem-link {
-                color: #333;
-                font-weight:bold;
-                font-size: 1.3rem !important;
-                padding: 0.65rem 0.50rem !important;
-                color:black;
-                border-radius: 10px !important;
-                display: flex;
-                align-items: center;
-                margin-bottom: 0.75rem; /* Add this line to increase spacing */
+      .sidebar.collapsed .ui-menuitem-link {
+        justify-content: center;
+        padding: 0.75rem !important;
+      }
 
-            }
+      .sidebar.collapsed .ui-icon {
+        margin-right: 0;
+        font-size: 1.5rem;
+      }
 
-            .sidebar .ui-menuitem-link:hover {
-                background-color: coral !important;
-                color: white !important;
-                border-radius: 10px !important;
-            }
+      /* Sidebar Header */
+      .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: coral;
+        padding: 0 1rem;
+      }
 
-            .sidebar .ui-icon {
-                margin-right: 0.5rem;
-            }
+      .sidebar-header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-            .sidebar .ui-state-active {
-                background-color: #5A57DD !important;
-                color: white !important;
-            }
-            .sidebar .custom-menu{
+      .sidebar-header .restaurant-icon {
+        font-size: 1.8rem;
+      }
 
-                width:100%;
-                padding: 0 1rem;
-                font-size: 1rem;
-                border-radius: 5px;
-            }
+      /* Toggle Button */
+      .toggle-btn {
+        background: none;
+        border: none;
+        color: coral;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.5rem;
+        transition: transform 0.3s ease;
+      }
 
-            .logout-btn {
-                text-align: center;
-                margin-top: 2rem;
-                padding: 1rem 0;
-            }
+      .toggle-btn:hover {
+        transform: scale(1.1);
+      }
 
-            .main-content {
-                margin-left: 250px;
-                padding: 2rem;
-            }
+      /* Menu Styles */
+      .sidebar .ui-menu {
+        border: none;
+        background: transparent;
+      }
 
-            /* Style the form panel */
-            .table-form-panel {
-                max-width: 400px;
-                padding: 1rem;
-                border-radius: 12px;
-                background-color: #fff;
-                box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            }
+      .sidebar .ui-menuitem-link {
+        /* color: #333; */
+        color: black !important;
+        font-weight: 600;
+        font-size: 1.1rem !important;
+        padding: 0.75rem 1rem !important;
+        border-radius: 8px !important;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+      }
 
-            /* Form fields layout */
-            .table-form-panel .ui-inputtext,
-            .table-form-panel .ui-outputlabel {
-                display: block;
-                width: 100%;
-                margin-bottom: 1rem;
-            }
+      .sidebar .ui-menuitem-link:hover {
+        /* background-color: transparent !important; */
+        /* color: black !important; */
+        transform: none;
+        box-shadow: none;
+      }
 
-            /* Style the submit button */
+      /*
+      .sidebar .ui-menuitem-link:hover .ui-icon,
+      .sidebar .ui-menuitem-link:hover .ui-menuitem-text {
+        color: black !important;
+      }*/
 
+      .sidebar .ui-menuitem-link:hover .ui-icon {
+        transform: none;
+      }
 
-            .top-bar-form {
-                width: 100%;
-                display: flex;
-                flex-direction: column; /* Change to column layout */
-                gap: 1rem;
-                padding: 1rem;
-                background-color: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                margin-bottom: 1rem;
-                box-sizing: border-box;
-            }
+      .sidebar .ui-icon {
+        margin-right: 0.75rem;
+        font-size: 1.3rem;
+        /* font-weight: bold; */
+        color: black !important;
+        transition: transform 0.3s ease;
+      }
 
-            .form-group {
-                display: flex;
-                gap: 0.5rem;
-                justify-content: flex-start;
-            }
-            .top-bar-formm {
-                width: 100%;
-                display: flex;
-                flex-direction: column; /* Change to column layout */
-                gap: 1rem;
-                padding: 1rem;
-                background-color: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                margin-bottom: 1rem;
-                box-sizing: border-box;
-            }
+      .sidebar .ui-menuitem-link:hover .ui-icon {
+        transform: scale(1.1);
+      }
 
-            .form-groupp {
-                display: flex;
-                gap: 0.5rem;
-                justify-content: flex-start;
-            }
-            .top-bar-formmm {
-                width: 100%;
-                display: flex;
-                flex-direction: column; /* Change to column layout */
-                gap: 1rem;
-                padding: 1rem;
-                background-color: #fff;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                border-radius: 8px;
-                margin-bottom: 1rem;
-                box-sizing: border-box;
-            }
+      .sidebar .ui-menuitem-text {
+        /* font-weight: bold; */
+        color: black !important;
+      }
 
-            .form-grouppp {
-                display: flex;
-                gap: 0.5rem;
-                justify-content: flex-start;
-            }
-            /*            .form-group1 {
-                            display: flex;
-                            gap: 0.5rem;
-                            justify-content: flex-start;
-                        }*/
+      .sidebar .ui-state-active {
+        background-color: #5a57dd !important;
+        color: white !important;
+        border-radius: 8px !important;
+      }
 
+      .sidebar .ui-state-active .ui-icon,
+      .sidebar .ui-state-active .ui-menuitem-text {
+        color: white !important;
+      }
 
-            .main {
-                display: flex;             /* Makes it a flex container */
-                flex-direction: row;       /* Ensures children are laid out horizontally */
-                gap: 2rem;                 /* Optional: spacing between form groups */
-                flex-wrap: wrap;           /* Optional: allows wrapping on smaller screens */
-                justify-content: center;   /* Optional: center items horizontally */
-            }
-            .mainnn {
-                display: flex;             /* Makes it a flex container */
-                flex-direction: row;       /* Ensures children are laid out horizontally */
-                gap: 2rem;                 /* Optional: spacing between form groups */
-                flex-wrap: wrap;
-                margin-left: 8rem;/* Optional: allows wrapping on smaller screens */
-            }
+      .sidebar .custom-menu {
+        width: 100%;
+        padding: 0;
+      }
 
+      /* Logout Button */
+      .logout-btn {
+        text-align: center;
+        padding: 1rem 0;
+      }
 
-            /* Coral colored button */
-            /*            .coral-button {
-                            background-color: coral !important;
-                            border: none;
-                            color: white !important;
-                            padding: 0.6rem 1.2rem;
-                            border-radius: 6px;
-                            margin-top: 1rem;
-                        }*/
-            /*            .top-bar-form .form-group {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.5rem;
-                        }*/
+      .logout-btn .ui-button {
+        background-color: coral !important;
+        border: none !important;
+        color: white !important;
+        /* border-radius: 8px; */
+        padding: 0.25rem 1.2rem;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
 
-            .top-bar-form .ui-outputlabel {
-                font-weight: 500;
-                color: grey;
-                font-size: 1.5rem;
-                min-width: 100px;
-            }
-            .top-bar-formm .ui-outputlabel {
-                font-weight: 500;
-                color: grey;
-                font-size: 1.5rem;
-                min-width: 100px;
-                margin-left: 9rem;
-            }
-            .top-bar-formmm .ui-outputlabel {
-                font-weight: 500;
-                color: grey;
-                font-size: 1.5rem;
-                min-width: 120px;
-            }
+      .logout-btn .ui-button:hover {
+        background-color: #e6735f !important;
+        transform: translateY(-2px);
+      }
 
-            .top-bar-form .ui-inputtext {
-                margin-left: 1rem;
-                width: 150px;
-            }
-            .top-bar-formm .ui-inputtext {
-                margin-left: 1rem;
-                width: 150px;
-            }
-            .top-bar-formmm .ui-inputtext {
-                margin-left: 1rem;
-                width: 150px;
-            }
+      /* Main Content */
+      .main-content {
+        margin-left: 300px; /* Adjusted to match increased sidebar width */
+        padding: 2rem;
+        transition: margin-left 0.3s ease;
+      }
 
-            .coral-button {
-                align-self: center; /* Centers the button horizontally */
-                background-color: coral !important;
-                border: none !important;
-                color: white !important;
-                font-weight: bold;
-                padding: 0rem 1.5rem;
-                border-radius: 6px;
-                box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-                cursor: pointer;
-            }
-            .coral-button:hover {
-                background-color: #ff5252 !important;
-            }
+      .main-content.collapsed {
+        margin-left: 80px;
+      }
 
-            /*-----------------------------------*/
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        /* Tablets */
+        .sidebar {
+          width: 250px;
+        }
 
-            .top-bar-form {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-                background-color: #fff;
-                padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                max-width: 100%;
-                margin: auto;
-            }
-            .top-bar-formm {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                background-color: #fff;
-                padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                max-width: 50%;
-                margin: auto;
-            }
-            .top-bar-formmm {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                background-color: #fff;
-                padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                max-width: 50%;
-                margin: auto;
-            }
+        .main-content {
+          margin-left: 250px;
+        }
 
-            .form-group {
-                display: flex;
-                flex-direction: row;
-            }
+        .main-content.collapsed {
+          margin-left: 80px;
+        }
+      }
 
-            .form-group label {
-                margin-bottom: 0.5rem;
-                font-weight: bold;
-            }
-            .form-groupp {
-                display: flex;
-                flex-direction: row;
-                margin-left: -2rem;
-            }
-            .form-grouppp {
-                display: flex;
-                flex-direction: row;
-                margin-left: 0rem;
-            }
+      @media (max-width: 768px) {
+        /* Mobile */
+        .sidebar {
+          width: 250px;
+          transform: translateX(-100%);
+        }
 
-            .form-groupp label {
-                margin-bottom: 0.5rem;
-                font-weight: bold;
-            }
-            .form-grouppp label {
-                margin-bottom: 0.5rem;
-                font-weight: bold;
-            }
+        .sidebar.active {
+          transform: translateX(0);
+        }
 
-            .coral-button {
-                background-color: coral !important;
-                color: white !important;
-                border: none;
-                padding: 0.5rem 1rem;
-                font-size: 1rem;
-                border-radius: 5px;
-            }
+        .main-content {
+          margin-left: 0;
+        }
 
-            .coral-button:hover {
-                background-color: #e6735f !important;
-            }
+        .main-content.collapsed {
+          margin-left: 80px;
+        }
 
-            .details-list {
-                list-style-type: none;
-                margin-left: 5rem;
-                padding: 0;
-            }
+        .sidebar.collapsed {
+          width: 80px;
+          transform: translateX(0);
+        }
 
-            .details-list li {
-                margin-bottom: 1.5rem;
-                font-size:1.3rem;
-            }
-            .uu{
-                font-size: 1.4rem;
-                margin-left: 5rem;
-                font-weight: bold;
+        .toggle-btn {
+          display: block;
+        }
 
-            }
+        .mobile-toggle {
+          position: fixed;
+          top: 1rem;
+          left: 1rem;
+          z-index: 1100;
+          background: coral;
+          color: white;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
 
-            .uu .custom-menu{
-                margin-top: 5rem !important;
-            }
+      /* Existing Form and Table Styles (Unchanged) */
+      .table-form-panel {
+        max-width: 400px;
+        padding: 1rem;
+        border-radius: 12px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-            .form-grid {
-                margin-top: 1rem;
-                margin-bottom: 3rem;
-                /*                row-gap: 6rem !important;*/
-                column-gap: -0.5rem;
-            }
+      .table-form-panel .ui-inputtext,
+      .table-form-panel .ui-outputlabel {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+      }
 
-            /*            .form-grid .custom-menu{
-                            margin-bottom: 4rem;
-                        }*/
+      .top-bar-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+      }
 
-            .form-group .ui-outputlabel {
-                font-weight: bold;
-                margin-bottom: -0.5rem ! important;
-                font-size: 1.2rem; /* optional, improves visibility */
-            }
-            .form-groupp .ui-outputlabel {
-                font-weight: bold;
-                margin-bottom: -0.5rem ! important;
-                font-size: 1.2rem; /* optional, improves visibility */
-                width: 28%;
-            }
-            .form-grouppp .ui-outputlabel {
-                font-weight: bold;
-                margin-bottom: -0.5rem ! important;
-                font-size: 1.2rem; /* optional, improves visibility */
-                width: 28%;
-            }
+      .form-group {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
 
-            .form-group .ui-inputtext,
-            .form-group .ui-calendar {
-                padding: 0.5rem;
-                font-size: 1rem;
-            }
-            .form-groupp .ui-inputtext,
-            .form-groupp .ui-calendar {
-                padding: 0.5rem;
-                font-size: 1rem;
-            }
-            .form-grouppp .ui-inputtext,
-            .form-grouppp .ui-calendar {
-                padding: 0.5rem;
-                font-size: 1rem;
-            }
+      .top-bar-formm {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+      }
 
+      .form-groupp {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
 
-            /*staffcss*/
+      .top-bar-formmm {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-sizing: border-box;
+      }
 
-            .top-bar-formmmS {
-                display: flex;
-                flex-direction: column;
-                gap: 2rem;
-                background-color: #fff;
-                padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                max-width: 90%;
-                margin: 2rem auto;
-                width: 100%;
-            }
+      .form-grouppp {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
 
-            .mainnnS {
-                display: flex;
-                flex-direction: row;
-                gap: 2rem;
-                flex-wrap: wrap;
-                margin-left: 0rem;
-            }
+      .main {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
 
-            .form-groupppS {
-                display: flex;
-                flex-direction: row;
-                margin-left: 0rem;
-                gap: 0.5rem;
-                justify-content: flex-start;
-            }
+      .mainnn {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-left: 8rem;
+      }
 
-            .form-groupppS .ui-outputlabel {
-                font-weight: bold;
-                margin-bottom: -0.5rem ! important;
-                font-size: 1.2rem;
-                width: 28%;
-                color: grey;
-                min-width: 150px;
-                margin-left: 6rem;
-            }
+      .coral-button {
+        align-self: center;
+        background-color: coral !important;
+        border: none !important;
+        color: white !important;
+        font-weight: bold;
+        padding: 0rem 1.5rem;
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+      }
 
-            .form-groupppS .ui-inputtext, .form-groupppS .ui-calendar {
-                padding: 0.5rem;
-                font-size: 1rem;
-                margin-left: 1rem;
-                width: 212px;
+      .coral-button:hover {
+        background-color: #ff5252 !important;
+      }
 
-            }
+      .top-bar-form .ui-outputlabel {
+        font-weight: 500;
+        color: grey;
+        font-size: 1.5rem;
+        min-width: 100px;
+      }
 
-        </style>
-    </h:head>
+      .top-bar-formm .ui-outputlabel {
+        font-weight: 500;
+        color: grey;
+        font-size: 1.5rem;
+        min-width: 100px;
+        margin-left: 9rem;
+      }
 
-    <h:body>
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div>
-                <div class="sidebar-header"><h1>Bhagyoday</h1></div>
+      .top-bar-formmm .ui-outputlabel {
+        font-weight: 500;
+        color: grey;
+        font-size: 1.5rem;
+        min-width: 120px;
+      }
 
-                <p:menu styleClass="custom-menu">
-                    <p:menuitem value="Dashboard" icon="pi pi-th-large" />
-                    <p:menuitem value="Table Mangement" icon="pi pi-table"
-                                action="#{tableBean.showForm}" update="mainContent" />
-                    <p:menuitem value="Book Table" icon="pi pi-star" action="#{tableBean.showFormbooking()}" update="mainContent" />
-                    <p:menuitem value="Menu Management" icon="pi pi-exclamation-triangle" action="#{tableBean.showmenu()}" update="mainContent"/>
-                    <p:menuitem value="Manage Category" icon="pi pi-book" action="#{tableBean.showcategoryy()}" update="mainContent"/>
-                    <p:menuitem value="staff Category" icon="pi pi-book" action="#{tableBean.showstafffunc()}" update="mainContent"/>
-                    <p:menuitem value="add user" icon="pi pi-book" action="#{tableBean.showuserfunc()}" update="mainContent"/>
-                </p:menu>
-            </div>
+      .top-bar-form .ui-inputtext {
+        margin-left: 1rem;
+        width: 150px;
+      }
 
-            <div class="logout-btn">
-                <h:form>
-                    <p:commandButton value="Logout" icon="pi pi-sign-out"
-                                     action="#{loginBean.logout}"
-                                     styleClass="ui-button-danger" />
-                </h:form>
-            </div>
+      .top-bar-formm .ui-inputtext {
+        margin-left: 1rem;
+        width: 150px;
+      }
+
+      .top-bar-formmm .ui-inputtext {
+        margin-left: 1rem;
+        width: 150px;
+      }
+
+      .top-bar-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 100%;
+        margin: auto;
+      }
+
+      .top-bar-formm {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 50%;
+        margin: auto;
+      }
+
+      .top-bar-formmm {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 50%;
+        margin: auto;
+      }
+
+      .form-group label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      .form-groupp {
+        display: flex;
+        flex-direction: row;
+        margin-left: -2rem;
+      }
+
+      .form-grouppp {
+        display: flex;
+        flex-direction: row;
+        margin-left: 0rem;
+      }
+
+      .form-groupp label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      .form-grouppp label {
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      .details-list {
+        list-style-type: none;
+        margin-left: 5rem;
+        padding: 0;
+      }
+
+      .details-list li {
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
+      }
+
+      .uu {
+        font-size: 1.4rem;
+        margin-left: 5rem;
+        font-weight: bold;
+      }
+
+      .form-grid {
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+        column-gap: -0.5rem;
+      }
+
+      .form-group .ui-outputlabel {
+        font-weight: bold;
+        margin-bottom: -0.5rem !important;
+        font-size: 1.2rem;
+      }
+
+      .form-groupp .ui-outputlabel {
+        font-weight: bold;
+        margin-bottom: -0.5rem !important;
+        font-size: 1.2rem;
+        width: 28%;
+      }
+
+      .form-grouppp .ui-outputlabel {
+        font-weight: bold;
+        margin-bottom: -0.5rem !important;
+        font-size: 1.2rem;
+        width: 28%;
+      }
+
+      .form-group .ui-inputtext,
+      .form-group .ui-calendar {
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .form-groupp .ui-inputtext,
+      .form-groupp .ui-calendar {
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .form-grouppp .ui-inputtext,
+      .form-grouppp .ui-calendar {
+        padding: 0.5rem;
+        font-size: 1rem;
+      }
+
+      /* Staff CSS */
+      .top-bar-formmmS {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 90%;
+        margin: 2rem auto;
+        width: 100%;
+      }
+
+      .mainnnS {
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-left: 0rem;
+      }
+
+      .form-groupppS {
+        display: flex;
+        flex-direction: row;
+        margin-left: 0rem;
+        gap: 0.5rem;
+        justify-content: flex-start;
+      }
+
+      .form-groupppS .ui-outputlabel {
+        font-weight: bold;
+        margin-bottom: -0.5rem !important;
+        font-size: 1.2rem;
+        width: 28%;
+        color: grey;
+        min-width: 150px;
+        margin-left: 6rem;
+      }
+
+      .form-groupppS .ui-inputtext,
+      .form-groupppS .ui-calendar {
+        padding: 0.5rem;
+        font-size: 1rem;
+        margin-left: 1rem;
+        width: 212px;
+      }
+
+      .top-right-btn {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      /* Availability Highlighting */
+      .availability-available {
+        color: #4caf50;
+        font-weight: bold;
+      }
+      .availability-unavailable {
+        color: #f44336;
+        font-weight: bold;
+      }
+
+      /* Dashboard Analytics Styles */
+      .dashboard-container {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+      }
+
+      .stats-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: space-between;
+      }
+
+      .stat-card {
+        flex: 1;
+        min-width: 220px;
+        padding: 1.5rem;
+        border-radius: 12px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card-blue {
+        background-color: #4285f4;
+      }
+
+      .stat-card-green {
+        background-color: #34a853;
+      }
+
+      .stat-card-orange {
+        background-color: #fb8c00;
+      }
+
+      .stat-card-purple {
+        background-color: #a142f4;
+      }
+
+      .stat-card-title {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .stat-card-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-card-subtitle {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      .dashboard-sections {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+      }
+
+      .dashboard-section {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .dashboard-section-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #333;
+      }
+
+      .dashboard-section-subtitle {
+        font-size: 1rem;
+        color: #666;
+        margin-bottom: 1.5rem;
+      }
+
+      .recent-order {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .recent-order:last-child {
+        border-bottom: none;
+      }
+
+      .order-details {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .order-table {
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .order-time {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .order-price {
+        font-weight: bold;
+        font-size: 1.1rem;
+      }
+
+      .order-status {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        text-align: center;
+      }
+
+      .status-completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+
+      .status-progress {
+        background-color: #e3f2fd;
+        color: #1565c0;
+      }
+
+      .status-pending {
+        background-color: #fff3e0;
+        color: #e65100;
+      }
+
+      .quick-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #333;
+      }
+
+      .quick-action:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-5px);
+      }
+
+      .quick-action i {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+        color: #555;
+      }
+
+      .quick-action-text {
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .stats-cards {
+          flex-direction: column;
+        }
+
+        .dashboard-sections {
+          flex-direction: column;
+        }
+      }
+    </style>
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const mainContent = document.querySelector(".main-content");
+        sidebar.classList.toggle("collapsed");
+        mainContent.classList.toggle("collapsed");
+        const toggleIcon = document.querySelector(".toggle-btn i");
+        if (sidebar.classList.contains("collapsed")) {
+          toggleIcon.className = "pi pi-angle-double-right";
+        } else {
+          toggleIcon.className = "pi pi-angle-double-left";
+        }
+      }
+
+      function toggleMobileSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        sidebar.classList.toggle("active");
+      }
+
+      function setActiveMenu(element) {
+        // Remove active class from all menu items
+        document
+          .querySelectorAll(".sidebar .ui-menuitem-link")
+          .forEach((link) => {
+            link.classList.remove("active");
+          });
+
+        // Add active class to clicked menu item
+        if (element) {
+          element.classList.add("active");
+        }
+      }
+
+      function setActiveMenuByIndex(index) {
+        // Get all menu items
+        const menuItems = document.querySelectorAll(
+          ".sidebar .ui-menuitem-link"
+        );
+
+        // Remove active class from all menu items
+        menuItems.forEach((link) => {
+          link.classList.remove("active");
+        });
+
+        // Add active class to the menu item at the specified index (0-based)
+        if (menuItems.length > index) {
+          menuItems[index].classList.add("active");
+        }
+      }
+    </script>
+  </h:head>
+
+  <h:body>
+    <!-- Mobile Toggle Button -->
+    <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+      <i class="pi pi-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <h1><i class="pi pi-cutlery restaurant-icon"></i> QuickServe</h1>
+          <button class="toggle-btn" onclick="toggleSidebar()">
+            <i class="pi pi-angle-double-left"></i>
+          </button>
         </div>
 
-        <!-- Main Content -->
-        <!-- Main Content -->
-        <h:form id="mainContent" style=" margin-left: 2rem">
-            <div class="main-content">
-                <!--table-->
-                <h:panelGroup rendered="#{tableBean.showTableForm}">
-                    <!-- Top bar form -->
-                    <div class="top-bar-form" >
-                        <div class="main">
-                            <div class="form-group">
-                                <p:outputLabel for="tableNumber" value="Table Number:" />
-                                <p:inputText id="tableNumber" value="#{tableBean.tableNumber}" placeholder="Enter number" />
-                            </div>
-                            <div class="form-group">
-                                <p:outputLabel for="capacity" value="Capacity-of-peoples:" />
-                                <p:inputText id="capacity" value="#{tableBean.capacity}" placeholder="Enter capacity" />
-                            </div>
-                        </div>
-
-                        <!-- Submit button below -->
-                        <p:commandButton value="#{tableBean.editMode ? 'Update' : 'Add-Table'}"
-                                         action="#{tableBean.submitTable}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </div>
-
-                    <!-- Data Table -->
-                    <p:dataTable value="#{tableBean.gettabledata()}" var="table"
-                                 style="margin-top: 2rem; width: 100%; height:100%">
-
-                        <!-- Table Number -->
-                        <p:column headerText="Table Number">
-                            <h:outputText value="#{table.tableNumber}" />
-                        </p:column>
-
-                        <!-- Capacity -->
-                        <p:column headerText="Capacity">
-                            <h:outputText value="#{table.capacity}" />
-                        </p:column>
-
-
-
-                        <!-- Delete Button with SVG -->
-                        <p:column headerText="Delete">
-                            <p:column headerText="Delete">
-                                <p:commandButton value="Delete"
-                                                 action="#{tableBean.deleteTable(table)}"
-                                                 update="mainContent"
-                                                 styleClass="ui-button-danger"
-                                                 title="Delete" />
-                            </p:column>
-                        </p:column>
-                        <p:column headerText="Edit">
-                            <p:column headerText="Update">
-                                <p:commandButton value="update"
-                                                 action="#{tableBean.editTable(table)}"
-                                                 update="mainContent"
-                                                 styleClass="ui-button-secondary"
-                                                 title="Update" />
-                            </p:column>
-                        </p:column>
-
-                        <!-- Book Table Button -->
-
-
-                    </p:dataTable>
-
-
-                </h:panelGroup>
-
-                <!--booking-->
-                <h:panelGroup rendered="#{tableBean.showbookingForm}" id="mainContent">
-
-                    <!-- Top bar with Book Table button -->
-                    <h:panelGroup rendered="#{bookingbean.showBookingList}">
-                        <p:commandButton value="Book Table" icon="pi pi-plus"
-                                         action="#{bookingbean.showFormView}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </h:panelGroup>
-
-                    <!-- Booking Form -->
-                    <h:panelGroup rendered="#{bookingbean.showBookingForm}">
-                        <div class="top-bar-formm">
-                            <p:commandButton value="show bookings" icon="pi pi-chevron-left"
-                                             action="#{bookingbean.showBookingListView()}"
-                                             update="mainContent"
-                                             styleClass="coral-button" />
-
-                            <div class="form-groupp">
-
-                                <p:outputLabel for="ps2" value="Table-Number" />
-                                <p:selectOneMenu id="ps2" value="#{bookingbean.tableNumber}" style="width: 150px; margin-left:1rem"> 
-                                    <f:selectItem itemLabel="-- Select table --" itemValue="" />
-                                    <f:selectItems value="#{bookingbean.tables}"    
-                                                   var="cat"
-                                                   itemLabel="#{cat.tableNumber}"
-                                                   itemValue="#{cat.tableNumber}" />     
-                                </p:selectOneMenu>
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Capacity:" for="capacity3"/>
-                                <p:inputText id="capacity3" value="#{bookingbean.capacity}" />
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Customer Name:" for="customername"/>
-                                <p:inputText id="customername" value="#{bookingbean.customername}" />
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Mobile No:" for="mobileno"/>
-                                <p:inputText id="mobileno" value="#{bookingbean.mobileno}" />
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Booking Date:" for="bookingdate"/>
-                                <p:calendar id="bookingdate" value="#{bookingbean.bookingdate}" pattern="yyyy-MM-dd" />
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Booking Time:" for="bookingtime"/>
-                                <p:datePicker id="bookingtime" value="#{bookingbean.bookingtime}" pattern="HH:mm" timeOnly="true" hourFormat="24"/>
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Dine-in Date:" for="dinedate"/>
-                                <p:calendar id="dinedate" value="#{bookingbean.dineDate}" pattern="yyyy-MM-dd" />
-                            </div>
-                            <div class="form-groupp">
-                                <p:outputLabel value="Dine-in Time:" for="dinetime"/>
-                                <p:datePicker id="dinetime" value="#{bookingbean.dinetime}" pattern="HH:mm" timeOnly="true"  hourFormat="24"/>
-                            </div>
-
-                            <p:commandButton value="Submit" action="#{bookingbean.insertbook()}" update="mainContent"
-                                             styleClass="coral-button" />
-                        </div>
-                    </h:panelGroup>
-
-                    <!-- Booking List -->
-                    <h:panelGroup rendered="#{bookingbean.showBookingList}">
-                        <p:dataTable value="#{bookingbean.bookings}" var="b" style="margin-top: 1rem">
-                            <p:column headerText="Table Number">
-                                #{b.tableId.tableNumber}
-                            </p:column>
-                            <p:column headerText="Customer-Name">
-                                #{b.customername}
-                            </p:column>
-                            <p:column headerText="Action">
-                                <p:commandButton value="View Details" icon="pi pi-eye"
-                                                 action="#{bookingbean.showDetailsView(b)}"
-                                                 update="mainContent"
-                                                 styleClass="ui-button-secondary" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:panelGroup>
-
-                    <!-- Booking Details -->
-                    <h:panelGroup rendered="#{bookingbean.showBookingDetails}">
-                        <h1>Booking Details</h1>
-
-                        <div class="uu">
-                            <h:panelGrid columns="2" styleClass="form-grid">
-
-
-                                <h:outputLabel value="Table Number:" for="tableId5" />
-                                <p:inputText id="tableId5" value="#{bookingbean.currentBooking.tableId.tableNumber}" disabled="true" />
-
-                                <h:outputLabel value="Capacity:" for="capacity5" />
-                                <p:inputText id="capacity5" value="#{bookingbean.currentBooking.noofpeoples}" required="true" />
-
-                                <h:outputLabel value="Customer Name:" for="customername5" />
-                                <p:inputText id="customername5" value="#{bookingbean.currentBooking.customername}" required="true" />
-
-                                <h:outputLabel value="Mobile Number:" for="contactno5" />
-                                <p:inputText id="contactno5" value="#{bookingbean.currentBooking.contactno}" required="true" />
-
-                                <h:outputLabel value="Booking Date:" for="bookingDate5" />
-                                <p:calendar id="bookingDate5" value="#{bookingbean.currentBooking.bookingDate}" pattern="yyyy-MM-dd" required="true" />
-
-                                <h:outputLabel value="Booking Time:" for="bookingTime5" />
-                                <p:datePicker id="bookingTime5" value="#{bookingbean.currentBooking.bookingTime}" required="true" timeOnly="true"  hourFormat="24"/>
-
-                                <h:outputLabel value="Dine-in Date:" for="dineInDate5" />
-                                <p:calendar id="dineInDate5" value="#{bookingbean.currentBooking.dineInDate}" pattern="yyyy-MM-dd" required="true" />
-
-                                <h:outputLabel value="Dine-in Time:" for="dineInTime5" />
-                                <p:datePicker id="dineInTime5" value="#{bookingbean.currentBooking.dineInTime}" required="true" timeOnly="true" hourFormat="24"  />
-                            </h:panelGrid>
-                        </div>
-                        <p:commandButton value="Back to List" action="#{bookingbean.showBookingListView}" update="mainContent" icon="pi pi-chevron-left"
-                                         styleClass="coral-button" style="margin-left: 5rem; " />
-                        <p:commandButton value="Update" action="#{bookingbean.updatedetails}" update="mainContent"
-                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
-                        <p:commandButton value="Delete" action="#{bookingbean.deletebooking}" update="mainContent"
-                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
-
-                    </h:panelGroup>
-                </h:panelGroup>
-
-                <!--category-->
-                <h:panelGroup rendered="#{tableBean.showcategory}"  layout="block" style="display: flex; flex-direction: column; height: 100vh;">
-                    <!-- Top bar form -->
-                    <div class="top-bar-form" >
-                        <div class="main">
-                            <div class="form-group">
-                                <p:outputLabel for="category" value="Category" />
-                                <p:inputText id="category" value="#{menubean.categoryname}" placeholder="Enter categoryname" style="width:200px"/>
-                            </div>
-                            <p:commandButton value="#{menubean.editMode ? 'Update' : 'Add-Category'}"
-                                             action="#{menubean.submitTable()}"
-                                             update="mainContent"
-                                             styleClass="coral-button" />
-                        </div>
-
-                        <!-- Submit button below -->
-
-                    </div>
-
-                    <!-- Data Table -->
-                    <h:panelGroup  >
-
-                        <p:dataTable value="#{menubean.getcategorydata()}" var="table" 
-                                     style="margin-top: 2rem; width: 100%; height:100%">
-
-                            <!-- Table Number -->
-                            <p:column headerText="Category Name">
-                                <h:outputText value="#{table.categoryName}" />
-                            </p:column>
-
-
-
-                            <!-- Update Button with SVG -->
-                            <p:column headerText="Update">
-                                <p:commandButton value="Edit" action="#{menubean.editTable(table)}"
-                                                 update="mainContent"
-                                                 styleClass="ui-button-secondary"
-                                                 title="Edit" >
-                                    <!--                                    <f:facet name="icon">
-                                                                            <span class="ui-icon" style="width: 20px; height: 20px;">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="coral" viewBox="0 0 24 24">
-                                                                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 
-                                                                                          0-1.41l-2.34-2.34a1.003 1.003 0 0 0-1.42 0l-1.83 1.83 
-                                                                                          3.75 3.75 1.84-1.83z"/>
-                                                                                </svg>
-                                                                            </span>
-                                                                        </f:facet>-->
-                                </p:commandButton>
-                            </p:column>
-
-                            <!-- Delete Button with SVG -->
-                            <p:column headerText="Delete">
-                                <p:column headerText="Delete">
-                                    <p:commandButton value="Delete"
-                                                     action="#{menubean.deletecategory(table)}"
-                                                     update="mainContent"
-                                                     styleClass="ui-button-danger"
-                                                     title="Delete" />
-                                </p:column>
-                            </p:column>
-
-                            <!-- Book Table Button -->
-
-
-                        </p:dataTable>
-                    </h:panelGroup>
-
-
-                </h:panelGroup>
-
-                <!--menu-->
-                <h:panelGroup rendered="#{tableBean.showmenuform}">
-
-                    <h:panelGroup rendered="#{onlymenubean.showmenulist}">
-                        <p:commandButton value="Add Item" icon="pi pi-plus"
-                                         action="#{onlymenubean.showFormlistfunc}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </h:panelGroup>
-
-
-                    <h:panelGroup rendered="#{onlymenubean.showformlist}" layout="block" style="display: flex; flex-direction: column; height: 100vh;">
-
-                        <!-- Top bar form -->
-                        <div class="top-bar-formmm" >
-
-                            <div class="mainnn">
-                                <div class="form-grouppp">
-                                    <p:outputLabel for="item" value="Item Name:" />
-                                    <p:inputText id="item" value="#{onlymenubean.menuname}" placeholder="Enter name" />
-                                </div>
-                                <div class="form-grouppp">
-                                    <p:outputLabel for="price" value="Item Price:" />
-                                    <p:inputText id="price" value="#{onlymenubean.price}" placeholder="Enter price" />
-                                </div>
-                                <div class="form-grouppp">
-                                    <p:outputLabel for="categoryyy" value="Category:" />
-                                    <p:selectOneMenu id="categoryyy" value="#{onlymenubean.selectedcategoryformenu}">
-                                        <f:selectItem itemLabel="-- Select Category --" itemValue="" />
-                                        <f:selectItems value="#{menubean.getcategorydata()}"
-                                                       var="cat"
-                                                       itemLabel="#{cat.categoryName}"
-                                                       itemValue="#{cat.categoryid}" />
-                                    </p:selectOneMenu>
-                                </div>
-
-
-
-                                <div class="form-grouppp">
-                                    <p:outputLabel for="foodtype" value="Food Type:" />
-                                    <p:selectOneMenu id="foodtype" value="#{onlymenubean.foodtype}" style="width: 200px;"> 
-                                        <f:selectItem itemLabel="-- Select Food Type --" itemValue="" />
-                                        <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
-                                        <f:selectItem itemLabel="Non-Vegeterian" itemValue="non-veg" />
-                                    </p:selectOneMenu>
-                                </div>
-
-                                <div class="form-grouppp">
-                                    <p:outputLabel for="description" value="Description:" />
-                                    <p:inputTextarea id="description"
-                                                     value="#{onlymenubean.description}"
-                                                     placeholder="Enter item description"
-                                                     rows="1" cols="30"
-                                                     autoResize="true" />
-                                </div>
-
-
-
-                                <!-- Submit button below -->
-
-
-                                <p:commandButton value="show items" 
-                                                 action="#{onlymenubean.showmenulistfunc()}"
-                                                 update="mainContent"
-                                                 icon="pi pi-chevron-left"
-                                                 styleClass="coral-button" />
-
-                                <p:commandButton value="#{onlymenubean.editMode ? 'Update' : 'Add-Item'}"
-                                                 action="#{onlymenubean.submitTable()}"
-                                                 update="mainContent"
-                                                 icon="pi pi-plus"
-                                                 styleClass="ui-button-secondary" />
-                            </div>
-                        </div>
-
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="#{onlymenubean.showmenulist}" >
-
-                        <!-- Data Table -->
-                        <h:panelGroup  layout="block" >
-
-                            <div class="form-group" style="margin-bottom: 1rem; margin-top: 1rem;">
-                                <p:outputLabel for="categoryFilter" value="Filter by Category:" style="margin-right: 1rem;" />
-                                <p:selectOneMenu id="categoryFilter" value="#{onlymenubean.selectedCategoryFilter}">
-                                    <f:selectItem itemLabel="All" itemValue="" />
-                                    <f:selectItems value="#{menubean.getcategorydata()}" var="cat"
-                                                   itemLabel="#{cat.categoryName}" itemValue="#{cat.categoryid}" />
-                                    <p:ajax listener="#{onlymenubean.filterMenuByCategory}" update="menuTable" />
-                                </p:selectOneMenu>
-                            </div>
-                            <p:dataTable id="menuTable" value="#{onlymenubean.menus}" var="menu" 
-                                         style="margin-top: 2rem; width: 100%; height:100%">
-
-                                <!-- Table Number -->
-                                <p:column headerText="Item Name">
-                                    <h:outputText value="#{menu.itemName}" />
-                                </p:column>
-
-                                <!-- Capacity -->
-                                <p:column headerText="Price">
-                                    <h:outputText value="#{menu.itemPrice}" />
-                                </p:column>
-                                <p:column headerText="Category">
-                                    <h:outputText value="#{menu.categoryId.categoryName}" />
-                                </p:column>
-                                <p:column headerText="Availability">
-                                    <h:outputText value="#{menu.isAvalaible ? 'Available' : 'Unavailable'}" />
-                                </p:column>
-                                <p:column headerText="Action">
-                                    <p:commandButton value="View Details" icon="pi pi-eye"
-                                                     action="#{onlymenubean.showmenudetails(menu)}"
-                                                     update="mainContent"
-                                                     styleClass="ui-button-secondary" />
-                                </p:column>
-
-
-
-
-
-
-                            </p:dataTable>
-                        </h:panelGroup>
-
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="#{onlymenubean.menudetails}">
-                        <h1>Menu Details</h1>
-
-                        <div class="uu">
-                            <h:panelGrid columns="2" styleClass="form-grid">
-
-
-                                <h:outputLabel value="Item Name" for="item1" />
-                                <p:inputText id="item1" value="#{onlymenubean.menuname}"  />
-
-                                <p:outputLabel for="price1" value="Item Price:" />
-                                <p:inputText id="price1" value="#{onlymenubean.price}" />
-
-                                <p:outputLabel for="categoryyy1" value="Category:" />
-                                <p:selectOneMenu id="categoryyy1" value="#{onlymenubean.selectedcategoryformenu}">
-                                    <f:selectItem itemLabel="-- Select Category --" itemValue="" />
-                                    <f:selectItems value="#{menubean.getcategorydata()}"
-                                                   var="cat"
-                                                   itemLabel="#{cat.categoryName}"
-                                                   itemValue="#{cat.categoryid}" />
-                                </p:selectOneMenu>
-
-                                <p:outputLabel for="foodtype1" value="Food Type:" />
-                                <p:selectOneMenu id="foodtype1" value="#{onlymenubean.foodtype}" style="width: 200px;"> 
-                                    <f:selectItem itemLabel="-- Select Food Type --" itemValue="" />
-                                    <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
-                                    <f:selectItem itemLabel="Non-Vegeterian" itemValue="non-veg" />
-                                </p:selectOneMenu>
-
-                                <p:outputLabel for="description1" value="Description:" />
-                                <p:inputTextarea id="description1"
-                                                 value="#{onlymenubean.description}"
-                                                 placeholder="Enter item description"
-                                                 rows="1" cols="30"
-                                                 autoResize="true" />
-
-                                <p:outputLabel for="availability" value="Availability:" />
-
-                                <p:toggleSwitch id="availability" value="#{onlymenubean.avability}">
-                                    <p:ajax update="availabilityLabel" />
-                                </p:toggleSwitch>
-
-                                <!-- Dynamic Label -->
-                                <h:outputText id="availabilityLabel" 
-                                              value="#{onlymenubean.avability ? 'Available' : 'Unavailable'}"
-                                              style="font-weight: bold;" />
-
-
-
-                            </h:panelGrid>
-                        </div>
-                        <p:commandButton value="Back to List" action="#{onlymenubean.showformlistfunc}" update="mainContent" icon="pi pi-chevron-left"
-                                         styleClass="coral-button" style="margin-left: 5rem; " />
-                        <p:commandButton value="Update" action="#{onlymenubean.updatemenu()}" update="mainContent" icon="pi pi-pencil"
-                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
-                        <p:commandButton value="Delete" action="#{onlymenubean.deletemenu()}" update="mainContent" icon="pi pi-trash"
-                                         styleClass="ui-button-danger" style="margin-left: 5rem; " />
-
-                    </h:panelGroup>
-
-
-
-                </h:panelGroup>
-
-                <!--staff-->
-
-
-                <h:panelGroup rendered="#{tableBean.showstaff}">
-
-                    <h:panelGroup rendered="#{staffbean.showstafflist}">
-                        <p:commandButton value="Add Staff" icon="pi pi-plus"
-                                         action="#{staffbean.showformlistfunc()}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </h:panelGroup>
-
-
-                    <h:panelGroup rendered="#{staffbean.showformlist}" layout="block" style="display: flex; flex-direction: column; height: 100vh;">
-
-                        <!-- Top bar form -->
-                        <div class="top-bar-formmmS" >
-                            <div class="mainnnS">
-
-
-                                <div class="form-groupppS">
-                                    <p:outputLabel for="staffname" value="Staff Name:" />
-                                    <p:inputText id="staffname" value="#{staffbean.name}" placeholder="Enter name" />
-
-                                    <p:outputLabel for="sur" value="Surname" />
-                                    <p:inputText id="sur" value="#{staffbean.surname}" placeholder="Enter surname" />
-                                </div>
-                                <div class="form-groupppS">
-                                    <p:outputLabel for="age" value="Age" />
-                                    <p:inputText id="age" value="#{staffbean.age}" placeholder="Enter age" />
-                                    <p:outputLabel for="sal" value="Salary" />
-                                    <p:inputText id="sal" value="#{staffbean.salary}" placeholder="Enter salary" />
-                                </div>
-                                <div class="form-groupppS">
-                                    <p:outputLabel for="id-type" value="id-type" />
-                                    <p:inputText id="id-type" value="#{staffbean.idtype}" placeholder="Enter id-type" />
-                                    <p:outputLabel for="idno" value="id-number" />
-                                    <p:inputText id="idno" value="#{staffbean.idno}" placeholder="Enter id-number" />
-                                </div>
-                                <div class="form-groupppS">
-                                    <p:outputLabel for="doj" value="Date-0f-joining" />
-                                    <p:datePicker id="doj" value="#{staffbean.datee}" placeholder="Select date" />
-
-                                    <p:outputLabel for="role" value="Select position:" />
-                                    <p:selectOneMenu id="role" value="#{staffbean.position}" style="width: 20%; margin-left: 2rem">
-                                        <f:selectItem itemLabel="-- Select Role --" itemValue="" noSelectionOption="true" />
-                                        <f:selectItem itemLabel="Waiter" itemValue="waiter" />
-                                        <f:selectItem itemLabel="Chef" itemValue="chef" />
-                                        <f:selectItem itemLabel="Cleaner" itemValue="cleaner" />
-                                        <f:selectItem itemLabel="Other" itemValue="other" />
-                                    </p:selectOneMenu>
-                                </div>
-
-                                <div class="form-groupppS" style="margin-left: 20rem">
-
-                                    <p:commandButton value="Add-staff"
-                                                     action="#{staffbean.addstaff()}"
-                                                     update="mainContent"
-                                                     icon="pi pi-plus"
-                                                     styleClass="ui-button-secondary" />
-
-
-                                    <p:commandButton value="show staff-list" 
-                                                     action="#{staffbean.showstafflistfunc()}"
-                                                     update="mainContent"
-                                                     icon="pi pi-chevron-left"
-                                                     style="margin-left: 5rem"
-                                                     styleClass="coral-button" />
-
-
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-                    </h:panelGroup>
-
-                    <h:panelGroup rendered="#{staffbean.showstafflist}" >
-
-                        <!-- Data Table -->
-                        <H1>staff list</H1>
-
-
-                        <h:panelGroup  layout="block" >
-
-
-                            <p:dataTable id="menuTable11" value="#{staffbean.staff}" var="s" 
-                                         style="margin-top: 2rem; width: 100%; height:100%">
-
-                                <!-- Table Number -->
-                                <p:column headerText="Staff Name">
-                                    <h:outputText value="#{s.name}" />
-                                </p:column>
-
-                                <!-- Capacity -->
-                                <p:column headerText="Position">
-                                    <h:outputText value="#{s.position}" />
-                                </p:column>
-
-                                <p:column headerText="Action">
-                                    <p:commandButton value="View Details" icon="pi pi-eye"
-                                                     action="#{staffbean.showstaffdetailsfunc(s)}"
-                                                     update="mainContent"
-                                                     styleClass="ui-button-secondary" />
-                                </p:column>
-
-                            </p:dataTable>
-                        </h:panelGroup>
-
-                    </h:panelGroup>
-
-
-                    <h:panelGroup rendered="#{staffbean.showstaffdetails}">
-                        <h1>staff Details</h1>
-
-                        <div class="uu">
-                            <h:panelGrid columns="2" styleClass="form-grid">
-
-
-                                <h:outputLabel value="Staff Name" for="item11" />
-                                <p:inputText id="item11" value="#{staffbean.name}"  />
-
-                                <p:outputLabel for="surname1" value="Staff surname" />
-                                <p:inputText id="surname1" value="#{staffbean.surname}" />
-
-                                <p:outputLabel for="age1" value="Age" />
-                                <p:inputText id="age1" value="#{staffbean.age}" />
-
-                                <p:outputLabel for="salary1" value="Salary:" />
-                                <p:inputText id="salary1" value="#{staffbean.salary}" />
-
-                                <p:outputLabel for="dat" value="Date-of-joining" />
-                                <p:datePicker id="dat" value="#{staffbean.datee}" />
-
-                                <p:outputLabel for="idt" value="Id-type" />
-                                <p:inputText id="idt" value="#{staffbean.idtype}" />
-
-                                <p:outputLabel for="idn" value="Id-number" />
-                                <p:inputText id="idn" value="#{staffbean.idno}" />
-
-
-
-                                <p:outputLabel for="ps1" value="Position:" />
-                                <p:selectOneMenu id="ps1" value="#{staffbean.position}" style="width: 200px;"> 
-                                    <f:selectItem itemLabel="-- Select position Type --" itemValue="" />
-                                    <f:selectItem itemLabel="waiter" itemValue="waiter" />
-                                    <f:selectItem itemLabel="chef" itemValue="chef" />
-                                    <f:selectItem itemLabel="cleaner" itemValue="cleaner" />
-                                    <f:selectItem itemLabel="other" itemValue="other" />
-                                </p:selectOneMenu>
-
-
-
-                            </h:panelGrid>
-                        </div>
-                        <p:commandButton value="Back to List" action="#{staffbean.showstafflistfunc()}" update="mainContent" icon="pi pi-chevron-left"
-                                         styleClass="coral-button" style="margin-left: 5rem; " />
-                        <p:commandButton value="Update" action="#{staffbean.updatestaff()}" update="mainContent" icon="pi pi-pencil"
-                                         styleClass="ui-button-secondary" style="margin-left: 5rem; " />
-                        <p:commandButton value="Delete" action="#{staffbean.deletestaff()}" update="mainContent" icon="pi pi-trash"
-                                         styleClass="ui-button-danger" style="margin-left: 5rem; " />
-
-                    </h:panelGroup>
-
-
-
-                </h:panelGroup>
-                
-                
-                    <h:panelGroup rendered="#{tableBean.showuser}">
-                    <!-- Top bar form -->
-                    <div class="top-bar-form" >
-                        <div class="main">
-                            <div class="form-group">
-                                <p:outputLabel for="q1" value="Username" />
-                                <p:inputText id="q1" value="#{adduserbean.username}" placeholder="Enter username" />
-                            </div>
-                            <div class="form-group">
-                                <p:outputLabel for="q2" value="Password" />
-                                <p:inputText id="q2" value="#{adduserbean.password}" placeholder="Enter password" />
-                            </div>
-                        </div>
-
-                        <!-- Submit button below -->
-                        <p:commandButton value="Add-user"
-                                         action="#{adduserbean.adduser()}"
-                                         update="mainContent"
-                                         styleClass="coral-button" />
-                    </div>
-
-                    <!-- Data Table -->
-                    <p:dataTable value="#{adduserbean.user}" var="uu"
-                                 style="margin-top: 2rem; width: 100%; height:100%">
-
-                        <!-- Table Number -->
-                        <p:column headerText="Username">
-                            <h:outputText value="#{uu.username}" />
-                        </p:column>
-
-                       
-
-                        <!-- Delete Button with SVG -->
-                        <p:column headerText="Delete">
-                            <p:column headerText="Delete">
-                                <p:commandButton value="Delete"
-                                                 
-                                                 update="mainContent"
-                                                 styleClass="ui-button-danger"
-                                                 title="Delete" />
-                            </p:column>
-                        </p:column>
-                        
-
-                        <!-- Book Table Button -->
-
-
-                    </p:dataTable>
-
-
-                </h:panelGroup>
-
-
-
-
-
+        <p:menu styleClass="custom-menu">
+          <p:menuitem
+            value="Dashboard"
+            icon="pi pi-home"
+            action="#{dashboardBean.showDashboard}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{tableBean.showTableForm}"
+              value="false"
+            />
+            <f:setPropertyActionListener
+              target="#{tableBean.showbookingForm}"
+              value="false"
+            />
+            <f:setPropertyActionListener
+              target="#{tableBean.showcategory}"
+              value="false"
+            />
+            <f:setPropertyActionListener
+              target="#{tableBean.showmenuform}"
+              value="false"
+            />
+            <f:setPropertyActionListener
+              target="#{tableBean.showstaff}"
+              value="false"
+            />
+            <f:setPropertyActionListener
+              target="#{tableBean.showuser}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="Table Management"
+            icon="pi pi-table"
+            action="#{tableBean.showForm}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="Book Table"
+            icon="pi pi-calendar-plus"
+            action="#{tableBean.showFormbooking()}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="Menu Management"
+            icon="pi pi-book"
+            action="#{tableBean.showmenu()}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="Manage Category"
+            icon="pi pi-tags"
+            action="#{tableBean.showcategoryy()}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="Staff Management"
+            icon="pi pi-users"
+            action="#{tableBean.showstafffunc()}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+          <p:menuitem
+            value="User Management"
+            icon="pi pi-user"
+            action="#{tableBean.showuserfunc()}"
+            update="mainContent"
+            onclick="setActiveMenu(this)"
+          >
+            <f:setPropertyActionListener
+              target="#{dashboardBean.showDashboardView}"
+              value="false"
+            />
+          </p:menuitem>
+        </p:menu>
+      </div>
+
+      <div class="logout-btn">
+        <h:form>
+          <p:commandButton
+            value="Logout"
+            action="#{loginBean.logout}"
+            styleClass="ui-button-danger"
+          />
+        </h:form>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <h:form id="mainContent" style="margin-left: 2rem">
+      <div class="main-content">
+        <!--table-->
+        <h:panelGroup rendered="#{tableBean.showTableForm}">
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              Table Management
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Manage restaurant tables and seating capacity
+            </p>
+          </div>
+
+          <!-- Top bar form -->
+          <div class="top-bar-form">
+            <div class="main">
+              <div class="form-group">
+                <p:outputLabel for="tableNumber" value="Table Number:" />
+                <p:inputText
+                  id="tableNumber"
+                  value="#{tableBean.tableNumber}"
+                  placeholder="Enter number"
+                  required="true"
+                  requiredMessage="Table number is required"
+                  validatorMessage="Table number must be a positive number"
+                >
+                  <f:validateLongRange minimum="1" />
+                </p:inputText>
+                <p:message for="tableNumber" display="text" />
+              </div>
+              <div class="form-group">
+                <p:outputLabel for="capacity" value="Capacity-of-peoples:" />
+                <p:inputText
+                  id="capacity"
+                  value="#{tableBean.capacity}"
+                  required="true"
+                  requiredMessage="Capacity is required"
+                  placeholder="Enter capacity"
+                  validatorMessage="Capacity must be between 1 and 20"
+                >
+                  <f:validateLongRange minimum="1" maximum="20" />
+                </p:inputText>
+                <p:message for="capacity" display="text" />
+              </div>
             </div>
 
+            <!-- Submit button below -->
+            <p:commandButton
+              value="#{tableBean.editMode ? 'Update' : 'Add Table'}"
+              action="#{tableBean.submitTable}"
+              update="mainContent"
+              styleClass="coral-button"
+            />
+          </div>
 
+          <!-- Data Table -->
+          <p:dataTable
+            value="#{tableBean.gettabledata()}"
+            var="table"
+            style="margin-top: 2rem; width: 100%; height: 100%"
+          >
+            <!-- Table Number -->
+            <p:column headerText="Table Number">
+              <h:outputText value="#{table.tableNumber}" />
+            </p:column>
 
+            <!-- Capacity -->
+            <p:column headerText="Capacity">
+              <h:outputText value="#{table.capacity}" />
+            </p:column>
 
+            <!-- Delete Button with SVG -->
+            <p:column headerText="Delete">
+              <p:commandButton
+                value="Delete"
+                action="#{tableBean.deleteTable(table)}"
+                update="mainContent"
+                styleClass="ui-button-danger"
+                title="Delete"
+              />
+            </p:column>
+            <p:column headerText="Edit">
+              <p:commandButton
+                value="Update"
+                action="#{tableBean.editTable(table)}"
+                update="mainContent"
+                styleClass="ui-button-secondary"
+                title="Update"
+              />
+            </p:column>
+          </p:dataTable>
+        </h:panelGroup>
 
-        </h:form>
+        <!--booking-->
+        <h:panelGroup rendered="#{tableBean.showbookingForm}" id="mainContent">
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              Table Bookings
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Manage customer reservations and table bookings
+            </p>
+          </div>
 
+          <!-- Top bar with Book Table button -->
+          <h:panelGroup rendered="#{bookingbean.showBookingList}">
+            <div class="top-right-btn">
+              <p:commandButton
+                value="Book Table"
+                icon="pi pi-plus"
+                action="#{bookingbean.showFormView}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
+            </div>
+          </h:panelGroup>
 
+          <!-- Booking Form -->
+          <h:panelGroup rendered="#{bookingbean.showBookingForm}">
+            <div class="top-bar-formm">
+              <p:commandButton
+                value="Show Bookings"
+                icon="pi pi-chevron-left"
+                action="#{bookingbean.showBookingListView()}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
 
+              <div class="form-groupp">
+                <p:outputLabel for="ps2" value="Table-Number" />
+                <p:selectOneMenu
+                  id="ps2"
+                  value="#{bookingbean.tableNumber}"
+                  style="width: 150px; margin-left: 1rem"
+                  required="true"
+                  requiredMessage="Table number is required"
+                >
+                  <f:selectItem itemLabel="-- Select table --" itemValue="" />
+                  <f:selectItems
+                    value="#{bookingbean.tables}"
+                    var="cat"
+                    itemLabel="#{cat.tableNumber}"
+                    itemValue="#{cat.tableNumber}"
+                  />
+                </p:selectOneMenu>
+                <p:message for="ps2" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Capacity:" for="capacity3" />
+                <p:inputText
+                  id="capacity3"
+                  value="#{bookingbean.capacity}"
+                  required="true"
+                  requiredMessage="Capacity is required"
+                  validatorMessage="Capacity must be a positive number"
+                >
+                  <f:validateLongRange minimum="1" />
+                </p:inputText>
+                <p:message for="capacity3" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Customer Name:" for="customername" />
+                <p:inputText
+                  id="customername"
+                  value="#{bookingbean.customername}"
+                  required="true"
+                  requiredMessage="Customer name is required"
+                >
+                  <f:validateLength minimum="3" maximum="50" />
+                </p:inputText>
+                <p:message for="customername" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Mobile No:" for="mobileno" />
+                <p:inputText
+                  id="mobileno"
+                  value="#{bookingbean.mobileno}"
+                  required="true"
+                  requiredMessage="Mobile number is required"
+                  validatorMessage="Please enter a valid 10-digit mobile number"
+                >
+                  <f:validateRegex pattern="^[0-9]{10}$" />
+                </p:inputText>
+                <p:message for="mobileno" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Booking Date:" for="bookingdate" />
+                <p:calendar
+                  id="bookingdate"
+                  value="#{bookingbean.bookingdate}"
+                  pattern="yyyy-MM-dd"
+                  required="true"
+                  requiredMessage="Booking date is required"
+                  mindate="#{bookingbean.today}"
+                />
+                <p:message for="bookingdate" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Booking Time:" for="bookingtime" />
+                <p:datePicker
+                  id="bookingtime"
+                  value="#{bookingbean.bookingtime}"
+                  pattern="HH:mm"
+                  timeOnly="true"
+                  hourFormat="24"
+                  required="true"
+                  requiredMessage="Booking time is required"
+                />
+                <p:message for="bookingtime" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Dine-in Date:" for="dinedate" />
+                <p:calendar
+                  id="dinedate"
+                  value="#{bookingbean.dineDate}"
+                  pattern="yyyy-MM-dd"
+                  required="true"
+                  requiredMessage="Dine-in date is required"
+                  mindate="#{bookingbean.today}"
+                />
+                <p:message for="dinedate" display="text" />
+              </div>
+              <div class="form-groupp">
+                <p:outputLabel value="Dine-in Time:" for="dinetime" />
+                <p:datePicker
+                  id="dinetime"
+                  value="#{bookingbean.dinetime}"
+                  pattern="HH:mm"
+                  timeOnly="true"
+                  hourFormat="24"
+                  required="true"
+                  requiredMessage="Dine-in time is required"
+                />
+                <p:message for="dinetime" display="text" />
+              </div>
 
+              <p:commandButton
+                value="Submit"
+                action="#{bookingbean.insertbook()}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
+            </div>
+          </h:panelGroup>
 
-    </h:body>
+          <!-- Booking List -->
+          <h:panelGroup rendered="#{bookingbean.showBookingList}">
+            <p:dataTable
+              value="#{bookingbean.bookings}"
+              var="b"
+              style="margin-top: 1rem"
+            >
+              <p:column headerText="Table Number">
+                #{b.tableId.tableNumber}
+              </p:column>
+              <p:column headerText="Customer-Name">
+                #{b.customername}
+              </p:column>
+              <p:column headerText="Action">
+                <p:commandButton
+                  value="View Details"
+                  icon="pi pi-eye"
+                  action="#{bookingbean.showDetailsView(b)}"
+                  update="mainContent"
+                  styleClass="ui-button-secondary"
+                />
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+
+          <!-- Booking Details -->
+          <h:panelGroup rendered="#{bookingbean.showBookingDetails}">
+            <h1>Booking Details</h1>
+
+            <div class="uu">
+              <h:panelGrid columns="2" styleClass="form-grid">
+                <h:outputLabel value="Table Number:" for="tableId5" />
+                <p:inputText
+                  id="tableId5"
+                  value="#{bookingbean.currentBooking.tableId.tableNumber}"
+                  disabled="true"
+                />
+
+                <h:outputLabel value="Capacity:" for="capacity5" />
+                <p:inputText
+                  id="capacity5"
+                  value="#{bookingbean.currentBooking.noofpeoples}"
+                  required="true"
+                />
+
+                <h:outputLabel value="Customer Name:" for="customername5" />
+                <p:inputText
+                  id="customername5"
+                  value="#{bookingbean.currentBooking.customername}"
+                  required="true"
+                />
+
+                <h:outputLabel value="Mobile Number:" for="contactno5" />
+                <p:inputText
+                  id="contactno5"
+                  value="#{bookingbean.currentBooking.contactno}"
+                  required="true"
+                />
+
+                <h:outputLabel value="Booking Date:" for="bookingDate5" />
+                <p:calendar
+                  id="bookingDate5"
+                  value="#{bookingbean.currentBooking.bookingDate}"
+                  pattern="yyyy-MM-dd"
+                  required="true"
+                />
+
+                <h:outputLabel value="Booking Time:" for="bookingTime5" />
+                <p:datePicker
+                  id="bookingTime5"
+                  value="#{bookingbean.currentBooking.bookingTime}"
+                  required="true"
+                  timeOnly="true"
+                  hourFormat="24"
+                />
+
+                <h:outputLabel value="Dine-in Date:" for="dineInDate5" />
+                <p:calendar
+                  id="dineInDate5"
+                  value="#{bookingbean.currentBooking.dineInDate}"
+                  pattern="yyyy-MM-dd"
+                  required="true"
+                />
+
+                <h:outputLabel value="Dine-in Time:" for="dineInTime5" />
+                <p:datePicker
+                  id="dineInTime5"
+                  value="#{bookingbean.currentBooking.dineInTime}"
+                  required="true"
+                  timeOnly="true"
+                  hourFormat="24"
+                />
+              </h:panelGrid>
+            </div>
+            <p:commandButton
+              value="Back to List"
+              action="#{bookingbean.showBookingListView}"
+              update="mainContent"
+              icon="pi pi-chevron-left"
+              styleClass="coral-button"
+              style="margin-left: 5rem"
+            />
+            <p:commandButton
+              value="Update"
+              action="#{bookingbean.updatedetails}"
+              update="mainContent"
+              styleClass="ui-button-secondary"
+              style="margin-left: 5rem"
+            />
+            <p:commandButton
+              value="Delete"
+              action="#{bookingbean.deletebooking}"
+              update="mainContent"
+              styleClass="ui-button-danger"
+              style="margin-left: 5rem"
+            />
+          </h:panelGroup>
+        </h:panelGroup>
+
+        <!--category-->
+        <h:panelGroup
+          rendered="#{tableBean.showcategory}"
+          layout="block"
+          style="display: flex; flex-direction: column; height: 100vh"
+        >
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              Category Management
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Create and manage menu categories
+            </p>
+          </div>
+
+          <!-- Top bar form -->
+          <div class="top-bar-form">
+            <div class="main">
+              <div class="form-group">
+                <p:outputLabel for="category" value="Category" />
+                <p:inputText
+                  id="category"
+                  value="#{menubean.categoryname}"
+                  placeholder="Enter categoryname"
+                  style="width: 200px"
+                  required="true"
+                  requiredMessage="Category name is required"
+                  validatorMessage="Category name must be between 2 and 30 characters"
+                >
+                  <f:validateLength minimum="2" maximum="30" />
+                </p:inputText>
+                <p:message for="category" display="text" />
+              </div>
+              <p:commandButton
+                value="#{menubean.editMode ? 'Update' : 'Add-Category'}"
+                action="#{menubean.submitTable()}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
+            </div>
+          </div>
+
+          <!-- Data Table -->
+          <h:panelGroup>
+            <p:dataTable
+              value="#{menubean.getcategorydata()}"
+              var="table"
+              style="margin-top: 2rem; width: 100%; height: 100%"
+            >
+              <!-- Table Number -->
+              <p:column headerText="Category Name">
+                <h:outputText value="#{table.categoryName}" />
+              </p:column>
+
+              <!-- Update Button with SVG -->
+              <p:column headerText="Update">
+                <p:commandButton
+                  value="Edit"
+                  action="#{menubean.editTable(table)}"
+                  update="mainContent"
+                  styleClass="ui-button-secondary"
+                  title="Edit"
+                />
+              </p:column>
+
+              <!-- Delete Button with SVG -->
+              <p:column headerText="Delete">
+                <p:commandButton
+                  value="Delete"
+                  action="#{menubean.deletecategory(table)}"
+                  update="mainContent"
+                  styleClass="ui-button-danger"
+                  title="Delete"
+                />
+              </p:column>
+            </p:dataTable>
+          </h:panelGroup>
+        </h:panelGroup>
+
+        <!--menu-->
+        <h:panelGroup rendered="#{tableBean.showmenuform}">
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              Menu Management
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Manage food items, prices, and availability
+            </p>
+          </div>
+
+          <h:panelGroup rendered="#{onlymenubean.showmenulist}">
+            <div class="top-right-btn">
+              <p:commandButton
+                value="Add Item"
+                icon="pi pi-plus"
+                action="#{onlymenubean.showFormlistfunc}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
+            </div>
+          </h:panelGroup>
+
+          <h:panelGroup
+            rendered="#{onlymenubean.showformlist}"
+            layout="block"
+            style="display: flex; flex-direction: column; height: 100vh"
+          >
+            <!-- Top bar form -->
+            <div class="top-bar-formmm">
+              <div class="mainnn">
+                <div class="form-grouppp">
+                  <p:outputLabel for="item" value="Item Name:" />
+                  <p:inputText
+                    id="item"
+                    value="#{onlymenubean.menuname}"
+                    placeholder="Enter name"
+                    required="true"
+                    requiredMessage="Item name is required"
+                    validatorMessage="Item name must be between 2 and 50 characters"
+                  >
+                    <f:validateLength minimum="2" maximum="50" />
+                  </p:inputText>
+                  <p:message for="item" display="text" />
+                </div>
+                <div class="form-grouppp">
+                  <p:outputLabel for="price" value="Item Price:" />
+                  <p:inputText
+                    id="price"
+                    value="#{onlymenubean.price}"
+                    placeholder="Enter price"
+                    required="true"
+                    requiredMessage="Price is required"
+                    validatorMessage="Price must be a positive number"
+                  >
+                    <f:validateDoubleRange minimum="1" />
+                  </p:inputText>
+                  <p:message for="price" display="text" />
+                </div>
+                <div class="form-grouppp">
+                  <p:outputLabel for="categoryyy" value="Category:" />
+                  <p:selectOneMenu
+                    id="categoryyy"
+                    value="#{onlymenubean.selectedcategoryformenu}"
+                    required="true"
+                    requiredMessage="Category is required"
+                  >
+                    <f:selectItem
+                      itemLabel="-- Select Category --"
+                      itemValue=""
+                    />
+                    <f:selectItems
+                      value="#{menubean.getcategorydata()}"
+                      var="cat"
+                      itemLabel="#{cat.categoryName}"
+                      itemValue="#{cat.categoryid}"
+                    />
+                  </p:selectOneMenu>
+                  <p:message for="categoryyy" display="text" />
+                </div>
+
+                <div class="form-grouppp">
+                  <p:outputLabel for="foodtype" value="Food Type:" />
+                  <p:selectOneMenu
+                    id="foodtype"
+                    value="#{onlymenubean.foodtype}"
+                    style="width: 200px"
+                    required="true"
+                    requiredMessage="Food type is required"
+                  >
+                    <f:selectItem
+                      itemLabel="-- Select Food Type --"
+                      itemValue=""
+                    />
+                    <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
+                    <f:selectItem
+                      itemLabel="Non-Vegeterian"
+                      itemValue="non-veg"
+                    />
+                  </p:selectOneMenu>
+                  <p:message for="foodtype" display="text" />
+                </div>
+
+                <div class="form-grouppp">
+                  <p:outputLabel for="description" value="Description:" />
+                  <p:inputTextarea
+                    id="description"
+                    value="#{onlymenubean.description}"
+                    placeholder="Enter item description"
+                    rows="1"
+                    cols="30"
+                    autoResize="true"
+                    required="true"
+                    requiredMessage="Description is required"
+                    validatorMessage="Description must be between 10 and 200 characters"
+                  >
+                    <f:validateLength minimum="10" maximum="200" />
+                  </p:inputTextarea>
+                  <p:message for="description" display="text" />
+                </div>
+
+                <!-- Submit button below -->
+
+                <p:commandButton
+                  value="Show Items"
+                  action="#{onlymenubean.showmenulistfunc()}"
+                  update="mainContent"
+                  icon="pi pi-chevron-left"
+                  styleClass="coral-button"
+                  immediate="true"
+                  process="@this"
+                />
+
+                <p:commandButton
+                  value="#{onlymenubean.editMode ? 'Update' : 'Add-Item'}"
+                  action="#{onlymenubean.submitTable()}"
+                  update="mainContent"
+                  icon="pi pi-plus"
+                  styleClass="ui-button-secondary"
+                />
+              </div>
+            </div>
+          </h:panelGroup>
+
+          <h:panelGroup rendered="#{onlymenubean.showmenulist}">
+            <!-- Data Table -->
+            <h:panelGroup layout="block">
+              <div
+                class="form-group"
+                style="margin-bottom: 1rem; margin-top: 1rem"
+              >
+                <p:outputLabel
+                  for="categoryFilter"
+                  value="Filter by Category:"
+                  style="margin-right: 1rem"
+                />
+                <p:selectOneMenu
+                  id="categoryFilter"
+                  value="#{onlymenubean.selectedCategoryFilter}"
+                >
+                  <f:selectItem itemLabel="All" itemValue="" />
+                  <f:selectItems
+                    value="#{menubean.getcategorydata()}"
+                    var="cat"
+                    itemLabel="#{cat.categoryName}"
+                    itemValue="#{cat.categoryid}"
+                  />
+                  <p:ajax
+                    listener="#{onlymenubean.filterMenuByCategory}"
+                    update="menuTable"
+                  />
+                </p:selectOneMenu>
+              </div>
+              <p:dataTable
+                id="menuTable"
+                value="#{onlymenubean.menus}"
+                var="menu"
+                style="margin-top: 2rem; width: 100%; height: 100%"
+              >
+                <!-- Table Number -->
+                <p:column headerText="Item Name">
+                  <h:outputText value="#{menu.itemName}" />
+                </p:column>
+
+                <!-- Capacity -->
+                <p:column headerText="Price">
+                  <h:outputText value="#{menu.itemPrice}" />
+                </p:column>
+                <p:column headerText="Category">
+                  <h:outputText value="#{menu.categoryId.categoryName}" />
+                </p:column>
+                <p:column headerText="Availability">
+                  <h:outputText
+                    value="#{menu.isAvalaible ? 'Available' : 'Unavailable'}"
+                    styleClass="#{(menu.isAvalaible ? 'availability-available' : 'availability-unavailable')}"
+                  />
+                </p:column>
+                <p:column headerText="Action">
+                  <p:commandButton
+                    value="View Details"
+                    icon="pi pi-eye"
+                    action="#{onlymenubean.showmenudetails(menu)}"
+                    update="mainContent"
+                    styleClass="ui-button-secondary"
+                  />
+                </p:column>
+              </p:dataTable>
+            </h:panelGroup>
+          </h:panelGroup>
+
+          <h:panelGroup rendered="#{onlymenubean.menudetails}">
+            <h1>Menu Details</h1>
+
+            <div class="uu">
+              <h:panelGrid columns="2" styleClass="form-grid">
+                <h:outputLabel value="Item Name" for="item1" />
+                <p:inputText id="item1" value="#{onlymenubean.menuname}" />
+
+                <p:outputLabel for="price1" value="Item Price:" />
+                <p:inputText id="price1" value="#{onlymenubean.price}" />
+
+                <p:outputLabel for="categoryyy1" value="Category:" />
+                <p:selectOneMenu
+                  id="categoryyy1"
+                  value="#{onlymenubean.selectedcategoryformenu}"
+                >
+                  <f:selectItem
+                    itemLabel="-- Select Category --"
+                    itemValue=""
+                  />
+                  <f:selectItems
+                    value="#{menubean.getcategorydata()}"
+                    var="cat"
+                    itemLabel="#{cat.categoryName}"
+                    itemValue="#{cat.categoryid}"
+                  />
+                </p:selectOneMenu>
+
+                <p:outputLabel for="foodtype1" value="Food Type:" />
+                <p:selectOneMenu
+                  id="foodtype1"
+                  value="#{onlymenubean.foodtype}"
+                  style="width: 200px"
+                >
+                  <f:selectItem
+                    itemLabel="-- Select Food Type --"
+                    itemValue=""
+                  />
+                  <f:selectItem itemLabel="Vegeterian" itemValue="veg" />
+                  <f:selectItem
+                    itemLabel="Non-Vegeterian"
+                    itemValue="non-veg"
+                  />
+                </p:selectOneMenu>
+
+                <p:outputLabel for="description1" value="Description:" />
+                <p:inputTextarea
+                  id="description1"
+                  value="#{onlymenubean.description}"
+                  placeholder="Enter item description"
+                  rows="1"
+                  cols="30"
+                  autoResize="true"
+                />
+
+                <p:outputLabel for="availability" value="Availability:" />
+
+                <p:toggleSwitch
+                  id="availability"
+                  value="#{onlymenubean.avability}"
+                >
+                  <p:ajax update="availabilityLabel" />
+                </p:toggleSwitch>
+
+                <h:outputText
+                  id="availabilityLabel"
+                  value="#{onlymenubean.avability ? 'Available' : 'Unavailable'}"
+                  style="font-weight: bold"
+                />
+              </h:panelGrid>
+            </div>
+            <p:commandButton
+              value="Back to List"
+              action="#{onlymenubean.showmenulistfunc()}"
+              update="mainContent"
+              icon="pi pi-chevron-left"
+              styleClass="coral-button"
+              style="margin-left: 5rem"
+              immediate="true"
+              process="@this"
+            />
+            <p:commandButton
+              value="Update"
+              action="#{onlymenubean.updatemenu()}"
+              update="mainContent"
+              icon="pi pi-pencil"
+              styleClass="ui-button-secondary"
+              style="margin-left: 5rem"
+            />
+            <p:commandButton
+              value="Delete"
+              action="#{onlymenubean.deletemenu()}"
+              update="mainContent"
+              icon="pi pi-trash"
+              styleClass="ui-button-danger"
+              style="margin-left: 5rem"
+            />
+          </h:panelGroup>
+        </h:panelGroup>
+
+        <!--staff-->
+        <h:panelGroup rendered="#{tableBean.showstaff}">
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              Staff Management
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Manage restaurant staff and positions
+            </p>
+          </div>
+
+          <h:panelGroup rendered="#{staffbean.showstafflist}">
+            <div class="top-right-btn">
+              <p:commandButton
+                value="Add Staff"
+                icon="pi pi-plus"
+                action="#{staffbean.showformlistfunc()}"
+                update="mainContent"
+                styleClass="coral-button"
+              />
+            </div>
+          </h:panelGroup>
+
+          <h:panelGroup
+            rendered="#{staffbean.showformlist}"
+            layout="block"
+            style="display: flex; flex-direction: column; height: 100vh"
+          >
+            <!-- Top bar form -->
+            <div class="top-bar-formmmS">
+              <div class="mainnnS">
+                <div class="form-groupppS">
+                  <p:outputLabel for="staffname" value="Staff Name:" />
+                  <p:inputText
+                    id="staffname"
+                    value="#{staffbean.name}"
+                    placeholder="Enter name"
+                    required="true"
+                    requiredMessage="Staff name is required"
+                    validatorMessage="Name must be between 2 and 30 characters"
+                  >
+                    <f:validateLength minimum="2" maximum="30" />
+                  </p:inputText>
+                  <p:message for="staffname" display="text" />
+
+                  <p:outputLabel for="sur" value="Surname" />
+                  <p:inputText
+                    id="sur"
+                    value="#{staffbean.surname}"
+                    placeholder="Enter surname"
+                    required="true"
+                    requiredMessage="Surname is required"
+                    validatorMessage="Surname must be between 2 and 30 characters"
+                  >
+                    <f:validateLength minimum="2" maximum="30" />
+                  </p:inputText>
+                  <p:message for="sur" display="text" />
+                </div>
+                <div class="form-groupppS">
+                  <p:outputLabel for="age" value="Age" />
+                  <p:inputText
+                    id="age"
+                    value="#{staffbean.age}"
+                    placeholder="Enter age"
+                    required="true"
+                    requiredMessage="Age is required"
+                    validatorMessage="Age must be between 18 and 65"
+                  >
+                    <f:validateLongRange minimum="18" maximum="65" />
+                  </p:inputText>
+                  <p:message for="age" display="text" />
+
+                  <p:outputLabel for="sal" value="Salary" />
+                  <p:inputText
+                    id="sal"
+                    value="#{staffbean.salary}"
+                    placeholder="Enter salary"
+                    required="true"
+                    requiredMessage="Salary is required"
+                    validatorMessage="Salary must be a positive number"
+                  >
+                    <f:validateLongRange minimum="1000" />
+                  </p:inputText>
+                  <p:message for="sal" display="text" />
+                </div>
+                <div class="form-groupppS">
+                  <p:outputLabel for="id-type" value="ID Type" />
+                  <p:selectOneMenu
+                    id="id-type"
+                    value="#{staffbean.idtype}"
+                    style="width: 212px; margin-left: 1rem"
+                    required="true"
+                    requiredMessage="ID type is required"
+                  >
+                    <f:selectItem
+                      itemLabel="-- Select ID Type --"
+                      itemValue=""
+                    />
+                    <f:selectItem itemLabel="Aadhar Card" itemValue="Aadhar" />
+                    <f:selectItem itemLabel="PAN Card" itemValue="PAN" />
+                    <f:selectItem itemLabel="Voter ID" itemValue="Voter ID" />
+                    <f:selectItem
+                      itemLabel="Driving License"
+                      itemValue="Driving License"
+                    />
+                    <f:selectItem itemLabel="Passport" itemValue="Passport" />
+                    <f:selectItem itemLabel="Other" itemValue="Other" />
+                  </p:selectOneMenu>
+                  <p:message for="id-type" display="text" />
+
+                  <p:outputLabel for="idno" value="ID Number" />
+                  <p:inputText
+                    id="idno"
+                    value="#{staffbean.idno}"
+                    placeholder="Enter ID number"
+                    required="true"
+                    requiredMessage="ID number is required"
+                  >
+                    <f:validateLength minimum="5" maximum="20" />
+                  </p:inputText>
+                  <p:message for="idno" display="text" />
+                </div>
+                <div class="form-groupppS">
+                  <p:outputLabel for="doj" value="Date-0f-joining" />
+                  <p:datePicker
+                    id="doj"
+                    value="#{staffbean.datee}"
+                    placeholder="Select date"
+                    required="true"
+                    requiredMessage="Date of joining is required"
+                  />
+                  <p:message for="doj" display="text" />
+
+                  <p:outputLabel for="role" value="Select position:" />
+                  <p:selectOneMenu
+                    id="role"
+                    value="#{staffbean.position}"
+                    style="width: 20%; margin-left: 2rem"
+                    required="true"
+                    requiredMessage="Position is required"
+                  >
+                    <f:selectItem
+                      itemLabel="-- Select Role --"
+                      itemValue=""
+                      noSelectionOption="true"
+                    />
+                    <f:selectItem itemLabel="Waiter" itemValue="waiter" />
+                    <f:selectItem itemLabel="Chef" itemValue="chef" />
+                    <f:selectItem itemLabel="Cleaner" itemValue="cleaner" />
+                    <f:selectItem itemLabel="Other" itemValue="other" />
+                  </p:selectOneMenu>
+                  <p:message for="role" display="text" />
+                </div>
+
+                <div class="form-groupppS" style="margin-left: 20rem">
+                  <p:commandButton
+                    value="Add-staff"
+                    action="#{staffbean.addstaff}"
+                    update="mainContent"
+                    icon="pi pi-plus"
+                    styleClass="ui-button-secondary"
+                  />
+
+                  <p:commandButton
+                    value="Show Staff-List"
+                    action="#{staffbean.showstafflistfunc()}"
+                    update="mainContent"
+                    icon="pi pi-chevron-left"
+                    style="margin-left: 5rem"
+                    styleClass="coral-button"
+                    immediate="true"
+                    process="@this"
+                  />
+                </div>
+              </div>
+            </div>
+          </h:panelGroup>
+
+          <h:panelGroup rendered="#{staffbean.showstafflist}">
+            <!-- Data Table -->
+            <!-- <h1>Staff List</h1> -->
+
+            <h:panelGroup layout="block">
+              <p:dataTable
+                id="menuTable11"
+                value="#{staffbean.staff}"
+                var="s"
+                style="margin-top: 2rem; width: 100%; height: 100%"
+              >
+                <!-- Table Number -->
+                <p:column headerText="Full Name">
+                  <h:outputText value="#{s.name} #{s.surname}" />
+                </p:column>
+
+                <p:column headerText="Age">
+                  <h:outputText value="#{s.age}" />
+                </p:column>
+
+                <p:column headerText="Date of Joining">
+                  <h:outputText value="#{s.dateOfJoining}">
+                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                  </h:outputText>
+                </p:column>
+
+                <p:column headerText="Position">
+                  <h:outputText value="#{s.position}" />
+                </p:column>
+
+                <p:column headerText="Action">
+                  <p:commandButton
+                    value="View Details"
+                    icon="pi pi-eye"
+                    action="#{staffbean.showstaffdetailsfunc(s)}"
+                    update="mainContent"
+                    styleClass="ui-button-secondary"
+                  />
+                </p:column>
+              </p:dataTable>
+            </h:panelGroup>
+          </h:panelGroup>
+
+          <h:panelGroup rendered="#{staffbean.showstaffdetails}">
+            <h1>Staff Details</h1>
+
+            <div class="uu">
+              <h:panelGrid columns="2" styleClass="form-grid">
+                <h:outputLabel value="Staff Name" for="item11" />
+                <p:inputText id="item11" value="#{staffbean.name}" />
+
+                <p:outputLabel for="surname1" value="Staff Surname" />
+                <p:inputText id="surname1" value="#{staffbean.surname}" />
+
+                <p:outputLabel for="age1" value="Age" />
+                <p:inputText id="age1" value="#{staffbean.age}" />
+
+                <p:outputLabel for="salary1" value="Salary:" />
+                <p:inputText id="salary1" value="#{staffbean.salary}" />
+
+                <p:outputLabel for="dat" value="Date-of-Joining" />
+                <p:datePicker id="dat" value="#{staffbean.datee}" />
+
+                <p:outputLabel for="idt" value="ID Type" />
+                <p:selectOneMenu
+                  id="idt"
+                  value="#{staffbean.idtype}"
+                  style="width: 200px"
+                >
+                  <f:selectItem itemLabel="-- Select ID Type --" itemValue="" />
+                  <f:selectItem itemLabel="Aadhar Card" itemValue="Aadhar" />
+                  <f:selectItem itemLabel="PAN Card" itemValue="PAN" />
+                  <f:selectItem itemLabel="Voter ID" itemValue="Voter ID" />
+                  <f:selectItem
+                    itemLabel="Driving License"
+                    itemValue="Driving License"
+                  />
+                  <f:selectItem itemLabel="Passport" itemValue="Passport" />
+                  <f:selectItem itemLabel="Other" itemValue="Other" />
+                </p:selectOneMenu>
+
+                <p:outputLabel for="idn" value="Id-Number" />
+                <p:inputText id="idn" value="#{staffbean.idno}" />
+
+                <p:outputLabel for="ps1" value="Position:" />
+                <p:selectOneMenu
+                  id="ps1"
+                  value="#{staffbean.position}"
+                  style="width: 200px"
+                >
+                  <f:selectItem
+                    itemLabel="-- Select Position Type --"
+                    itemValue=""
+                  />
+                  <f:selectItem itemLabel="Waiter" itemValue="waiter" />
+                  <f:selectItem itemLabel="Chef" itemValue="chef" />
+                  <f:selectItem itemLabel="Cleaner" itemValue="cleaner" />
+                  <f:selectItem itemLabel="Other" itemValue="other" />
+                </p:selectOneMenu>
+              </h:panelGrid>
+            </div>
+            <p:commandButton
+              value="Back to List"
+              action="#{staffbean.showstafflistfunc()}"
+              update="mainContent"
+              icon="pi pi-chevron-left"
+              styleClass="coral-button"
+              style="margin-left: 5rem"
+            />
+            <p:commandButton
+              value="Update"
+              action="#{staffbean.updatestaff()}"
+              update="mainContent"
+              icon="pi pi-pencil"
+              styleClass="ui-button-secondary"
+              style="margin-left: 5rem"
+            />
+            <p:commandButton
+              value="Delete"
+              action="#{staffbean.deletestaff()}"
+              update="mainContent"
+              icon="pi pi-trash"
+              styleClass="ui-button-danger"
+              style="margin-left: 5rem"
+            />
+          </h:panelGroup>
+        </h:panelGroup>
+
+        <h:panelGroup rendered="#{tableBean.showuser}">
+          <div>
+            <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+              User Management
+            </h1>
+            <p style="color: #666; margin-bottom: 2rem">
+              Users added to the system will be granted access with the role of
+              "Waiter".
+            </p>
+          </div>
+
+          <!-- Top bar form -->
+          <div class="top-bar-form">
+            <div class="main">
+              <div class="form-group">
+                <p:outputLabel for="q1" value="Username" />
+                <p:inputText
+                  id="q1"
+                  value="#{adduserbean.username}"
+                  placeholder="Enter username"
+                  required="true"
+                  requiredMessage="Username is required"
+                  validatorMessage="Username must be between 4 and 20 characters"
+                >
+                  <f:validateLength minimum="4" maximum="20" />
+                </p:inputText>
+                <p:message for="q1" display="text" />
+              </div>
+              <div class="form-group">
+                <p:outputLabel for="q2" value="Password" />
+                <p:inputText
+                  id="q2"
+                  value="#{adduserbean.password}"
+                  placeholder="Enter password"
+                  required="true"
+                  requiredMessage="Password is required"
+                  validatorMessage="Password must be at least 6 characters"
+                  type="password"
+                >
+                  <f:validateLength minimum="6" />
+                </p:inputText>
+                <p:message for="q2" display="text" />
+              </div>
+            </div>
+
+            <!-- Submit button below -->
+            <p:commandButton
+              value="Add User"
+              action="#{adduserbean.adduser()}"
+              update="mainContent"
+              styleClass="coral-button"
+            />
+          </div>
+
+          <!-- Data Table -->
+          <p:dataTable
+            value="#{adduserbean.user}"
+            var="uu"
+            style="margin-top: 2rem; width: 100%; height: 100%"
+          >
+            <!-- Table Number -->
+            <p:column headerText="Username">
+              <h:outputText value="#{uu.username}" />
+            </p:column>
+
+            <!-- Delete Button with SVG -->
+            <p:column headerText="Delete">
+              <p:commandButton
+                value="Delete"
+                update="mainContent"
+                styleClass="ui-button-danger"
+                title="Delete"
+              />
+            </p:column>
+          </p:dataTable>
+        </h:panelGroup>
+
+        <!--dashboard-->
+        <h:panelGroup rendered="#{dashboardBean.showDashboardView}">
+          <div class="dashboard-container">
+            <div>
+              <h1 style="font-size: 2rem; margin-bottom: 0.5rem">
+                Admin Dashboard
+              </h1>
+              <p style="color: #666; margin-bottom: 2rem">
+                Overview of your restaurant operations
+              </p>
+            </div>
+
+            <div class="stats-cards">
+              <div class="stat-card stat-card-blue">
+                <div class="stat-card-title">
+                  Total Orders
+                  <i class="pi pi-calendar"></i>
+                </div>
+                <div class="stat-card-value">
+                  #{dashboardBean.totalOrderCount}
+                </div>
+                <div class="stat-card-subtitle">+12% from yesterday</div>
+              </div>
+
+              <div class="stat-card stat-card-green">
+                <div class="stat-card-title">
+                  Revenue
+                  <i class="pi pi-dollar"></i>
+                </div>
+                <div class="stat-card-value">₹12,450</div>
+                <div class="stat-card-subtitle">+8% from yesterday</div>
+              </div>
+
+              <div class="stat-card stat-card-orange">
+                <div class="stat-card-title">
+                  Active Tables
+                  <i class="pi pi-table"></i>
+                </div>
+                <div class="stat-card-value">
+                  #{dashboardBean.totalTableCount}
+                </div>
+                <div class="stat-card-subtitle">
+                  of #{dashboardBean.totalTableCount} total tables
+                </div>
+              </div>
+
+              <div class="stat-card stat-card-purple">
+                <div class="stat-card-title">
+                  Staff Count
+                  <i class="pi pi-users"></i>
+                </div>
+                <div class="stat-card-value">
+                  #{dashboardBean.totalStaffCount}
+                </div>
+                <div class="stat-card-subtitle">
+                  #{dashboardBean.activeStaffCount} on duty now
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-sections">
+              <div class="dashboard-section">
+                <div class="dashboard-section-title">Recent Orders</div>
+                <div class="dashboard-section-subtitle">
+                  Latest orders from your restaurant
+                </div>
+
+                <div class="recent-order">
+                  <div class="order-details">
+                    <div class="order-table">Table 2</div>
+                    <div class="order-time">2:30 PM</div>
+                  </div>
+                  <div class="order-price">₹85.50</div>
+                  <div class="order-status status-completed">completed</div>
+                </div>
+
+                <div class="recent-order">
+                  <div class="order-details">
+                    <div class="order-table">Table 3</div>
+                    <div class="order-time">2:15 PM</div>
+                  </div>
+                  <div class="order-price">₹127.25</div>
+                  <div class="order-status status-progress">in-progress</div>
+                </div>
+
+                <div class="recent-order">
+                  <div class="order-details">
+                    <div class="order-table">Table 1</div>
+                    <div class="order-time">2:00 PM</div>
+                  </div>
+                  <div class="order-price">₹65.00</div>
+                  <div class="order-status status-pending">pending</div>
+                </div>
+              </div>
+
+              <div class="dashboard-section">
+                <div class="dashboard-section-title">Quick Actions</div>
+                <div class="dashboard-section-subtitle">
+                  Common administrative tasks
+                </div>
+
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1rem;
+                  "
+                >
+                  <p:commandLink
+                    styleClass="quick-action"
+                    action="#{tableBean.showmenu()}"
+                    update="mainContent"
+                    onclick="setActiveMenuByIndex(3)"
+                  >
+                    <i class="pi pi-book"></i>
+                    <span class="quick-action-text">Manage Menu</span>
+                    <f:setPropertyActionListener
+                      target="#{dashboardBean.showDashboardView}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showmenuform}"
+                      value="true"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showTableForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showbookingForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showcategory}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showstaff}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showuser}"
+                      value="false"
+                    />
+                  </p:commandLink>
+
+                  <p:commandLink
+                    styleClass="quick-action"
+                    action="#{staffbean.showformlistfunc()}"
+                    update="mainContent"
+                    onclick="setActiveMenuByIndex(5)"
+                  >
+                    <i class="pi pi-user-plus"></i>
+                    <span class="quick-action-text">Add Staff</span>
+                    <f:setPropertyActionListener
+                      target="#{dashboardBean.showDashboardView}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showstaff}"
+                      value="true"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showTableForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showbookingForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showcategory}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showmenuform}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showuser}"
+                      value="false"
+                    />
+                  </p:commandLink>
+
+                  <p:commandLink
+                    styleClass="quick-action"
+                    action="#{tableBean.showForm}"
+                    update="mainContent"
+                    onclick="setActiveMenuByIndex(1)"
+                  >
+                    <i class="pi pi-table"></i>
+                    <span class="quick-action-text">Table Management</span>
+                    <f:setPropertyActionListener
+                      target="#{dashboardBean.showDashboardView}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showTableForm}"
+                      value="true"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showbookingForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showcategory}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showmenuform}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showstaff}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showuser}"
+                      value="false"
+                    />
+                  </p:commandLink>
+
+                  <p:commandLink
+                    styleClass="quick-action"
+                    action="#{tableBean.showFormbooking()}"
+                    update="mainContent"
+                    onclick="setActiveMenuByIndex(2)"
+                  >
+                    <i class="pi pi-calendar-plus"></i>
+                    <span class="quick-action-text">Book Table</span>
+                    <f:setPropertyActionListener
+                      target="#{dashboardBean.showDashboardView}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showbookingForm}"
+                      value="true"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showTableForm}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showcategory}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showmenuform}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showstaff}"
+                      value="false"
+                    />
+                    <f:setPropertyActionListener
+                      target="#{tableBean.showuser}"
+                      value="false"
+                    />
+                  </p:commandLink>
+                </div>
+              </div>
+            </div>
+          </div>
+        </h:panelGroup>
+      </div>
+    </h:form>
+  </h:body>
 </html>

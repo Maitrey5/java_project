@@ -62,6 +62,14 @@ public class menubean implements Serializable {
         System.err.println(showcategoryform);
     }
 
+    private void clearFormFields() {
+        // Reset all form fields to default values
+        this.categoryname = null;
+        // Reset edit mode
+        this.editMode = false;
+        this.selectedcategory = null;
+    }
+
     public void submitTable() {
 
         System.err.println("category bean ------------ " + formatted + "oooooo" + categoryname);
@@ -89,6 +97,8 @@ public class menubean implements Serializable {
         } else {
             System.err.println("category bean ------------ " + formatted + "oooooo" + categoryname);
             em.add_category(String.valueOf(keepRecord.getIi()), categoryname, formatted);
+            // Clear form fields after successfully adding a category
+            clearFormFields();
         }
     }
 

@@ -50,8 +50,17 @@ public class adduserbean implements Serializable{
     public void adduser(){
         System.err.println("inside add userrrrrrrr");
     
-                em.add_user_of_restaurant(username, password, String.valueOf(keepRecord.getIi()),"Waiter");
-
+        em.add_user_of_restaurant(username, password, String.valueOf(keepRecord.getIi()),"Waiter");
+        
+        // Clear the form fields after adding user
+        clearFormFields();
+    }
+    
+    private void clearFormFields() {
+        // Reset all form fields to default values
+        this.username = null;
+        this.password = null;
+        this.role = null;
     }
     
     public Collection<User> displayuser()

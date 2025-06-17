@@ -104,7 +104,7 @@ public class staffbean implements Serializable {
     public Collection<Staffmaster> getmenudata() {
 
         Collection<Staffmaster> s;
-        rs = em.get_all_staff_by_restaurant(Response.class, String.valueOf(keepRecord.getR_id()));
+        rs = em.get_all_staff_by_restaurant(Response.class, String.valueOf(keepRecord.getIi()));
         s = rs.readEntity(gstaff);
         return s;
 
@@ -127,11 +127,24 @@ public class staffbean implements Serializable {
     }
 
     public void showformlistfunc() {
-
+        // Clear all form fields when showing the form
+        clearFormFields();
+        
         showstafflist = false;
         showstaffdetails = false;
         showformlist = true;
-
+    }
+    
+    private void clearFormFields() {
+        // Reset all form fields to default values
+        this.name = null;
+        this.surname = null;
+        this.age = null;
+        this.salary = null;
+        this.idno = null;
+        this.datee = null;
+        this.idtype = null;
+        this.position = null;
     }
 
     public void showstaffdetailsfunc(Staffmaster s) {
@@ -163,7 +176,9 @@ public class staffbean implements Serializable {
         showstaffdetails = false;
         showformlist = false;
         showstafflist = true;
-
+        
+        // Refresh staff list
+        staff = getmenudata();
     }
 
     public Boolean getShowformlist() {
